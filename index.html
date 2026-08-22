@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jadwal Piket & Ompreng - Premium Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9; /* slate-100 */
+        }
+        /* Custom scrollbar for an elegant touch */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="p-4 md:p-8 lg:p-12 min-h-screen flex justify-center text-slate-800 selection:bg-indigo-100 selection:text-indigo-900">
+
+    <div class="max-w-[1400px] w-full">
+        
+        <!-- Premium Header -->
+        <header class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-slate-200 pb-6">
+            <div>
+                <div class="flex items-center gap-3 mb-2">
+                    <div class="bg-indigo-600 p-2 rounded-xl text-white shadow-lg shadow-indigo-200">
+                        <i class="ph-bold ph-calendar-check text-2xl"></i>
+                    </div>
+                    <span class="text-sm font-bold tracking-widest uppercase text-indigo-600">Manajemen Tim</span>
+                </div>
+                <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight text-slate-900">
+                    Jadwal Piket & Ompreng
+                </h1>
+            </div>
+            <div class="text-slate-500 text-sm font-medium flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm border border-slate-200">
+                <i class="ph ph-clock text-lg"></i> Siklus Rotasi 8 Minggu
+            </div>
+        </header>
+
+        <div class="grid grid-cols-1 xl:grid-cols-12 gap-8">
+
+            <!-- SIDEBAR KIRI (Informasi Utama) -->
+            <div class="xl:col-span-3 space-y-6">
+                
+                <!-- Anggota Tim -->
+                <div class="bg-white rounded-3xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100">
+                    <h2 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-4 flex items-center gap-2">
+                        <i class="ph-bold ph-users"></i> Anggota Tim
+                    </h2>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-slate-50 border border-slate-200 hover:border-indigo-300 hover:text-indigo-700 transition-colors cursor-default px-3 py-1.5 rounded-lg text-sm font-semibold text-slate-700">Adit</span>
+                        <span class="bg-slate-50 border border-slate-200 hover:border-indigo-300 hover:text-indigo-700 transition-colors cursor-default px-3 py-1.5 rounded-lg text-sm font-semibold text-slate-700">Agus</span>
+                        <span class="bg-slate-50 border border-slate-200 hover:border-indigo-300 hover:text-indigo-700 transition-colors cursor-default px-3 py-1.5 rounded-lg text-sm font-semibold text-slate-700">Aziz</span>
+                        <span class="bg-slate-50 border border-slate-200 hover:border-indigo-300 hover:text-indigo-700 transition-colors cursor-default px-3 py-1.5 rounded-lg text-sm font-semibold text-slate-700">Fajar M</span>
+                        <span class="bg-slate-50 border border-slate-200 hover:border-indigo-300 hover:text-indigo-700 transition-colors cursor-default px-3 py-1.5 rounded-lg text-sm font-semibold text-slate-700">Fajar R</span>
+                        <span class="bg-slate-50 border border-slate-200 hover:border-indigo-300 hover:text-indigo-700 transition-colors cursor-default px-3 py-1.5 rounded-lg text-sm font-semibold text-slate-700">Bowo</span>
+                        <span class="bg-slate-50 border border-slate-200 hover:border-indigo-300 hover:text-indigo-700 transition-colors cursor-default px-3 py-1.5 rounded-lg text-sm font-semibold text-slate-700">Rizal</span>
+                        <span class="bg-slate-50 border border-slate-200 hover:border-indigo-300 hover:text-indigo-700 transition-colors cursor-default px-3 py-1.5 rounded-lg text-sm font-semibold text-slate-700">Zaidan</span>
+                        <span class="bg-slate-50 border border-slate-200 hover:border-indigo-300 hover:text-indigo-700 transition-colors cursor-default px-3 py-1.5 rounded-lg text-sm font-semibold text-slate-700">Zakaria</span>
+                    </div>
+                </div>
+
+                <!-- Memindahkan Ompreng -->
+                <div class="bg-white rounded-3xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-4 opacity-5 text-6xl pointer-events-none"><i class="ph-fill ph-stack"></i></div>
+                    <h2 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-5 flex items-center gap-2">
+                        <i class="ph-bold ph-arrows-out-line-horizontal"></i> Memindahkan Ompreng
+                    </h2>
+                    <div class="space-y-4">
+                        <div class="flex justify-between items-center pb-3 border-b border-slate-100">
+                            <span class="font-semibold text-slate-900">Senin</span>
+                            <span class="text-sm text-slate-500">Rizal & Adit</span>
+                        </div>
+                        <div class="flex justify-between items-center pb-3 border-b border-slate-100">
+                            <span class="font-semibold text-slate-900">Selasa</span>
+                            <span class="text-sm text-slate-500">Bowo & Zakaria</span>
+                        </div>
+                        <div class="flex justify-between items-center pb-3 border-b border-slate-100">
+                            <span class="font-semibold text-slate-900">Rabu</span>
+                            <span class="text-sm text-slate-500">Fajar R & Fajar M</span>
+                        </div>
+                        <div class="flex justify-between items-center pb-3 border-b border-slate-100">
+                            <span class="font-semibold text-slate-900">Kamis</span>
+                            <span class="text-sm text-slate-500">Agus & Aziz</span>
+                        </div>
+                        <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+                            <span class="block font-semibold text-indigo-700 mb-1">Jum'at</span>
+                            <span class="block text-sm text-slate-600">• Zaidan (rotasi)</span>
+                            <span class="block text-sm text-slate-600">• Pendamping: (lihat rotasi)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Rotasi Jumat -->
+                <div class="bg-slate-900 rounded-3xl p-6 shadow-xl border border-slate-800 text-slate-300">
+                    <h2 class="text-xs font-bold uppercase tracking-wider text-indigo-400 mb-5 flex items-center gap-2">
+                        <i class="ph-bold ph-arrows-clockwise"></i> Rotasi Jum'at
+                    </h2>
+                    <div class="grid grid-cols-2 gap-x-4 gap-y-3 text-sm">
+                        <div class="flex justify-between border-b border-slate-800 pb-1"><span class="text-slate-500">M1</span> <span class="font-medium text-white">Rizal</span></div>
+                        <div class="flex justify-between border-b border-slate-800 pb-1"><span class="text-slate-500">M2</span> <span class="font-medium text-white">Adit</span></div>
+                        <div class="flex justify-between border-b border-slate-800 pb-1"><span class="text-slate-500">M3</span> <span class="font-medium text-white">Bowo</span></div>
+                        <div class="flex justify-between border-b border-slate-800 pb-1"><span class="text-slate-500">M4</span> <span class="font-medium text-white">Zakaria</span></div>
+                        <div class="flex justify-between border-b border-slate-800 pb-1"><span class="text-slate-500">M5</span> <span class="font-medium text-white">Fajar R</span></div>
+                        <div class="flex justify-between border-b border-slate-800 pb-1"><span class="text-slate-500">M6</span> <span class="font-medium text-white">Fajar M</span></div>
+                        <div class="flex justify-between border-b border-slate-800 pb-1"><span class="text-slate-500">M7</span> <span class="font-medium text-white">Aziz</span></div>
+                        <div class="flex justify-between border-b border-slate-800 pb-1"><span class="text-slate-500">M8</span> <span class="font-medium text-white">Agus</span></div>
+                    </div>
+                </div>
+
+                <!-- Jadwal Bilas -->
+                <div class="bg-white rounded-3xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100">
+                    <h2 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-5 flex items-center gap-2">
+                        <i class="ph-bold ph-drop"></i> Jadwal Bilas
+                    </h2>
+                    
+                    <div class="space-y-4">
+                        <!-- M1 -->
+                        <div class="border border-slate-200 rounded-2xl overflow-hidden">
+                            <div class="bg-slate-50 text-xs font-bold uppercase tracking-wider text-slate-500 p-2 text-center border-b border-slate-200">Minggu 1</div>
+                            <div class="p-3 text-xs space-y-2">
+                                <div class="grid grid-cols-12 gap-2 border-b border-slate-100 pb-1"><span class="col-span-2 font-bold text-slate-400">SEN</span> <span class="col-span-5 font-medium">Fajar M <span class="text-[10px] text-slate-400 font-normal">(Tutup)</span></span> <span class="col-span-5 font-medium">Fajar R <span class="text-[10px] text-slate-400 font-normal">(Ompreng)</span></span></div>
+                                <div class="grid grid-cols-12 gap-2 border-b border-slate-100 pb-1"><span class="col-span-2 font-bold text-slate-400">SEL</span> <span class="col-span-5 font-medium">Agus <span class="text-[10px] text-slate-400 font-normal">(Ompreng)</span></span> <span class="col-span-5 font-medium">Aziz <span class="text-[10px] text-slate-400 font-normal">(Tutup)</span></span></div>
+                                <div class="grid grid-cols-12 gap-2 border-b border-slate-100 pb-1"><span class="col-span-2 font-bold text-slate-400">RAB</span> <span class="col-span-5 font-medium">Adit <span class="text-[10px] text-slate-400 font-normal">(Ompreng)</span></span> <span class="col-span-5 font-medium">Rizal <span class="text-[10px] text-slate-400 font-normal">(Tutup)</span></span></div>
+                                <div class="grid grid-cols-12 gap-2"><span class="col-span-2 font-bold text-slate-400">KAM</span> <span class="col-span-5 font-medium">Zakaria <span class="text-[10px] text-slate-400 font-normal">(Tutup)</span></span> <span class="col-span-5 font-medium">Bowo <span class="text-[10px] text-slate-400 font-normal">(Ompreng)</span></span></div>
+                            </div>
+                        </div>
+                        
+                        <!-- M2 -->
+                        <div class="border border-slate-200 rounded-2xl overflow-hidden">
+                            <div class="bg-slate-50 text-xs font-bold uppercase tracking-wider text-slate-500 p-2 text-center border-b border-slate-200">Minggu 2</div>
+                            <div class="p-3 text-xs space-y-2">
+                                <div class="grid grid-cols-12 gap-2 border-b border-slate-100 pb-1"><span class="col-span-2 font-bold text-slate-400">SEN</span> <span class="col-span-5 font-medium">Agus <span class="text-[10px] text-slate-400 font-normal">(Tutup)</span></span> <span class="col-span-5 font-medium">Aziz <span class="text-[10px] text-slate-400 font-normal">(Ompreng)</span></span></div>
+                                <div class="grid grid-cols-12 gap-2 border-b border-slate-100 pb-1"><span class="col-span-2 font-bold text-slate-400">SEL</span> <span class="col-span-5 font-medium">Fajar M <span class="text-[10px] text-slate-400 font-normal">(Ompreng)</span></span> <span class="col-span-5 font-medium">Fajar R <span class="text-[10px] text-slate-400 font-normal">(Tutup)</span></span></div>
+                                <div class="grid grid-cols-12 gap-2 border-b border-slate-100 pb-1"><span class="col-span-2 font-bold text-slate-400">RAB</span> <span class="col-span-5 font-medium">Zakaria <span class="text-[10px] text-slate-400 font-normal">(Ompreng)</span></span> <span class="col-span-5 font-medium">Bowo <span class="text-[10px] text-slate-400 font-normal">(Tutup)</span></span></div>
+                                <div class="grid grid-cols-12 gap-2"><span class="col-span-2 font-bold text-slate-400">KAM</span> <span class="col-span-5 font-medium">Adit <span class="text-[10px] text-slate-400 font-normal">(Tutup)</span></span> <span class="col-span-5 font-medium">Rizal <span class="text-[10px] text-slate-400 font-normal">(Ompreng)</span></span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- KONTEN KANAN (Jadwal Lengkap) -->
+            <div class="xl:col-span-9 space-y-8">
+                
+                <!-- Jadwal Harian (Senin - Kamis) -->
+                <div>
+                    <h2 class="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+                        Jadwal Piket Harian <span class="text-slate-400 font-normal text-sm ml-2">(Senin - Kamis)</span>
+                    </h2>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        
+                        <!-- MINGGU 1 -->
+                        <div class="bg-white rounded-3xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 relative">
+                            <div class="absolute -top-3 left-6 bg-indigo-600 text-white text-xs font-bold px-4 py-1.5 rounded-full shadow-md tracking-widest uppercase">
+                                Minggu 1
+                            </div>
+                            <div class="space-y-6 mt-4">
+                                <!-- HARI -->
+                                <div class="grid grid-cols-[80px_1fr] gap-4 items-start border-b border-slate-100 pb-4">
+                                    <div class="font-bold text-slate-900 bg-slate-50 px-2 py-1 rounded text-center text-sm border border-slate-200">Senin</div>
+                                    <div class="text-sm text-slate-600 space-y-1.5 leading-relaxed">
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Adit</span><span>Gestrep</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Rizal</span><span>Westafel + cuci tempat makan</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Agus</span><span>Bawa ompreng&tutup + pengering lantai</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Aziz</span><span>Bawa ompreng&tutup + pengering lantai</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Zaidan</span><span>Sikat lantai & pengering lantai</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Fajar R</span><span>Sikat lantai</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Fajar M</span><span>Sikat lantai</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Zakaria</span><span>Selokan</span></div>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-[80px_1fr] gap-4 items-start border-b border-slate-100 pb-4">
+                                    <div class="font-bold text-slate-900 bg-slate-50 px-2 py-1 rounded text-center text-sm border border-slate-200">Selasa</div>
+                                    <div class="text-sm text-slate-600 space-y-1.5 leading-relaxed">
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Zaidan</span><span>Gestrep</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Zakaria</span><span>Westafel + cuci tempat makan</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Fajar M</span><span>Bawa ompreng&tutup + pengering lantai</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Fajar R</span><span>Bawa ompreng&tutup + pengering lantai</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Rizal</span><span>Sikat lantai & pengering lantai</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Agus</span><span>Sikat lantai</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Aziz</span><span>Sikat lantai</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Adit</span><span>Selokan</span></div>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-[80px_1fr] gap-4 items-start border-b border-slate-100 pb-4">
+                                    <div class="font-bold text-slate-900 bg-slate-50 px-2 py-1 rounded text-center text-sm border border-slate-200">Rabu</div>
+                                    <div class="text-sm text-slate-600 space-y-1.5 leading-relaxed">
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Fajar R</span><span>Gestrep</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Fajar M</span><span>Westafel + cuci tempat makan</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Zaidan</span><span>Bawa ompreng&tutup + pengering lantai</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Zakaria</span><span>Bawa ompreng&tutup + pengering lantai</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Agus</span><span>Sikat lantai & pengering lantai</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Adit</span><span>Sikat lantai</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Rizal</span><span>Sikat lantai</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Aziz</span><span>Selokan</span></div>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-[80px_1fr] gap-4 items-start">
+                                    <div class="font-bold text-slate-900 bg-slate-50 px-2 py-1 rounded text-center text-sm border border-slate-200">Kamis</div>
+                                    <div class="text-sm text-slate-600 space-y-1.5 leading-relaxed">
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Agus</span><span>Gestrep</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Aziz</span><span>Westafel + cuci tempat makan</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Adit</span><span>Bawa ompreng&tutup + pengering lantai</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Rizal</span><span>Bawa ompreng&tutup + pengering lantai</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Fajar M</span><span>Sikat lantai & pengering lantai</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Zakaria</span><span>Sikat lantai</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Zaidan</span><span>Sikat lantai</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Fajar R</span><span>Selokan</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- MINGGU 2 -->
+                        <div class="bg-white rounded-3xl p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-slate-100 relative">
+                            <div class="absolute -top-3 left-6 bg-indigo-600 text-white text-xs font-bold px-4 py-1.5 rounded-full shadow-md tracking-widest uppercase">
+                                Minggu 2
+                            </div>
+                            <div class="space-y-6 mt-4">
+                                <!-- HARI -->
+                                <div class="grid grid-cols-[80px_1fr] gap-4 items-start border-b border-slate-100 pb-4">
+                                    <div class="font-bold text-slate-900 bg-slate-50 px-2 py-1 rounded text-center text-sm border border-slate-200">Senin</div>
+                                    <div class="text-sm text-slate-600 space-y-1.5 leading-relaxed">
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Adit</span><span>Gestrep</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Rizal</span><span>Westafel + cuci tempat makan</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Fajar M</span><span>Bawa ompreng&tutup + pengering lantai</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Fajar R</span><span>Bawa ompreng&tutup + pengering lantai</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Zakaria</span><span>Sikat lantai & pengering lantai</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Agus</span><span>Sikat lantai</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Aziz</span><span>Sikat lantai</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Zaidan</span><span>Selokan</span></div>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-[80px_1fr] gap-4 items-start border-b border-slate-100 pb-4">
+                                    <div class="font-bold text-slate-900 bg-slate-50 px-2 py-1 rounded text-center text-sm border border-slate-200">Selasa</div>
+                                    <div class="text-sm text-slate-600 space-y-1.5 leading-relaxed">
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Zakaria</span><span>Gestrep</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Zaidan</span><span>Westafel + cuci tempat makan</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Agus</span><span>Bawa ompreng&tutup + pengering lantai</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Aziz</span><span>Bawa ompreng&tutup + pengering lantai</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Adit</span><span>Sikat lantai & pengering lantai</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Fajar M</span><span>Sikat lantai</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Fajar R</span><span>Sikat lantai</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Rizal</span><span>Selokan</span></div>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-[80px_1fr] gap-4 items-start border-b border-slate-100 pb-4">
+                                    <div class="font-bold text-slate-900 bg-slate-50 px-2 py-1 rounded text-center text-sm border border-slate-200">Rabu</div>
+                                    <div class="text-sm text-slate-600 space-y-1.5 leading-relaxed">
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Fajar M</span><span>Gestrep</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Fajar R</span><span>Westafel + cuci tempat makan</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Adit</span><span>Bawa ompreng&tutup + pengering lantai</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Rizal</span><span>Bawa ompreng&tutup + pengering lantai</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Aziz</span><span>Sikat lantai & pengering lantai</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Zaidan</span><span>Sikat lantai</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Zakaria</span><span>Sikat lantai</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Agus</span><span>Selokan</span></div>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-[80px_1fr] gap-4 items-start">
+                                    <div class="font-bold text-slate-900 bg-slate-50 px-2 py-1 rounded text-center text-sm border border-slate-200">Kamis</div>
+                                    <div class="text-sm text-slate-600 space-y-1.5 leading-relaxed">
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Aziz</span><span>Gestrep</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Agus</span><span>Westafel + cuci tempat makan</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Zaidan</span><span>Bawa ompreng&tutup + pengering lantai</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Zakaria</span><span>Bawa ompreng&tutup + pengering lantai</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Fajar R</span><span>Sikat lantai & pengering lantai</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Rizal</span><span>Sikat lantai</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Adit</span><span>Sikat lantai</span></div>
+                                        <div class="flex"><span class="font-semibold text-slate-800 w-20 shrink-0">Fajar M</span><span>Selokan</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Jadwal Piket Khusus Jumat -->
+                <div class="mt-10">
+                    <h2 class="text-xl font-bold text-slate-800 mb-6 flex items-center gap-2">
+                        Jadwal Piket Khusus Jum'at
+                    </h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                        
+                        <!-- Loop untuk M1 - M8 menggunakan struktur desain yang sama -->
+                        <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200 hover:shadow-md transition-shadow">
+                            <h3 class="text-indigo-600 font-bold mb-3 border-b border-indigo-100 pb-2 flex items-center justify-between">
+                                Jum'at <span class="bg-indigo-50 text-indigo-700 text-[10px] px-2 py-0.5 rounded-full">M1</span>
+                            </h3>
+                            <div class="text-xs text-slate-600 space-y-1.5">
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Zaidan</span> <span class="text-right ml-2 line-clamp-1 truncate" title="Westafel + cuci tempat makan">Westafel + cuci</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Rizal</span> <span class="text-right ml-2">Gestrep</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Fajar M</span> <span class="text-right ml-2 line-clamp-1 truncate" title="Bawa ompreng&tutup + pengering lantai">Ompreng + pengering</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Fajar R</span> <span class="text-right ml-2 line-clamp-1 truncate" title="Bawa ompreng&tutup + pengering lantai">Ompreng + pengering</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Zakaria</span> <span class="text-right ml-2 line-clamp-1 truncate" title="Sikat lantai & pengering lantai">Sikat + pengering</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Aziz</span> <span class="text-right ml-2">Sikat lantai</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Agus</span> <span class="text-right ml-2">Selokan</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Adit</span> <span class="text-right ml-2">Sikat lantai</span></div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200 hover:shadow-md transition-shadow">
+                            <h3 class="text-indigo-600 font-bold mb-3 border-b border-indigo-100 pb-2 flex items-center justify-between">
+                                Jum'at <span class="bg-indigo-50 text-indigo-700 text-[10px] px-2 py-0.5 rounded-full">M2</span>
+                            </h3>
+                            <div class="text-xs text-slate-600 space-y-1.5">
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Zaidan</span> <span class="text-right ml-2">Gestrep</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Adit</span> <span class="text-right ml-2 line-clamp-1 truncate" title="Westafel + cuci tempat makan">Westafel + cuci</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Zakaria</span> <span class="text-right ml-2">Selokan</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Agus</span> <span class="text-right ml-2 line-clamp-1 truncate" title="Bawa ompreng&tutup + pengering lantai">Ompreng + pengering</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Aziz</span> <span class="text-right ml-2 line-clamp-1 truncate" title="Bawa ompreng&tutup + pengering lantai">Ompreng + pengering</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Rizal</span> <span class="text-right ml-2 line-clamp-1 truncate" title="Sikat lantai & pengering lantai">Sikat + pengering</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Fajar M</span> <span class="text-right ml-2">Sikat lantai</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Fajar R</span> <span class="text-right ml-2">Sikat lantai</span></div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200 hover:shadow-md transition-shadow">
+                            <h3 class="text-indigo-600 font-bold mb-3 border-b border-indigo-100 pb-2 flex items-center justify-between">
+                                Jum'at <span class="bg-indigo-50 text-indigo-700 text-[10px] px-2 py-0.5 rounded-full">M3</span>
+                            </h3>
+                            <div class="text-xs text-slate-600 space-y-1.5">
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Zakaria</span> <span class="text-right ml-2">Gestrep</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Zaidan</span> <span class="text-right ml-2 line-clamp-1 truncate" title="Westafel + cuci tempat makan">Westafel + cuci</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Agus</span> <span class="text-right ml-2">Selokan</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Adit</span> <span class="text-right ml-2 line-clamp-1 truncate" title="Bawa ompreng&tutup + pengering lantai">Ompreng + pengering</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Rizal</span> <span class="text-right ml-2 line-clamp-1 truncate" title="Bawa ompreng&tutup + pengering lantai">Ompreng + pengering</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Fajar R</span> <span class="text-right ml-2 line-clamp-1 truncate" title="Sikat lantai & pengering lantai">Sikat + pengering</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Aziz</span> <span class="text-right ml-2">Sikat lantai</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Fajar M</span> <span class="text-right ml-2">Sikat lantai</span></div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200 hover:shadow-md transition-shadow">
+                            <h3 class="text-indigo-600 font-bold mb-3 border-b border-indigo-100 pb-2 flex items-center justify-between">
+                                Jum'at <span class="bg-indigo-50 text-indigo-700 text-[10px] px-2 py-0.5 rounded-full">M4</span>
+                            </h3>
+                            <div class="text-xs text-slate-600 space-y-1.5">
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Fajar R</span> <span class="text-right ml-2 line-clamp-1 truncate" title="Westafel + cuci tempat makan">Westafel + cuci</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Zaidan</span> <span class="text-right ml-2">Gestrep</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Aziz</span> <span class="text-right ml-2">Selokan</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Agus</span> <span class="text-right ml-2 line-clamp-1 truncate" title="Bawa ompreng&tutup + pengering lantai">Ompreng + pengering</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Zakaria</span> <span class="text-right ml-2 line-clamp-1 truncate" title="Bawa ompreng&tutup + pengering lantai">Ompreng + pengering</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Fajar M</span> <span class="text-right ml-2 line-clamp-1 truncate" title="Sikat lantai & pengering lantai">Sikat + pengering</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Rizal</span> <span class="text-right ml-2">Sikat lantai</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Adit</span> <span class="text-right ml-2">Sikat lantai</span></div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200 hover:shadow-md transition-shadow">
+                            <h3 class="text-indigo-600 font-bold mb-3 border-b border-indigo-100 pb-2 flex items-center justify-between">
+                                Jum'at <span class="bg-indigo-50 text-indigo-700 text-[10px] px-2 py-0.5 rounded-full">M5</span>
+                            </h3>
+                            <div class="text-xs text-slate-600 space-y-1.5">
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Fajar M</span> <span class="text-right ml-2">Gestrep</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Zaidan</span> <span class="text-right ml-2 line-clamp-1 truncate" title="Westafel + cuci tempat makan">Westafel + cuci</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Rizal</span> <span class="text-right ml-2">Selokan</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Agus</span> <span class="text-right ml-2 line-clamp-1 truncate" title="Bawa ompreng&tutup + pengering lantai">Ompreng + pengering</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Aziz</span> <span class="text-right ml-2 line-clamp-1 truncate" title="Bawa ompreng&tutup + pengering lantai">Ompreng + pengering</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Adit</span> <span class="text-right ml-2 line-clamp-1 truncate" title="Sikat lantai & pengering lantai">Sikat + pengering</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Fajar R</span> <span class="text-right ml-2">Sikat lantai</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Zakaria</span> <span class="text-right ml-2">Sikat lantai</span></div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200 hover:shadow-md transition-shadow">
+                            <h3 class="text-indigo-600 font-bold mb-3 border-b border-indigo-100 pb-2 flex items-center justify-between">
+                                Jum'at <span class="bg-indigo-50 text-indigo-700 text-[10px] px-2 py-0.5 rounded-full">M6</span>
+                            </h3>
+                            <div class="text-xs text-slate-600 space-y-1.5">
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Fajar M</span> <span class="text-right ml-2 line-clamp-1 truncate" title="Westafel + cuci tempat makan">Westafel + cuci</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Zaidan</span> <span class="text-right ml-2">Gestrep</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Fajar R</span> <span class="text-right ml-2">Selokan</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Adit</span> <span class="text-right ml-2 line-clamp-1 truncate" title="Bawa ompreng&tutup + pengering lantai">Ompreng + pengering</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Rizal</span> <span class="text-right ml-2 line-clamp-1 truncate" title="Bawa ompreng&tutup + pengering lantai">Ompreng + pengering</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Aziz</span> <span class="text-right ml-2 line-clamp-1 truncate" title="Sikat lantai & pengering lantai">Sikat + pengering</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Zakaria</span> <span class="text-right ml-2">Sikat lantai</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Agus</span> <span class="text-right ml-2">Sikat lantai</span></div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200 hover:shadow-md transition-shadow">
+                            <h3 class="text-indigo-600 font-bold mb-3 border-b border-indigo-100 pb-2 flex items-center justify-between">
+                                Jum'at <span class="bg-indigo-50 text-indigo-700 text-[10px] px-2 py-0.5 rounded-full">M7</span>
+                            </h3>
+                            <div class="text-xs text-slate-600 space-y-1.5">
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Agus</span> <span class="text-right ml-2">Gestrep</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Zaidan</span> <span class="text-right ml-2 line-clamp-1 truncate" title="Westafel + cuci tempat makan">Westafel + cuci</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Adit</span> <span class="text-right ml-2">Selokan</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Fajar M</span> <span class="text-right ml-2 line-clamp-1 truncate" title="Bawa ompreng&tutup + pengering lantai">Ompreng + pengering</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Fajar R</span> <span class="text-right ml-2 line-clamp-1 truncate" title="Bawa ompreng&tutup + pengering lantai">Ompreng + pengering</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Zakaria</span> <span class="text-right ml-2 line-clamp-1 truncate" title="Sikat lantai & pengering lantai">Sikat + pengering</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Aziz</span> <span class="text-right ml-2">Sikat lantai</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Rizal</span> <span class="text-right ml-2">Sikat lantai</span></div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-200 hover:shadow-md transition-shadow">
+                            <h3 class="text-indigo-600 font-bold mb-3 border-b border-indigo-100 pb-2 flex items-center justify-between">
+                                Jum'at <span class="bg-indigo-50 text-indigo-700 text-[10px] px-2 py-0.5 rounded-full">M8</span>
+                            </h3>
+                            <div class="text-xs text-slate-600 space-y-1.5">
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Aziz</span> <span class="text-right ml-2 line-clamp-1 truncate" title="Westafel + cuci tempat makan">Westafel + cuci</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Zaidan</span> <span class="text-right ml-2">Gestrep</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Fajar M</span> <span class="text-right ml-2">Selokan</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Agus</span> <span class="text-right ml-2 line-clamp-1 truncate" title="Bawa ompreng&tutup + pengering lantai">Ompreng + pengering</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Zakaria</span> <span class="text-right ml-2 line-clamp-1 truncate" title="Bawa ompreng&tutup + pengering lantai">Ompreng + pengering</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Fajar R</span> <span class="text-right ml-2 line-clamp-1 truncate" title="Sikat lantai & pengering lantai">Sikat + pengering</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Rizal</span> <span class="text-right ml-2">Sikat lantai</span></div>
+                                <div class="flex justify-between"><span class="font-semibold text-slate-800">Adit</span> <span class="text-right ml-2">Sikat lantai</span></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+```eof
+
+Beberapa peningkatan utama yang saya lakukan pada versi premium ini:
+*   **Minimalis & Elegan:** Menggunakan palet putih, abu-abu (*slate*), dan *indigo* (ungu kebiruan). Jauh dari kesan "ngejreng", sehingga terlihat lebih profesional layaknya *software dashboard* buatan *startup* modern.
+*   **Penyederhanaan Teks di Card Jumat:** Karena ruang tabel Jumat cukup sempit, tugas panjang (seperti "Bawa ompreng & tutup + pengering lantai") saya singkat secara visual menggunakan fitur `truncate`. Namun, **jika Anda mengarahkan kursor/mouse ke atasnya**, teks lengkapnya akan muncul.
+*   **Shadow & Border Modern:** Alih-alih garis tebal yang kaku, saya menggunakan border 1px super tipis dengan efek *soft shadow* yang memberi kedalaman (efek mengambang).
+*   **Dark Mode Section:** Khusus untuk area "Rotasi Jum'at", saya berikan desain terbalik (*inverted / dark mode*) agar langsung menarik perhatian karena ini adalah bagian penting yang berubah-ubah. 
+
+Silakan cek tab **Preview**! Anda bisa langsung *upload* kode ini ke Vercel tanpa perlu tambahan file apapun.
