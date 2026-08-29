@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="id" class="antialiased scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Jadwal piket dan pembagian tugas tim kebersihan harian dengan siklus rotasi 8 minggu.">
+    <meta name="theme-color" content="#09090b">
+    <title>Jadwal Piket & Ompreng - SatsetDasdes</title>
+
+    <!-- Google Fonts: Plus Jakarta Sans for premium modern look -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { 
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'] 
+                    },
+                    colors: {
+                        zinc: {
+                            50: '#fafafa', 100: '#f4f4f5', 200: '#e4e4e7', 300: '#d4d4d8', 400: '#a1a1aa',
+                            500: '#71717a', 600: '#52525b', 700: '#3f3f46', 800: '#27272a', 900: '#18181b', 950: '#09090b',
+                        }
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root {
+            --brand-primary: #8b5cf6; /* Violet */
+            --brand-secondary: #6366f1; /* Indigo */
+        }
+
+        body { 
+            background-color: #f4f4f5; 
+            background-image: radial-gradient(#e4e4e7 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+        .dark body { 
+            background-color: #09090b; 
+            background-image: radial-gradient(#27272a 1px, transparent 1px);
+        }
+
+        /* Premium Scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #d4d4d8; border-radius: 4px; }
+        .dark ::-webkit-scrollbar-thumb { background: #3f3f46; }
+        ::-webkit-scrollbar-thumb:hover { background: #a1a1aa; }
+
+        /* Floating Nav Glassmorphism */
+        .glass-nav {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+        }
+        .dark .glass-nav {
+            background: rgba(24, 24, 27, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Glass Panel for Sidebar */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+        }
+        .dark .glass-panel {
+            background: rgba(24, 24, 27, 0.6);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Active Week Highlights */
+        .week-active {
+            position: relative;
+        }
+        .week-active::after {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: inherit;
+            background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
+            z-index: -1;
+            opacity: 0.5;
+            transition: opacity 0.3s ease;
+        }
+        .dark .week-active::after { opacity: 0.8; }
+        
+        .week-active-badge {
+            background: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
+            color: white;
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+        }
+
+        /* Today Highlight */
+        .today-highlight {
+            background: rgba(139, 92, 246, 0.05);
+            border-left: 3px solid var(--brand-primary);
+        }
+        .dark .today-highlight { background: rgba(139, 92, 246, 0.1); }
+
+        /* Filter Focus Effects */
+        [data-member] { transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        body.filter-active [data-member] { opacity: 0.25; filter: grayscale(100%); }
+        body.filter-active [data-member].member-highlight {
+            opacity: 1; filter: none; 
+            background-color: rgba(250, 204, 21, 0.15) !important; 
+            border-radius: 8px; padding: 8px 12px; margin: -8px -12px; 
+            box-shadow: inset 0 0 0 1px rgba(250, 204, 21, 0.4); 
+            z-index: 10; position: relative; transform: scale(1.02);
+        }
+
+        /* Task Badges (Premium Tonal Look) */
+        .badge-base { 
+            padding: 0.25rem 0.6rem; border-radius: 99px; font-size: 0.65rem; font-weight: 700; 
+            text-transform: uppercase; letter-spacing: 0.05em; line-height: 1; 
+        }
+        .badge-gestrep { background: #d1fae5; color: #047857; }
+        .badge-westafel { background: #ffe4e6; color: #be123c; }
+        .badge-ompreng { background: #e0e7ff; color: #4338ca; }
+        .badge-lantai { background: #fef3c7; color: #b45309; }
+        .badge-selokan { background: #cffafe; color: #0f766e; }
+        .badge-tutup { background: #fce7f3; color: #be185d; }
+
+        .dark .badge-gestrep { background: rgba(16,185,129,0.15); color: #34d399; }
+        .dark .badge-westafel { background: rgba(244,63,94,0.15); color: #fb7185; }
+        .dark .badge-ompreng { background: rgba(99,102,241,0.15); color: #818cf8; }
+        .dark .badge-lantai { background: rgba(245,158,11,0.15); color: #fbbf24; }
+        .dark .badge-selokan { background: rgba(6,182,212,0.15); color: #22d3ee; }
+        .dark .badge-tutup { background: rgba(236,72,153,0.15); color: #f472b6; }
+
+        .friday-hidden { display: none; }
+        
+        /* Modal & Print */
+        .modal-overlay { opacity: 0; transition: opacity 0.3s ease; backdrop-filter: blur(5px); }
+        .modal-overlay.active { opacity: 1; }
+        .modal-content { opacity: 0; transform: scale(0.95) translateY(20px); transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        .modal-content.active { opacity: 1; transform: scale(1) translateY(0); }
+
+        @media print {
+            body { background: white !important; }
+            .no-print { display: none !important; }
+            .week-active::after { display: none; }
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+        }
+    </style>
+</head>
+<body class="text-zinc-800 dark:text-zinc-200 selection:bg-violet-200 dark:selection:bg-violet-900 pb-20">
+
+    <!-- ===== FLOATING NAVIGATION ===== -->
+    <div class="fixed top-4 left-0 right-0 z-50 flex justify-center px-4 no-print pointer-events-none">
+        <nav class="glass-nav pointer-events-auto rounded-full px-4 py-2.5 flex items-center gap-4 transition-all duration-300">
+            <div class="flex items-center gap-2 pr-4 border-r border-zinc-300 dark:border-zinc-700">
+                <div class="bg-gradient-to-tr from-violet-600 to-indigo-500 p-1.5 rounded-full text-white shadow-md">
+                    <i class="ph-fill ph-calendar-check text-lg" aria-hidden="true"></i>
+                </div>
+                <span class="font-bold text-sm hidden md:block">SatsetDasdes</span>
+            </div>
+
+            <div class="flex items-center gap-1 text-xs font-semibold" role="tablist">
+                <a href="#daily-schedule" class="px-3 py-1.5 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors">Harian</a>
+                <a href="#friday-schedule" class="px-3 py-1.5 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors">Jumat</a>
+            </div>
+
+            <div class="flex items-center gap-2 pl-4 border-l border-zinc-300 dark:border-zinc-700">
+                <div id="todayIndicator" class="hidden sm:flex items-center gap-1.5 text-xs font-bold text-violet-600 dark:text-violet-400">
+                    <i class="ph-fill ph-calendar-dot"></i> <span id="todayText">...</span>
+                </div>
+                <button id="darkModeToggle" onclick="toggleDarkMode()" aria-label="Toggle mode gelap" class="p-2 rounded-full hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors">
+                    <i class="ph-bold ph-moon text-lg dark:hidden"></i>
+                    <i class="ph-bold ph-sun text-lg hidden dark:inline text-yellow-400"></i>
+                </button>
+            </div>
+        </nav>
+    </div>
+
+    <div class="max-w-[1400px] mx-auto pt-28 px-4 md:px-8 lg:px-12 relative z-10">
+        
+        <!-- ===== HEADER HERO ===== -->
+        <header class="mb-12 text-center max-w-3xl mx-auto animate-fade-in-up">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-violet-100 dark:bg-violet-900/30 text-violet-700 dark:text-violet-300 text-xs font-bold mb-6 border border-violet-200 dark:border-violet-800/50">
+                <i class="ph-fill ph-lightning"></i> Manajemen Kebersihan
+            </div>
+            <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight text-zinc-900 dark:text-white mb-6">
+                Jadwal Piket & <span class="text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-indigo-500">Ompreng</span>
+            </h1>
+            
+            <div class="flex flex-wrap justify-center items-center gap-3">
+                <button onclick="shareToWhatsApp()" class="no-print group text-sm font-semibold flex items-center gap-2 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 px-6 py-2.5 rounded-full shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5">
+                    <i class="ph-fill ph-whatsapp-logo text-green-400 dark:text-green-600 text-lg group-hover:scale-110 transition-transform"></i> Bagikan Jadwal
+                </button>
+                <button onclick="openModal()" class="no-print text-sm font-semibold flex items-center gap-2 bg-white dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 px-6 py-2.5 rounded-full shadow border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-700 transition-colors">
+                    <i class="ph-bold ph-info text-lg text-zinc-400"></i> Panduan
+                </button>
+            </div>
+        </header>
+
+        <!-- ===== MAIN LAYOUT ===== -->
+        <main class="flex flex-col-reverse xl:grid xl:grid-cols-12 gap-8 lg:gap-10">
+            
+            <!-- ===== KONTEN UTAMA ===== -->
+            <div class="xl:col-span-9 space-y-12 animate-fade-in-up" style="animation-delay: 0.1s;">
+                
+                <!-- Jadwal Harian -->
+                <section id="daily-schedule" class="scroll-mt-32">
+                    <div class="flex items-center justify-between mb-8">
+                        <h2 class="text-2xl font-bold text-zinc-900 dark:text-white tracking-tight">Siklus Harian</h2>
+                        <span class="text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-widest">Senin — Kamis</span>
+                    </div>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8" id="dailyGrid"></div>
+                </section>
+
+                <!-- Jadwal Jumat -->
+                <section id="friday-schedule" class="pt-8 print-break scroll-mt-32 border-t border-zinc-200 dark:border-zinc-800/50">
+                    <div class="flex items-center justify-between mb-8 flex-wrap gap-4">
+                        <h2 class="text-2xl font-bold text-zinc-900 dark:text-white tracking-tight">Rotasi Jum'at</h2>
+                        <button onclick="toggleFridayVisibility()" id="toggleFridayBtn" class="no-print text-xs font-bold text-violet-600 dark:text-violet-400 bg-violet-50 dark:bg-violet-900/20 px-4 py-2 rounded-full hover:bg-violet-100 dark:hover:bg-violet-900/40 transition-colors">
+                            Tampilkan Semua
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5" id="fridayGrid"></div>
+                </section>
+            </div>
+
+            <!-- ===== SIDEBAR (DASHBOARD PANELS) ===== -->
+            <aside class="xl:col-span-3 space-y-6 xl:sticky xl:top-28 h-fit animate-fade-in-up" style="animation-delay: 0.2s;">
+                
+                <!-- Filter Anggota -->
+                <section class="glass-panel rounded-3xl p-6 shadow-sm border border-zinc-200/50 dark:border-zinc-800">
+                    <div class="flex justify-between items-center mb-5">
+                        <h2 class="text-xs font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400">Filter Personal</h2>
+                        <button id="resetFilterBtn" onclick="toggleMemberFilter('')" class="hidden text-[10px] bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400 px-2 py-1 rounded font-bold hover:bg-red-200 transition-colors">RESET</button>
+                    </div>
+                    
+                    <!-- Select Dropdown (Mobile mostly) -->
+                    <div class="relative mb-4">
+                        <select id="memberFilter" class="w-full text-sm font-semibold bg-zinc-50 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-700 rounded-xl px-4 py-2.5 appearance-none cursor-pointer focus:ring-2 focus:ring-violet-500 focus:outline-none dark:text-zinc-200">
+                            <option value="">Lihat Semua Jadwal</option>
+                        </select>
+                        <i class="ph-bold ph-caret-down absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none"></i>
+                    </div>
+
+                    <!-- Quick Tags -->
+                    <div class="flex flex-wrap gap-2" id="memberList"></div>
+                </section>
+
+                <!-- Rotasi Jumat Mini -->
+                <section class="bg-zinc-950 rounded-3xl p-6 shadow-lg border border-zinc-800 text-zinc-300 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-32 h-32 bg-violet-600/20 blur-3xl rounded-full"></div>
+                    <h2 class="text-xs font-bold uppercase tracking-widest text-violet-400 mb-5 relative z-10">Antrean Jum'at</h2>
+                    <div class="grid grid-cols-2 gap-x-4 gap-y-2.5 text-sm relative z-10" id="fridayRotation"></div>
+                </section>
+
+                <!-- Jadwal Bilas -->
+                <section id="bilas-section" class="glass-panel rounded-3xl p-6 shadow-sm border border-zinc-200/50 dark:border-zinc-800">
+                    <h2 class="text-xs font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400 mb-5 flex items-center gap-2">
+                        <i class="ph-fill ph-drop text-blue-500"></i> Jadwal Bilas
+                    </h2>
+                    <div class="space-y-4" id="bilasSchedule"></div>
+                </section>
+
+                <!-- Ompreng Manual -->
+                <section class="glass-panel rounded-3xl p-6 shadow-sm border border-zinc-200/50 dark:border-zinc-800">
+                    <h2 class="text-xs font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400 mb-4 flex items-center gap-2">
+                        <i class="ph-bold ph-arrows-left-right text-zinc-400"></i> Pindah Ompreng
+                    </h2>
+                    <div class="space-y-3" id="omprengSchedule"></div>
+                </section>
+            </aside>
+        </main>
+
+        <!-- ===== FOOTER ===== -->
+        <footer class="mt-16 pt-8 border-t border-zinc-200 dark:border-zinc-800 text-center text-sm font-medium text-zinc-400 dark:text-zinc-500">
+            <p>SatsetDasdes Edition • Siklus 8 Minggu</p>
+            <p class="text-xs mt-1">Diperbarui: <time id="lastUpdated" datetime=""></time></p>
+        </footer>
+    </div>
+
+    <!-- ===== MODAL PANDUAN ===== -->
+    <div id="guideModal" class="fixed inset-0 z-[60] flex items-center justify-center p-4 hidden">
+        <div class="modal-overlay absolute inset-0 bg-zinc-900/60" onclick="closeModal()"></div>
+        <div id="modalContent" class="modal-content bg-white dark:bg-zinc-900 rounded-[2rem] w-full max-w-lg shadow-2xl relative z-10 overflow-hidden">
+            <div class="p-8">
+                <div class="flex justify-between items-center mb-6">
+                    <div class="w-12 h-12 rounded-full bg-violet-100 dark:bg-violet-900/30 flex items-center justify-center text-violet-600 dark:text-violet-400">
+                        <i class="ph-bold ph-info text-2xl"></i>
+                    </div>
+                    <button onclick="closeModal()" class="text-zinc-400 hover:text-zinc-600 dark:hover:text-white transition-colors bg-zinc-100 dark:bg-zinc-800 p-2 rounded-full">
+                        <i class="ph-bold ph-x text-lg"></i>
+                    </button>
+                </div>
+                <h2 class="text-2xl font-bold text-zinc-900 dark:text-white mb-2">Panduan Sistem</h2>
+                <p class="text-sm text-zinc-500 dark:text-zinc-400 mb-6">Sistem jadwal menggunakan rotasi otomatis berbasis tanggal mulai.</p>
+                
+                <div class="space-y-5 text-sm text-zinc-700 dark:text-zinc-300">
+                    <div class="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-100 dark:border-zinc-800">
+                        <h3 class="font-bold text-zinc-900 dark:text-white mb-1">1. Putaran Harian & Jumat</h3>
+                        <p>Senin-Kamis berputar 2 minggu sekali. Jumat berputar penuh selama 8 minggu.</p>
+                    </div>
+                    <div class="p-4 rounded-2xl bg-zinc-50 dark:bg-zinc-800/50 border border-zinc-100 dark:border-zinc-800">
+                        <h3 class="font-bold text-zinc-900 dark:text-white mb-1">2. Pengecualian Zaidan</h3>
+                        <p>Zaidan bertugas bilas setiap Jumat, bergantian Ompreng/Tutup dengan partner rotasi mingguan.</p>
+                    </div>
+                </div>
+                
+                <button onclick="closeModal()" class="w-full mt-8 bg-zinc-900 dark:bg-white text-white dark:text-zinc-900 font-bold py-3 rounded-xl hover:bg-zinc-800 dark:hover:bg-zinc-100 transition-colors">
+                    Mengerti
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== JAVASCRIPT ===== -->
+    <script>
+    // =====================================================
+    // DATA SCHEDULE (TETAP SAMA)
+    // =====================================================
+    const MEMBERS = ['Adit', 'Agus', 'Aziz', 'Fajar M', 'Fajar R', 'Bowo', 'Rizal', 'Zaidan', 'Zakaria'];
+    const CYCLE_START_DATE = '2026-08-17'; // Senin
+    
+    const MANUAL_DAILY_WEEK = null;
+    const MANUAL_FRIDAY_WEEK = null;
+    
+    let activeFridayGlobal = 1; 
+    let showAllFriday = false;
+
+    const OMPRENG_SCHEDULE = {
+        'Senin': 'Rizal & Adit', 'Selasa': 'Bowo & Zakaria', 'Rabu': 'Fajar R & Fajar M', 'Kamis': 'Agus & Aziz'
+    };
+    const FRIDAY_ROTATION = ['Rizal', 'Adit', 'Bowo', 'Zakaria', 'Fajar R', 'Fajar M', 'Aziz', 'Agus'];
+
+    const BILAS_SCHEDULE = [
+        { week: 1, days: [
+            { day: 'SEN', p1: { name: 'Fajar M', task: 'Tutup' }, p2: { name: 'Fajar R', task: 'Ompreng' } },
+            { day: 'SEL', p1: { name: 'Agus', task: 'Ompreng' }, p2: { name: 'Aziz', task: 'Tutup' } },
+            { day: 'RAB', p1: { name: 'Adit', task: 'Ompreng' }, p2: { name: 'Rizal', task: 'Tutup' } },
+            { day: 'KAM', p1: { name: 'Zakaria', task: 'Tutup' }, p2: { name: 'Bowo', task: 'Ompreng' } },
+        ]},
+        { week: 2, days: [
+            { day: 'SEN', p1: { name: 'Agus', task: 'Tutup' }, p2: { name: 'Aziz', task: 'Ompreng' } },
+            { day: 'SEL', p1: { name: 'Fajar M', task: 'Ompreng' }, p2: { name: 'Fajar R', task: 'Tutup' } },
+            { day: 'RAB', p1: { name: 'Zakaria', task: 'Ompreng' }, p2: { name: 'Bowo', task: 'Tutup' } },
+            { day: 'KAM', p1: { name: 'Adit', task: 'Tutup' }, p2: { name: 'Rizal', task: 'Ompreng' } },
+        ]}
+    ];
+
+    const BILAS_FRIDAY_SCHEDULE = [
+        { week: 1, p1: { name: 'Zaidan', task: 'Ompreng' }, p2: { name: 'Rizal', task: 'Tutup' } },
+        { week: 2, p1: { name: 'Zaidan', task: 'Tutup' },   p2: { name: 'Adit', task: 'Ompreng' } },
+        { week: 3, p1: { name: 'Zaidan', task: 'Ompreng' }, p2: { name: 'Bowo', task: 'Tutup' } },
+        { week: 4, p1: { name: 'Zaidan', task: 'Tutup' },   p2: { name: 'Zakaria', task: 'Ompreng' } },
+        { week: 5, p1: { name: 'Zaidan', task: 'Ompreng' }, p2: { name: 'Fajar R', task: 'Tutup' } },
+        { week: 6, p1: { name: 'Zaidan', task: 'Tutup' },   p2: { name: 'Fajar M', task: 'Ompreng' } },
+        { week: 7, p1: { name: 'Zaidan', task: 'Ompreng' }, p2: { name: 'Aziz', task: 'Tutup' } },
+        { week: 8, p1: { name: 'Zaidan', task: 'Tutup' },   p2: { name: 'Agus', task: 'Ompreng' } },
+    ];
+
+    const DAILY_SCHEDULE = [
+        { week: 1, days: [
+            { day: 'Senin', tasks: [{ name: 'Rizal', task: 'Gestrep', type: 'gestrep' }, { name: 'Adit', task: 'Westafel + Cuci', type: 'westafel' }, { name: 'Agus', task: 'Ompreng & Pengering', type: 'ompreng' }, { name: 'Aziz', task: 'Ompreng & Pengering', type: 'ompreng' }, { name: 'Zaidan', task: 'Sikat lantai', type: 'lantai' }, { name: 'Fajar R', task: 'Sikat lantai', type: 'lantai' }, { name: 'Fajar M', task: 'Sikat lantai', type: 'lantai' }, { name: 'Zakaria', task: 'Selokan', type: 'selokan' }] },
+            { day: 'Selasa', tasks: [{ name: 'Zaidan', task: 'Gestrep', type: 'gestrep' }, { name: 'Zakaria', task: 'Westafel + Cuci', type: 'westafel' }, { name: 'Fajar M', task: 'Ompreng & Pengering', type: 'ompreng' }, { name: 'Fajar R', task: 'Ompreng & Pengering', type: 'ompreng' }, { name: 'Rizal', task: 'Sikat lantai', type: 'lantai' }, { name: 'Agus', task: 'Sikat lantai', type: 'lantai' }, { name: 'Aziz', task: 'Sikat lantai', type: 'lantai' }, { name: 'Adit', task: 'Selokan', type: 'selokan' }] },
+            { day: 'Rabu', tasks: [{ name: 'Fajar R', task: 'Gestrep', type: 'gestrep' }, { name: 'Fajar M', task: 'Westafel + Cuci', type: 'westafel' }, { name: 'Zaidan', task: 'Ompreng & Pengering', type: 'ompreng' }, { name: 'Zakaria', task: 'Ompreng & Pengering', type: 'ompreng' }, { name: 'Agus', task: 'Sikat lantai', type: 'lantai' }, { name: 'Adit', task: 'Sikat lantai', type: 'lantai' }, { name: 'Rizal', task: 'Sikat lantai', type: 'lantai' }, { name: 'Aziz', task: 'Selokan', type: 'selokan' }] },
+            { day: 'Kamis', tasks: [{ name: 'Agus', task: 'Gestrep', type: 'gestrep' }, { name: 'Aziz', task: 'Westafel + Cuci', type: 'westafel' }, { name: 'Adit', task: 'Ompreng & Pengering', type: 'ompreng' }, { name: 'Rizal', task: 'Ompreng & Pengering', type: 'ompreng' }, { name: 'Fajar M', task: 'Sikat lantai', type: 'lantai' }, { name: 'Zakaria', task: 'Sikat lantai', type: 'lantai' }, { name: 'Zaidan', task: 'Sikat lantai', type: 'lantai' }, { name: 'Fajar R', task: 'Selokan', type: 'selokan' }] },
+        ]},
+        { week: 2, days: [
+            { day: 'Senin', tasks: [{ name: 'Adit', task: 'Gestrep', type: 'gestrep' }, { name: 'Rizal', task: 'Westafel + Cuci', type: 'westafel' }, { name: 'Fajar M', task: 'Ompreng & Pengering', type: 'ompreng' }, { name: 'Fajar R', task: 'Ompreng & Pengering', type: 'ompreng' }, { name: 'Zakaria', task: 'Sikat lantai', type: 'lantai' }, { name: 'Agus', task: 'Sikat lantai', type: 'lantai' }, { name: 'Aziz', task: 'Sikat lantai', type: 'lantai' }, { name: 'Zaidan', task: 'Selokan', type: 'selokan' }] },
+            { day: 'Selasa', tasks: [{ name: 'Zakaria', task: 'Gestrep', type: 'gestrep' }, { name: 'Zaidan', task: 'Westafel + Cuci', type: 'westafel' }, { name: 'Agus', task: 'Ompreng & Pengering', type: 'ompreng' }, { name: 'Aziz', task: 'Ompreng & Pengering', type: 'ompreng' }, { name: 'Adit', task: 'Sikat lantai', type: 'lantai' }, { name: 'Fajar M', task: 'Sikat lantai', type: 'lantai' }, { name: 'Fajar R', task: 'Sikat lantai', type: 'lantai' }, { name: 'Rizal', task: 'Selokan', type: 'selokan' }] },
+            { day: 'Rabu', tasks: [{ name: 'Fajar M', task: 'Gestrep', type: 'gestrep' }, { name: 'Fajar R', task: 'Westafel + Cuci', type: 'westafel' }, { name: 'Adit', task: 'Ompreng & Pengering', type: 'ompreng' }, { name: 'Rizal', task: 'Ompreng & Pengering', type: 'ompreng' }, { name: 'Aziz', task: 'Sikat lantai', type: 'lantai' }, { name: 'Zaidan', task: 'Sikat lantai', type: 'lantai' }, { name: 'Zakaria', task: 'Sikat lantai', type: 'lantai' }, { name: 'Agus', task: 'Selokan', type: 'selokan' }] },
+            { day: 'Kamis', tasks: [{ name: 'Aziz', task: 'Gestrep', type: 'gestrep' }, { name: 'Agus', task: 'Westafel + Cuci', type: 'westafel' }, { name: 'Zaidan', task: 'Ompreng & Pengering', type: 'ompreng' }, { name: 'Zakaria', task: 'Ompreng & Pengering', type: 'ompreng' }, { name: 'Fajar R', task: 'Sikat lantai', type: 'lantai' }, { name: 'Rizal', task: 'Sikat lantai', type: 'lantai' }, { name: 'Adit', task: 'Sikat lantai', type: 'lantai' }, { name: 'Fajar M', task: 'Selokan', type: 'selokan' }] },
+        ]}
+    ];
+
+    const FRIDAY_SCHEDULE = [
+        { week: 1, tasks: [{ name: 'Zaidan', task: 'Westafel', type: 'westafel' }, { name: 'Rizal', task: 'Gestrep', type: 'gestrep' }, { name: 'Fajar M', task: 'Ompreng', type: 'ompreng' }, { name: 'Fajar R', task: 'Ompreng', type: 'ompreng' }, { name: 'Zakaria', task: 'Lantai', type: 'lantai' }, { name: 'Aziz', task: 'Lantai', type: 'lantai' }, { name: 'Agus', task: 'Selokan', type: 'selokan' }, { name: 'Adit', task: 'Lantai', type: 'lantai' }] },
+        { week: 2, tasks: [{ name: 'Zaidan', task: 'Gestrep', type: 'gestrep' }, { name: 'Adit', task: 'Westafel', type: 'westafel' }, { name: 'Zakaria', task: 'Selokan', type: 'selokan' }, { name: 'Agus', task: 'Ompreng', type: 'ompreng' }, { name: 'Aziz', task: 'Ompreng', type: 'ompreng' }, { name: 'Rizal', task: 'Lantai', type: 'lantai' }, { name: 'Fajar M', task: 'Lantai', type: 'lantai' }, { name: 'Fajar R', task: 'Lantai', type: 'lantai' }] },
+        { week: 3, tasks: [{ name: 'Zakaria', task: 'Gestrep', type: 'gestrep' }, { name: 'Zaidan', task: 'Westafel', type: 'westafel' }, { name: 'Agus', task: 'Selokan', type: 'selokan' }, { name: 'Adit', task: 'Ompreng', type: 'ompreng' }, { name: 'Rizal', task: 'Ompreng', type: 'ompreng' }, { name: 'Fajar R', task: 'Lantai', type: 'lantai' }, { name: 'Aziz', task: 'Lantai', type: 'lantai' }, { name: 'Fajar M', task: 'Lantai', type: 'lantai' }] },
+        { week: 4, tasks: [{ name: 'Fajar R', task: 'Westafel', type: 'westafel' }, { name: 'Zaidan', task: 'Gestrep', type: 'gestrep' }, { name: 'Aziz', task: 'Selokan', type: 'selokan' }, { name: 'Agus', task: 'Ompreng', type: 'ompreng' }, { name: 'Zakaria', task: 'Ompreng', type: 'ompreng' }, { name: 'Fajar M', task: 'Lantai', type: 'lantai' }, { name: 'Rizal', task: 'Lantai', type: 'lantai' }, { name: 'Adit', task: 'Lantai', type: 'lantai' }] },
+        { week: 5, tasks: [{ name: 'Fajar M', task: 'Gestrep', type: 'gestrep' }, { name: 'Zaidan', task: 'Westafel', type: 'westafel' }, { name: 'Rizal', task: 'Selokan', type: 'selokan' }, { name: 'Agus', task: 'Ompreng', type: 'ompreng' }, { name: 'Aziz', task: 'Ompreng', type: 'ompreng' }, { name: 'Adit', task: 'Lantai', type: 'lantai' }, { name: 'Fajar R', task: 'Lantai', type: 'lantai' }, { name: 'Zakaria', task: 'Lantai', type: 'lantai' }] },
+        { week: 6, tasks: [{ name: 'Fajar M', task: 'Westafel', type: 'westafel' }, { name: 'Zaidan', task: 'Gestrep', type: 'gestrep' }, { name: 'Fajar R', task: 'Selokan', type: 'selokan' }, { name: 'Adit', task: 'Ompreng', type: 'ompreng' }, { name: 'Rizal', task: 'Ompreng', type: 'ompreng' }, { name: 'Aziz', task: 'Lantai', type: 'lantai' }, { name: 'Zakaria', task: 'Lantai', type: 'lantai' }, { name: 'Agus', task: 'Lantai', type: 'lantai' }] },
+        { week: 7, tasks: [{ name: 'Agus', task: 'Gestrep', type: 'gestrep' }, { name: 'Zaidan', task: 'Westafel', type: 'westafel' }, { name: 'Adit', task: 'Selokan', type: 'selokan' }, { name: 'Fajar M', task: 'Ompreng', type: 'ompreng' }, { name: 'Fajar R', task: 'Ompreng', type: 'ompreng' }, { name: 'Zakaria', task: 'Lantai', type: 'lantai' }, { name: 'Aziz', task: 'Lantai', type: 'lantai' }, { name: 'Rizal', task: 'Lantai', type: 'lantai' }] },
+        { week: 8, tasks: [{ name: 'Aziz', task: 'Westafel', type: 'westafel' }, { name: 'Zaidan', task: 'Gestrep', type: 'gestrep' }, { name: 'Fajar M', task: 'Selokan', type: 'selokan' }, { name: 'Agus', task: 'Ompreng', type: 'ompreng' }, { name: 'Zakaria', task: 'Ompreng', type: 'ompreng' }, { name: 'Fajar R', task: 'Lantai', type: 'lantai' }, { name: 'Rizal', task: 'Lantai', type: 'lantai' }, { name: 'Adit', task: 'Lantai', type: 'lantai' }] },
+    ];
+
+    const PANTUN_OMPRENG = [
+        "Makan nasi pakai ikan teri,\nHabis makan ompreng dicuci sendiri! 🐟",
+        "Jalan-jalan ke kota Malang,\nSikat ompreng sampai kinclong terang! ✨",
+        "Ke pasar beli tomat dan lada,\nSatset dasdes bersih-bersih tiada dua! 🚀",
+        "Masak air biar mateng,\nJangan lupa bilas itu ompreng! 💦"
+    ];
+
+    // =====================================================
+    // LOGIKA PERHITUNGAN
+    // =====================================================
+    function mod(n, m) { return ((n % m) + m) % m; }
+
+    function getActiveWeeks() {
+        const startDate = new Date(CYCLE_START_DATE);
+        const now = new Date();
+        const utcStart = Date.UTC(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
+        const utcNow = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+        
+        const diffDays = Math.floor((utcNow - utcStart) / 86400000);
+        
+        const autoDaily = Math.floor(mod(diffDays, 14) / 7) + 1;
+        const autoFriday = Math.floor(mod(diffDays, 56) / 7) + 1;
+
+        return { daily: MANUAL_DAILY_WEEK ?? autoDaily, friday: MANUAL_FRIDAY_WEEK ?? autoFriday, diffDays };
+    }
+
+    function getBadgeClass(type) {
+        const map = { gestrep: 'badge-gestrep', westafel: 'badge-westafel', ompreng: 'badge-ompreng', lantai: 'badge-lantai', selokan: 'badge-selokan', tutup: 'badge-tutup' };
+        return `badge-base ${map[type] || 'bg-zinc-200 text-zinc-700'}`;
+    }
+
+    // =====================================================
+    // RENDER UI
+    // =====================================================
+    function renderMembers() {
+        const el = document.getElementById('memberList');
+        el.innerHTML = MEMBERS.map(m =>
+            `<button type="button" id="btn-member-${m}" onclick="toggleMemberFilter('${m}')" 
+                class="member-btn text-[11px] font-bold px-3 py-1.5 rounded-full border border-zinc-200 dark:border-zinc-700 text-zinc-600 dark:text-zinc-400 hover:border-violet-400 hover:text-violet-600 dark:hover:text-violet-300 transition-all">
+                ${m}
+            </button>`
+        ).join('');
+        
+        const select = document.getElementById('memberFilter');
+        MEMBERS.forEach(m => {
+            const opt = document.createElement('option'); opt.value = m; opt.textContent = m; select.appendChild(opt);
+        });
+    }
+
+    function renderOmpreng() {
+        const el = document.getElementById('omprengSchedule');
+        const days = ['Senin', 'Selasa', 'Rabu', 'Kamis'];
+        el.innerHTML = days.map(d =>
+            `<div class="flex justify-between items-center text-sm">
+                <span class="font-medium text-zinc-700 dark:text-zinc-300">${d}</span>
+                <span class="font-bold text-zinc-900 dark:text-white bg-zinc-100 dark:bg-zinc-800 px-2.5 py-1 rounded-md">${OMPRENG_SCHEDULE[d]}</span>
+            </div>`
+        ).join('');
+    }
+
+    function renderFridayRotation() {
+        const el = document.getElementById('fridayRotation');
+        el.innerHTML = FRIDAY_ROTATION.map((name, i) =>
+            `<div class="flex justify-between items-center bg-zinc-900 px-3 py-1.5 rounded border border-zinc-800/50">
+                <span class="text-zinc-500 font-mono text-[10px] font-bold">M${i+1}</span> 
+                <span class="font-semibold text-zinc-200">${name}</span>
+            </div>`
+        ).join('');
+    }
+
+    function renderBilas() {
+        const el = document.getElementById('bilasSchedule');
+        const { friday: activeFriday } = getActiveWeeks();
+        
+        let html = BILAS_SCHEDULE.map(w => {
+            const rows = w.days.map(d =>
+                `<div class="grid grid-cols-[30px_1fr_1fr] gap-2 items-center py-1.5 ${d.day !== 'KAM' ? 'border-b border-zinc-100 dark:border-zinc-800/50' : ''}">
+                    <span class="font-bold text-[10px] text-zinc-400">${d.day}</span>
+                    <div class="flex flex-col" data-member="${d.p1.name}">
+                        <span class="text-xs font-semibold dark:text-zinc-200">${d.p1.name}</span>
+                        <span class="text-[9px] text-zinc-500">${d.p1.task}</span>
+                    </div>
+                    <div class="flex flex-col" data-member="${d.p2.name}">
+                        <span class="text-xs font-semibold dark:text-zinc-200">${d.p2.name}</span>
+                        <span class="text-[9px] text-zinc-500">${d.p2.task}</span>
+                    </div>
+                </div>`
+            ).join('');
+            return `<div class="rounded-xl border border-zinc-200 dark:border-zinc-800 overflow-hidden mb-4 last:mb-0">
+                <div class="bg-zinc-50 dark:bg-zinc-800/50 text-[10px] font-bold uppercase tracking-widest text-zinc-500 py-1.5 text-center border-b border-zinc-200 dark:border-zinc-800">Minggu ${w.week}</div>
+                <div class="p-3">${rows}</div>
+            </div>`;
+        }).join('');
+
+        // Bilas Jumat section embedded inside the same panel for cleaner look
+        const fridayData = BILAS_FRIDAY_SCHEDULE.find(w => w.week === activeFriday);
+        if (fridayData) {
+            const badgeClass = (t) => t === 'Ompreng' ? 'badge-ompreng' : 'badge-tutup';
+            html += `
+            <div class="mt-4 p-3 rounded-xl bg-violet-50 dark:bg-violet-900/10 border border-violet-100 dark:border-violet-900/30">
+                <div class="text-[10px] font-bold uppercase tracking-widest text-violet-600 dark:text-violet-400 mb-2 text-center">Bilas Jumat (M${activeFriday})</div>
+                <div class="flex justify-between items-center">
+                    <div class="flex flex-col items-center flex-1 border-r border-violet-200 dark:border-violet-800" data-member="${fridayData.p1.name}">
+                        <span class="text-xs font-bold text-zinc-800 dark:text-zinc-200">${fridayData.p1.name}</span>
+                        <span class="badge-base ${badgeClass(fridayData.p1.task)} mt-1 scale-90">${fridayData.p1.task}</span>
+                    </div>
+                    <div class="flex flex-col items-center flex-1" data-member="${fridayData.p2.name}">
+                        <span class="text-xs font-bold text-zinc-800 dark:text-zinc-200">${fridayData.p2.name}</span>
+                        <span class="badge-base ${badgeClass(fridayData.p2.task)} mt-1 scale-90">${fridayData.p2.task}</span>
+                    </div>
+                </div>
+            </div>`;
+        }
+        el.innerHTML = html;
+    }
+
+    function renderDailySchedule() {
+        const el = document.getElementById('dailyGrid');
+        const { diffDays } = getActiveWeeks();
+        const actualDailyDayIndex = mod(diffDays, 14);
+        const dayOffset = { 'Senin': 0, 'Selasa': 1, 'Rabu': 2, 'Kamis': 3, 'Jumat': 4, 'Sabtu': 5, 'Minggu': 6 };
+
+        el.innerHTML = DAILY_SCHEDULE.map(w => {
+            const daysHtml = w.days.map(d => {
+                const blockAbsIndex = ((w.week - 1) * 7) + dayOffset[d.day];
+                const isToday = (blockAbsIndex === actualDailyDayIndex);
+
+                const tasksHtml = d.tasks.map(t => 
+                    `<div class="flex justify-between items-center py-1.5" data-member="${t.name}">
+                        <span class="font-semibold text-sm text-zinc-800 dark:text-zinc-200">${t.name}</span>
+                        <span class="${getBadgeClass(t.type)}">${t.task}</span>
+                    </div>`
+                ).join('');
+                
+                return `<div id="day-block-${blockAbsIndex}" class="p-4 rounded-2xl transition-colors ${isToday ? 'today-highlight' : ''}">
+                    <div class="font-extrabold text-lg text-zinc-900 dark:text-white tracking-tight mb-3 flex items-center gap-2">
+                        ${d.day}
+                        ${isToday ? '<span class="px-2 py-0.5 rounded-full bg-violet-600 text-white text-[9px] uppercase tracking-widest leading-none">Hari Ini</span>' : ''}
+                    </div>
+                    <div class="space-y-0.5">${tasksHtml}</div>
+                </div>
+                ${d.day !== 'Kamis' ? '<div class="h-px bg-zinc-200 dark:bg-zinc-800 my-2 mx-4"></div>' : ''}`;
+            }).join('');
+
+            return `<article id="week-${w.week}" class="relative bg-white dark:bg-zinc-900 rounded-[2rem] p-2 shadow-sm border border-zinc-200 dark:border-zinc-800">
+                <div class="absolute -top-3.5 left-8 bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 text-xs font-bold px-4 py-1 rounded-full tracking-widest uppercase shadow-md week-badge">Minggu ${w.week}</div>
+                <div class="pt-6 pb-2">${daysHtml}</div>
+            </article>`;
+        }).join('');
+    }
+
+    function renderFridaySchedule() {
+        const el = document.getElementById('fridayGrid');
+        el.innerHTML = FRIDAY_SCHEDULE.map(w => {
+            const tasksHtml = w.tasks.map(t => 
+                `<div class="flex justify-between items-center py-1.5 border-b border-zinc-100 dark:border-zinc-800/50 last:border-0" data-member="${t.name}">
+                    <span class="font-semibold text-xs text-zinc-800 dark:text-zinc-200">${t.name}</span>
+                    <span class="${getBadgeClass(t.type)} scale-90 origin-right">${t.task}</span>
+                </div>`
+            ).join('');
+            return `<article id="friday-m${w.week}" data-friday-week="${w.week}" class="friday-card bg-white dark:bg-zinc-900 rounded-3xl p-5 shadow-sm border border-zinc-200 dark:border-zinc-800">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="font-bold text-zinc-900 dark:text-white">Jum'at</h3>
+                    <span class="bg-violet-100 text-violet-700 dark:bg-violet-900/30 dark:text-violet-300 text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">M${w.week}</span>
+                </div>
+                <div>${tasksHtml}</div>
+            </article>`;
+        }).join('');
+    }
+
+    // =====================================================
+    // FITUR & INTERAKSI
+    // =====================================================
+    function highlightActiveWeek() {
+        const { daily, friday, diffDays } = getActiveWeeks();
+        activeFridayGlobal = friday;
+
+        document.querySelectorAll('.week-active').forEach(e => {
+            e.classList.remove('week-active');
+            const badge = e.querySelector('.week-badge');
+            if(badge) badge.classList.remove('week-active-badge');
+        });
+
+        const weekEl = document.getElementById('week-' + daily);
+        if (weekEl) {
+            weekEl.classList.add('week-active');
+            weekEl.querySelector('.week-badge').classList.add('week-active-badge');
+        }
+
+        const fridayEl = document.getElementById('friday-m' + friday);
+        if (fridayEl) fridayEl.classList.add('week-active');
+
+        const currentDayIndex = new Date().getDay();
+        const todayNames = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+        
+        document.getElementById('todayText').textContent = `${todayNames[currentDayIndex]}, M${daily}`;
+        
+        renderBilas(); // Re-render to update the friday bilas widget
+        updateFridayVisibility();
+    }
+
+    function toggleMemberFilter(name) {
+        const select = document.getElementById('memberFilter');
+        select.value = name;
+        filterByMember(name);
+    }
+
+    function filterByMember(name) {
+        document.querySelectorAll('.member-highlight').forEach(el => el.classList.remove('member-highlight'));
+        document.querySelectorAll('.member-btn').forEach(btn => btn.classList.remove('bg-violet-600', 'text-white', 'border-violet-600', 'dark:bg-violet-500'));
+        
+        const resetBtn = document.getElementById('resetFilterBtn');
+
+        if (!name) {
+            document.body.classList.remove('filter-active');
+            resetBtn.classList.add('hidden');
+            return;
+        }
+
+        document.body.classList.add('filter-active');
+        resetBtn.classList.remove('hidden');
+
+        document.querySelectorAll(`[data-member="${name}"]`).forEach(el => el.classList.add('member-highlight'));
+        
+        const activeBtn = document.getElementById(`btn-member-${name}`);
+        if (activeBtn) activeBtn.classList.add('bg-violet-600', 'text-white', 'border-violet-600', 'dark:bg-violet-500');
+    }
+
+    function toggleFridayVisibility() {
+        showAllFriday = !showAllFriday;
+        document.getElementById('toggleFridayBtn').textContent = showAllFriday ? 'Sembunyikan' : 'Tampilkan Semua';
+        updateFridayVisibility();
+    }
+
+    function updateFridayVisibility() {
+        document.querySelectorAll('.friday-card').forEach(card => {
+            if (!showAllFriday && parseInt(card.dataset.fridayWeek) !== activeFridayGlobal) {
+                card.classList.add('friday-hidden');
+            } else {
+                card.classList.remove('friday-hidden');
+            }
+        });
+    }
+
+    function shareToWhatsApp() {
+        const todayIndex = new Date().getDay();
+        const dayNames = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+        if (todayIndex === 0 || todayIndex === 6) return alert("Hari ini libur piket, selamat berakhir pekan! 🎉");
+
+        const { daily, friday } = getActiveWeeks();
+        let text = `🗓️ *Jadwal Piket SatsetDasdes - Hari Ini (${dayNames[todayIndex]})*\n\n`;
+
+        if (todayIndex >= 1 && todayIndex <= 4) {
+            text += `📌 *Siklus Harian: Minggu ${daily}*\n\n`;
+            const dayData = DAILY_SCHEDULE.find(w => w.week === daily).days.find(d => d.day.toLowerCase() === dayNames[todayIndex].toLowerCase());
+            if (dayData) {
+                text += `🧹 *Tim Kebersihan:*\n` + dayData.tasks.map(t => `▪️ *${t.name}*: ${t.task}`).join('\n');
+            }
+            const bilasDayMap = { 'Senin': 'SEN', 'Selasa': 'SEL', 'Rabu': 'RAB', 'Kamis': 'KAM' };
+            const bilasData = BILAS_SCHEDULE.find(w => w.week === daily).days.find(d => d.day === bilasDayMap[dayNames[todayIndex]]);
+            if (bilasData) {
+                text += `\n\n💧 *Tim Bilas:*\n▪️ *${bilasData.p1.name}*: ${bilasData.p1.task}\n▪️ *${bilasData.p2.name}*: ${bilasData.p2.task}`;
+            }
+        } else if (todayIndex === 5) {
+            text += `📌 *Siklus Jum'at: Minggu ${friday}*\n\n`;
+            const fridayData = FRIDAY_SCHEDULE.find(w => w.week === friday);
+            if (fridayData) {
+                text += `🧹 *Tim Kebersihan:*\n` + fridayData.tasks.map(t => `▪️ *${t.name}*: ${t.task}`).join('\n');
+            }
+            const bilasJumatData = BILAS_FRIDAY_SCHEDULE.find(w => w.week === friday);
+            if (bilasJumatData) {
+                text += `\n\n💧 *Tim Bilas:*\n▪️ *${bilasJumatData.p1.name}*: ${bilasJumatData.p1.task}\n▪️ *${bilasJumatData.p2.name}*: ${bilasJumatData.p2.task}`;
+            }
+        }
+
+        text += `\n\n${PANTUN_OMPRENG[Math.floor(Math.random() * PANTUN_OMPRENG.length)]}`;
+        
+        if (navigator.share && /mobile|android|iphone/i.test(navigator.userAgent)) {
+            navigator.share({ text: text }).catch(console.error);
+        } else {
+            window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+        }
+    }
+
+    // Modal & Theme
+    const modal = document.getElementById('guideModal');
+    const modalContent = document.getElementById('modalContent');
+    const modalOverlay = modal.querySelector('.modal-overlay');
+
+    function openModal() {
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+        requestAnimationFrame(() => {
+            modalOverlay.classList.add('active');
+            modalContent.classList.add('active');
+        });
+    }
+
+    function closeModal() {
+        modalOverlay.classList.remove('active');
+        modalContent.classList.remove('active');
+        document.body.style.overflow = '';
+        setTimeout(() => modal.classList.add('hidden'), 300);
+    }
+
+    function toggleDarkMode() {
+        document.documentElement.classList.toggle('dark');
+        localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'));
+    }
+
+    // Init
+    document.addEventListener('DOMContentLoaded', () => {
+        if (localStorage.getItem('darkMode') === 'true' || (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+
+        renderMembers();
+        renderOmpreng();
+        renderFridayRotation();
+        renderDailySchedule();
+        renderFridaySchedule();
+        
+        highlightActiveWeek();
+        
+        document.getElementById('lastUpdated').textContent = new Date().toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' });
+        document.getElementById('memberFilter').addEventListener('change', (e) => filterByMember(e.target.value));
+    });
+    </script>
+</body>
+</html>
+
