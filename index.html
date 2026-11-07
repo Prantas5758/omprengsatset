@@ -8,22 +8,7 @@
     <meta name="author" content="Tim Manajemen SatsetDasdes">
     <meta name="theme-color" content="#4f46e5">
 
-    <meta property="og:title" content="Jadwal Piket & Ompreng - SatsetDasdes Edition (Update IPAL)">
-    <meta property="og:description" content="Jadwal piket, SOP, dan pembagian tugas tim kebersihan harian dengan siklus rotasi 6 minggu + IPAL.">
-    <meta property="og:type" content="website">
-    <meta property="og:locale" content="id_ID">
-
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="Jadwal Piket">
-
     <title>Jadwal Piket & Ompreng - SatsetDasdes Edition</title>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://cdn.tailwindcss.com">
-    <link rel="preconnect" href="https://unpkg.com">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -50,69 +35,32 @@
     </script>
 
     <style>
-        :root {
-            --primary: #4f46e5;
-            --primary-light: #eef2ff;
-        }
-        .dark { --primary: #818cf8; --primary-light: #1e1b4b; }
-
+        :root { --primary: #4f46e5; }
+        .dark { --primary: #818cf8; }
         body { font-family: 'Inter', sans-serif; }
         html { scroll-behavior: smooth; scroll-padding-top: 100px; }
-
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
         .dark ::-webkit-scrollbar-thumb { background: #475569; }
 
-        .sticky-nav {
-            position: sticky;
-            top: 0;
-            z-index: 40;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-        }
-
+        .sticky-nav { position: sticky; top: 0; z-index: 40; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
         .modal-overlay { opacity: 0; transition: opacity 300ms ease; }
         .modal-overlay.active { opacity: 1; }
         .modal-content { opacity: 0; transform: scale(0.95) translateY(10px); transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1); }
         .modal-content.active { opacity: 1; transform: scale(1) translateY(0); }
         body.modal-forced-open .max-w-\[1400px\] { filter: blur(5px); pointer-events: none; user-select: none; }
 
-        .week-active {
-            border-color: var(--primary) !important;
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15), 0 8px 30px rgb(0,0,0,0.04) !important;
-        }
-        .week-active::before {
-            content: '📍 Minggu Ini';
-            position: absolute;
-            top: -12px;
-            right: 16px;
-            background: var(--primary);
-            color: white;
-            font-size: 10px;
-            font-weight: 700;
-            padding: 2px 10px;
-            border-radius: 9999px;
-            letter-spacing: 0.05em;
-            z-index: 5;
-        }
-        #fridayGrid article { overflow: visible; }
-
-        .today-highlight {
-            background: linear-gradient(135deg, rgba(79,70,229,0.05), rgba(99,102,241,0.1));
-            border-left: 4px solid var(--primary);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-        }
-        .dark .today-highlight {
-            background: linear-gradient(135deg, rgba(79,70,229,0.15), rgba(99,102,241,0.2));
-        }
+        .week-active { border-color: var(--primary) !important; box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15), 0 8px 30px rgb(0,0,0,0.04) !important; }
+        .week-active::before { content: '📍 Minggu Ini'; position: absolute; top: -12px; right: 16px; background: var(--primary); color: white; font-size: 10px; font-weight: 700; padding: 2px 10px; border-radius: 9999px; z-index: 5; letter-spacing: 0.05em; }
+        
+        .today-highlight { background: linear-gradient(135deg, rgba(79,70,229,0.05), rgba(99,102,241,0.1)); border-left: 4px solid var(--primary); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
+        .dark .today-highlight { background: linear-gradient(135deg, rgba(79,70,229,0.15), rgba(99,102,241,0.2)); }
 
         [data-member] { transition: opacity 0.3s ease, filter 0.3s ease, transform 0.2s ease; }
         body.filter-active [data-member] { opacity: 0.3; filter: grayscale(100%); }
-        body.filter-active [data-member].member-highlight {
-            opacity: 1; filter: none; background-color: #fef08a !important; border-radius: 6px; padding: 6px 8px; margin: -6px -8px; box-shadow: 0 2px 10px rgba(234, 179, 8, 0.3); z-index: 10; position: relative; transform: scale(1.02);
-        }
-        .dark body.filter-active [data-member].member-highlight { background-color: rgba(234, 179, 8, 0.15) !important; box-shadow: 0 2px 10px rgba(234, 179, 8, 0.2); border: 1px solid rgba(234, 179, 8, 0.4); }
+        body.filter-active [data-member].member-highlight { opacity: 1; filter: none; background-color: #fef08a !important; border-radius: 6px; padding: 6px 8px; margin: -6px -8px; box-shadow: 0 2px 10px rgba(234, 179, 8, 0.3); z-index: 10; position: relative; transform: scale(1.02); }
+        .dark body.filter-active [data-member].member-highlight { background-color: rgba(234, 179, 8, 0.15) !important; border: 1px solid rgba(234, 179, 8, 0.4); }
 
         .badge-base { padding: 0.125rem 0.5rem; border-radius: 0.25rem; font-size: 0.6875rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; display: inline-block; line-height: 1.2; word-break: break-word; }
         .badge-gestrep { background: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
@@ -129,9 +77,8 @@
         .dark .badge-selokan { background: rgba(6,182,212,0.2); color: #a5f3fc; border-color: rgba(6,182,212,0.5); }
         .dark .badge-tutup { background: rgba(236,72,153,0.2); color: #fbcfe8; border-color: rgba(236,72,153,0.5); }
 
-        .friday-hidden { display: none; }
         :focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; border-radius: 4px; }
-
+        
         @media print {
             body { background: white !important; padding: 0 !important; }
             .no-print, .sticky-nav { display: none !important; }
@@ -139,55 +86,50 @@
             article, section { box-shadow: none !important; break-inside: avoid; }
             .week-active::before { display: none; }
             .member-highlight { background: none !important; box-shadow: none !important; transform: none !important; }
-            .friday-hidden { display: block !important; }
+            .friday-card { display: block !important; }
             * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
         }
-
-        * { transition-property: background-color, border-color; transition-duration: 200ms; transition-timing-function: ease; }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-        .animate-in { animation: fadeInUp 0.5s ease forwards; }
     </style>
 </head>
-<body class="p-4 md:p-8 lg:p-12 min-h-screen flex justify-center text-slate-800 dark:text-slate-200 selection:bg-indigo-100 dark:selection:bg-indigo-900 selection:text-indigo-900 dark:selection:text-indigo-100 relative bg-slate-100 dark:bg-slate-900 transition-all duration-300">
+<body class="p-4 md:p-8 lg:p-12 min-h-screen flex justify-center text-slate-800 dark:text-slate-200 bg-slate-100 dark:bg-slate-900 transition-all duration-300">
 
     <div class="max-w-[1400px] w-full relative z-10 transition-all duration-300">
-        <nav class="sticky-nav no-print bg-white/80 dark:bg-slate-900/80 border-b border-slate-200 dark:border-slate-700 -mx-4 md:-mx-8 lg:-mx-12 px-4 md:px-8 lg:px-12 py-3 mb-8" aria-label="Navigasi utama">
+        <nav class="sticky-nav no-print bg-white/80 dark:bg-slate-900/80 border-b border-slate-200 dark:border-slate-700 -mx-4 md:-mx-8 lg:-mx-12 px-4 md:px-8 lg:px-12 py-3 mb-8">
             <div class="flex items-center justify-between gap-4 flex-wrap">
                 <div class="flex items-center gap-2">
                     <div class="bg-indigo-600 p-1.5 rounded-lg text-white">
-                        <i class="ph-bold ph-calendar-check text-lg" aria-hidden="true"></i>
+                        <i class="ph-bold ph-calendar-check text-lg"></i>
                     </div>
                     <span class="font-bold text-sm text-slate-900 dark:text-white hidden sm:inline">SatsetDasdes (6 Member)</span>
                 </div>
 
-                <div class="flex items-center gap-1 text-xs font-semibold" role="tablist">
-                    <a href="#daily-schedule" class="px-3 py-1.5 rounded-full text-slate-600 dark:text-slate-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors">Harian</a>
-                    <a href="#friday-schedule" class="px-3 py-1.5 rounded-full text-slate-600 dark:text-slate-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors">Jumat</a>
-                    <a href="#bilas-section" class="px-3 py-1.5 rounded-full text-slate-600 dark:text-slate-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors">Bilas</a>
+                <div class="flex items-center gap-1 text-xs font-semibold">
+                    <a href="#daily-schedule" class="px-3 py-1.5 rounded-full text-slate-600 dark:text-slate-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30">Harian</a>
+                    <a href="#friday-schedule" class="px-3 py-1.5 rounded-full text-slate-600 dark:text-slate-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/30">Jumat</a>
                 </div>
 
                 <div class="flex items-center gap-2">
                     <div id="todayIndicator" class="text-xs font-bold bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 px-3 py-1.5 rounded-full border border-indigo-200 dark:border-indigo-800 hidden sm:flex items-center gap-1.5">
-                        <i class="ph-bold ph-calendar-dot text-sm" aria-hidden="true"></i>
+                        <i class="ph-bold ph-calendar-dot text-sm"></i>
                         <span id="todayText">...</span>
                     </div>
                     
                     <div class="relative flex items-center">
-                        <select id="memberFilter" aria-label="Filter berdasarkan anggota" class="no-print text-xs font-semibold bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded-full px-3 py-1.5 pr-8 text-slate-700 dark:text-slate-300 cursor-pointer focus:ring-2 focus:ring-indigo-500 appearance-none">
+                        <select id="memberFilter" class="no-print text-xs font-semibold bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600 rounded-full px-3 py-1.5 pr-8 cursor-pointer">
                             <option value="">👤 Semua Anggota</option>
                         </select>
                         <i class="ph-bold ph-caret-down absolute right-3 text-slate-400 pointer-events-none text-xs"></i>
-                        <button id="resetFilterBtn" onclick="toggleMemberFilter('')" class="hidden absolute -right-2 -top-2 bg-red-100 text-red-600 hover:bg-red-200 rounded-full p-1 shadow-sm transition-all dark:bg-red-900/50 dark:text-red-300" title="Reset Filter">
+                        <button id="resetFilterBtn" class="hidden absolute -right-2 -top-2 bg-red-100 text-red-600 hover:bg-red-200 rounded-full p-1 shadow-sm transition-all dark:bg-red-900/50 dark:text-red-300">
                             <i class="ph-bold ph-x text-[10px]"></i>
                         </button>
                     </div>
 
-                    <button id="darkModeToggle" onclick="toggleDarkMode()" aria-label="Toggle mode gelap" class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors ml-1">
-                        <i class="ph-bold ph-moon text-lg dark:hidden" aria-hidden="true"></i>
-                        <i class="ph-bold ph-sun text-lg hidden dark:inline" aria-hidden="true"></i>
+                    <button id="darkModeToggle" class="p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700">
+                        <i class="ph-bold ph-moon text-lg dark:hidden"></i>
+                        <i class="ph-bold ph-sun text-lg hidden dark:inline"></i>
                     </button>
-                    <button onclick="window.print()" aria-label="Cetak jadwal" class="hidden sm:block p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors">
-                        <i class="ph-bold ph-printer text-lg" aria-hidden="true"></i>
+                    <button onclick="window.print()" class="hidden sm:block p-2 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700">
+                        <i class="ph-bold ph-printer text-lg"></i>
                     </button>
                 </div>
             </div>
@@ -196,61 +138,47 @@
         <header class="mb-10 flex flex-col xl:flex-row xl:items-end justify-between gap-4 border-b border-slate-200 dark:border-slate-700 pb-6 animate-in">
             <div>
                 <div class="flex items-center gap-3 mb-2">
-                    <div class="bg-indigo-600 p-2 rounded-xl text-white shadow-lg shadow-indigo-200 dark:shadow-indigo-900/30">
-                        <i class="ph-bold ph-calendar-check text-2xl" aria-hidden="true"></i>
-                    </div>
+                    <div class="bg-indigo-600 p-2 rounded-xl text-white shadow-lg"><i class="ph-bold ph-calendar-check text-2xl"></i></div>
                     <span class="text-sm font-bold tracking-widest uppercase text-indigo-600 dark:text-indigo-400">Manajemen Tim (Update IPAL)</span>
                 </div>
-                <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white">
-                    Jadwal Piket & Ompreng
-                </h1>
+                <h1 class="text-3xl md:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white">Jadwal Piket & Ompreng</h1>
             </div>
             <div class="flex flex-wrap items-center gap-3">
-                <button onclick="shareToWhatsApp()" aria-label="Share jadwal ke WhatsApp" class="no-print text-sm font-bold flex items-center gap-2 bg-emerald-50 dark:bg-emerald-900/30 hover:bg-emerald-100 dark:hover:bg-emerald-900/50 text-emerald-700 dark:text-emerald-400 px-5 py-2.5 rounded-full shadow-sm border border-emerald-200 dark:border-emerald-800 transition-colors group">
-                    <i class="ph-bold ph-whatsapp-logo text-lg group-hover:scale-110 transition-transform" aria-hidden="true"></i> Share WA
+                <button id="btnShareWA" class="no-print text-sm font-bold flex items-center gap-2 bg-emerald-50 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 px-5 py-2.5 rounded-full shadow-sm border border-emerald-200 dark:border-emerald-800 transition-colors group">
+                    <i class="ph-bold ph-whatsapp-logo text-lg group-hover:scale-110 transition-transform"></i> Share WA
                 </button>
-                <button onclick="openModalNormal()" aria-label="Buka panduan tugas dan SOP" class="no-print text-sm font-bold flex items-center gap-2 bg-indigo-50 dark:bg-indigo-900/30 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 px-5 py-2.5 rounded-full shadow-sm border border-indigo-200 dark:border-indigo-800 transition-colors group">
-                    <i class="ph-bold ph-book-open text-lg group-hover:scale-110 transition-transform" aria-hidden="true"></i> SOP & Panduan
+                <button id="btnOpenModal" class="no-print text-sm font-bold flex items-center gap-2 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 px-5 py-2.5 rounded-full shadow-sm border border-indigo-200 dark:border-indigo-800 transition-colors group">
+                    <i class="ph-bold ph-book-open text-lg group-hover:scale-110 transition-transform"></i> SOP & Panduan
                 </button>
             </div>
         </header>
 
         <main class="flex flex-col-reverse xl:grid xl:grid-cols-12 gap-8">
             <aside class="xl:col-span-3 space-y-6 xl:sticky xl:top-20 h-fit">
-                <section class="bg-white dark:bg-slate-800 rounded-3xl p-6 shadow-sm border border-slate-100 dark:border-slate-700 transition-all duration-300 hover:shadow-lg hover:border-indigo-100 dark:hover:border-indigo-800">
-                    <h2 class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-4 flex items-center gap-2">
-                        <i class="ph-bold ph-users text-indigo-400" aria-hidden="true"></i> Highlight Cepat (6 Org)
-                    </h2>
-                    <div class="flex flex-wrap gap-2" role="list" id="memberList"></div>
+                <section class="bg-white dark:bg-slate-800 rounded-3xl p-6 shadow-sm border border-slate-100 dark:border-slate-700">
+                    <h2 class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-4 flex items-center gap-2"><i class="ph-bold ph-users text-indigo-400"></i> Highlight Cepat (6 Org)</h2>
+                    <div class="flex flex-wrap gap-2" id="memberList"></div>
                     <p class="text-[10px] text-slate-400 mt-3 italic">*Klik nama untuk menyorot jadwal individu.</p>
                 </section>
 
-                <section class="bg-white dark:bg-slate-800 rounded-3xl p-6 shadow-sm border border-slate-100 dark:border-slate-700 relative overflow-hidden">
-                    <h2 class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-5 flex items-center gap-2 relative z-10">
-                        <i class="ph-bold ph-arrows-out-line-horizontal text-indigo-400" aria-hidden="true"></i> Ompreng Minggu Ini
-                    </h2>
-                    <div class="space-y-4 relative z-10" id="omprengSchedule"></div>
+                <section class="bg-white dark:bg-slate-800 rounded-3xl p-6 shadow-sm border border-slate-100 dark:border-slate-700">
+                    <h2 class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-5 flex items-center gap-2"><i class="ph-bold ph-arrows-out-line-horizontal text-indigo-400"></i> Ompreng Minggu Ini</h2>
+                    <div class="space-y-4" id="omprengSchedule"></div>
                 </section>
 
                 <section class="bg-slate-900 dark:bg-slate-950 rounded-3xl p-6 shadow-xl border border-slate-800 dark:border-slate-700 text-slate-300">
-                    <h2 class="text-xs font-bold uppercase tracking-wider text-cyan-400 mb-5 flex items-center gap-2">
-                        <i class="ph-bold ph-waves text-cyan-300" aria-hidden="true"></i> Tugas IPAL Jum'at
-                    </h2>
+                    <h2 class="text-xs font-bold uppercase tracking-wider text-cyan-400 mb-5 flex items-center gap-2"><i class="ph-bold ph-waves text-cyan-300"></i> Tugas IPAL Jum'at</h2>
                     <div class="grid grid-cols-1 gap-y-3 text-sm" id="ipalSidebar"></div>
                 </section>
 
                 <section class="bg-slate-900 dark:bg-slate-950 rounded-3xl p-6 shadow-xl border border-slate-800 dark:border-slate-700 text-slate-300">
-                    <h2 class="text-xs font-bold uppercase tracking-wider text-indigo-400 mb-5 flex items-center gap-2">
-                        <i class="ph-bold ph-arrows-clockwise text-indigo-300" aria-hidden="true"></i> Tim Bilas Jum'at
-                    </h2>
+                    <h2 class="text-xs font-bold uppercase tracking-wider text-indigo-400 mb-5 flex items-center gap-2"><i class="ph-bold ph-arrows-clockwise text-indigo-300"></i> Tim Bilas Jum'at</h2>
                     <div class="grid grid-cols-1 gap-y-3 text-sm" id="fridayRotation"></div>
                 </section>
 
                 <section id="bilas-section" class="bg-white dark:bg-slate-800 rounded-3xl p-6 shadow-sm border border-slate-100 dark:border-slate-700">
-                    <h2 class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-5 flex items-center gap-2">
-                        <i class="ph-bold ph-drop text-blue-400" aria-hidden="true"></i> Jadwal Bilas Harian
-                    </h2>
-                    <div class="space-y-4" id="bilasSchedule"></div>
+                    <h2 class="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-5 flex items-center gap-2"><i class="ph-bold ph-drop text-blue-400"></i> Jadwal Bilas Harian</h2>
+                    <div id="bilasSchedule"></div>
                 </section>
             </aside>
 
@@ -264,12 +192,8 @@
 
                 <section id="friday-schedule" class="mt-10 print-break scroll-mt-24">
                     <div class="flex items-center justify-between mb-6 flex-wrap gap-4">
-                        <h2 class="text-xl font-bold text-slate-800 dark:text-white flex items-center gap-2">
-                            Jadwal Piket Khusus Jum'at
-                        </h2>
-                        <button onclick="toggleFridayVisibility()" id="toggleFridayBtn" class="no-print text-sm bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 px-4 py-2 rounded-full font-semibold transition-colors flex items-center gap-2">
-                            <i class="ph-bold ph-eye"></i> Tampilkan Semua
-                        </button>
+                        <h2 class="text-xl font-bold text-slate-800 dark:text-white flex items-center gap-2">Jadwal Piket Khusus Jum'at</h2>
+                        <button id="toggleFridayBtn" class="no-print text-sm bg-indigo-50 hover:bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-800 px-4 py-2 rounded-full font-semibold transition-colors flex items-center gap-2"><i class="ph-bold ph-eye"></i> Tampilkan Semua</button>
                     </div>
                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="fridayGrid"></div>
                 </section>
@@ -277,19 +201,17 @@
         </main>
 
         <footer class="mt-12 pt-6 border-t border-slate-200 dark:border-slate-700 text-center text-sm text-slate-500 dark:text-slate-400 pb-8">
-            <p>Jadwal Piket & Ompreng (6 Anggota) • Siklus 6 Minggu • Terakhir diperbarui: <time id="lastUpdated" datetime="">Memuat...</time></p>
+            <p>Jadwal Piket & Ompreng (6 Anggota) • Siklus 6 Minggu • Terakhir diperbarui: <time id="lastUpdated" datetime=""></time></p>
         </footer>
     </div>
 
     <!-- MODAL SOP -->
     <div id="guideModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 hidden">
-        <div id="modalOverlay" class="modal-overlay absolute inset-0 bg-slate-900/70 dark:bg-black/80 backdrop-blur-sm transition-opacity"></div>
+        <div id="modalOverlay" class="modal-overlay absolute inset-0 bg-slate-900/70 dark:bg-black/80 backdrop-blur-sm"></div>
         <div id="modalContent" class="modal-content bg-white dark:bg-slate-800 rounded-3xl w-full max-w-3xl shadow-2xl relative z-10 overflow-hidden flex flex-col max-h-[90vh]">
             <div class="bg-indigo-600 text-white p-5 sm:px-8 flex justify-between items-center shrink-0">
-                <h2 class="text-xl font-bold flex items-center gap-2"><i class="ph-fill ph-book-open text-2xl text-indigo-200" aria-hidden="true"></i> SOP & Aturan Piket Baru</h2>
-                <button id="modalCloseTop" onclick="closeModal()" class="text-white hover:bg-indigo-500 p-1.5 rounded-full transition-colors hidden">
-                    <i class="ph-bold ph-x text-xl" aria-hidden="true"></i>
-                </button>
+                <h2 class="text-xl font-bold flex items-center gap-2"><i class="ph-fill ph-book-open text-2xl text-indigo-200"></i> SOP & Aturan Piket Baru</h2>
+                <button id="modalCloseTop" class="text-white hover:bg-indigo-500 p-1.5 rounded-full transition-colors hidden"><i class="ph-bold ph-x text-xl"></i></button>
             </div>
             <div class="p-5 sm:p-8 overflow-y-auto space-y-8 text-slate-700 dark:text-slate-300">
                 <div class="bg-indigo-50 dark:bg-indigo-900/30 p-4 sm:p-5 rounded-2xl border border-indigo-100 dark:border-indigo-800 text-sm leading-relaxed shadow-sm">
@@ -298,20 +220,16 @@
                 </div>
 
                 <section>
-                    <h3 class="font-bold text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-600 pb-2 mb-4 flex items-center gap-2">
-                        <i class="ph-fill ph-calendar text-indigo-500"></i> SISTEM JADWAL BARU (6 MINGGU)
-                    </h3>
+                    <h3 class="font-bold text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-600 pb-2 mb-4 flex items-center gap-2"><i class="ph-fill ph-calendar text-indigo-500"></i> SISTEM JADWAL BARU (6 MINGGU)</h3>
                     <ul class="list-disc pl-5 space-y-2 text-sm">
                         <li><strong>Siklus Minggu:</strong> Jadwal berputar penuh secara berurutan untuk ke-6 anggota selama 6 minggu.</li>
-                        <li><strong>Rotasi Tugas:</strong> <strong>Rotasi Berkelanjutan:</strong> Tugas (Senin-Jum'at) berputar secara konsisten dan terus bersambung tanpa putus. Setiap hari, seluruh anggota memegang persis 1 peran secara bergantian.</li>
+                        <li><strong>Rotasi Berkelanjutan:</strong> Tugas (Senin-Jum'at) berputar secara konsisten dan terus bersambung tanpa putus. Setiap hari, seluruh anggota memegang persis 1 peran secara bergantian.</li>
                         <li><strong>Pemisahan Tugas Bilas & Angkut:</strong> Untuk menjaga keadilan, <strong>Tim Angkut</strong> (Bawa Ompreng/Tutup) <strong>TIDAK SAMA</strong> dengan <strong>Tim Bilas</strong>. Tim Bilas diisi oleh anggota yang memegang tugas <em>Gestrep & Westafel</em> (karena mereka berada di area air/cuci).</li>
                     </ul>
                 </section>
                 
                 <section>
-                    <h3 class="font-bold text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-600 pb-2 mb-4 flex items-center gap-2">
-                        <i class="ph-fill ph-waves text-cyan-500"></i> TUGAS KHUSUS IPAL (JUM'AT)
-                    </h3>
+                    <h3 class="font-bold text-slate-900 dark:text-white border-b border-slate-200 dark:border-slate-600 pb-2 mb-4 flex items-center gap-2"><i class="ph-fill ph-waves text-cyan-500"></i> TUGAS KHUSUS IPAL (JUM'AT)</h3>
                     <ul class="list-disc pl-5 space-y-3 text-sm text-slate-600 dark:text-slate-300">
                         <li><strong>Jadwal Pelaksanaan:</strong> Pembersihan IPAL wajib dilakukan <strong>2 kali</strong> pada hari Jum'at, yaitu saat mulai kerja (Jam 13:00) dan setelah seluruh pekerjaan selesai.</li>
                         <li><strong>Aturan Rotasi Khusus:</strong> Tugas ini dirotasi bergiliran secara adil kepada 5 anggota. <strong>Bowo (Koordinator) dikecualikan</strong> dari rotasi tugas ini.</li>
@@ -331,34 +249,19 @@
                         <div class="space-y-3">
                             <div class="bg-white dark:bg-slate-800 p-3 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm flex items-start gap-3">
                                 <div class="bg-cyan-100 dark:bg-cyan-900/50 text-cyan-700 dark:text-cyan-300 font-bold w-6 h-6 rounded-full flex items-center justify-center shrink-0 text-xs">1</div>
-                                <div>
-                                    <p class="text-sm font-bold text-slate-800 dark:text-slate-200">Posisi Normal (Awal)</p>
-                                    <p class="text-xs text-slate-600 dark:text-slate-400 mt-1">Pastikan tuas Tabung 1 (Biru) = Posisi Filter, dan Tabung 2 (Hijau) = Posisi Filter.</p>
-                                </div>
+                                <div><p class="text-sm font-bold text-slate-800 dark:text-slate-200">Posisi Normal (Awal)</p><p class="text-xs text-slate-600 dark:text-slate-400 mt-1">Pastikan tuas Tabung 1 (Biru) = Posisi Filter, dan Tabung 2 (Hijau) = Posisi Filter.</p></div>
                             </div>
-                            
                             <div class="bg-white dark:bg-slate-800 p-3 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm flex items-start gap-3">
                                 <div class="bg-cyan-100 dark:bg-cyan-900/50 text-cyan-700 dark:text-cyan-300 font-bold w-6 h-6 rounded-full flex items-center justify-center shrink-0 text-xs">2</div>
-                                <div>
-                                    <p class="text-sm font-bold text-slate-800 dark:text-slate-200">BackWash Tabung 1 (Biru)</p>
-                                    <p class="text-xs text-slate-600 dark:text-slate-400 mt-1">Putar tuas Tabung 1 ke posisi <strong>BackWash</strong> (Tabung 2 tetap posisi Filter). Biarkan proses ini berjalan selama <strong>15 Menit</strong>.</p>
-                                </div>
+                                <div><p class="text-sm font-bold text-slate-800 dark:text-slate-200">BackWash Tabung 1 (Biru)</p><p class="text-xs text-slate-600 dark:text-slate-400 mt-1">Putar tuas Tabung 1 ke posisi <strong>BackWash</strong> (Tabung 2 tetap posisi Filter). Biarkan proses ini berjalan selama <strong>15 Menit</strong>.</p></div>
                             </div>
-
                             <div class="bg-white dark:bg-slate-800 p-3 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm flex items-start gap-3">
                                 <div class="bg-cyan-100 dark:bg-cyan-900/50 text-cyan-700 dark:text-cyan-300 font-bold w-6 h-6 rounded-full flex items-center justify-center shrink-0 text-xs">3</div>
-                                <div>
-                                    <p class="text-sm font-bold text-slate-800 dark:text-slate-200">BackWash Tabung 2 (Hijau)</p>
-                                    <p class="text-xs text-slate-600 dark:text-slate-400 mt-1">Putar tuas Tabung 1 kembali ke Posisi Filter, lalu putar tuas Tabung 2 ke posisi <strong>BackWash</strong>. Biarkan berjalan selama <strong>15 Menit</strong>.</p>
-                                </div>
+                                <div><p class="text-sm font-bold text-slate-800 dark:text-slate-200">BackWash Tabung 2 (Hijau)</p><p class="text-xs text-slate-600 dark:text-slate-400 mt-1">Putar tuas Tabung 1 kembali ke Posisi Filter, lalu putar tuas Tabung 2 ke posisi <strong>BackWash</strong>. Biarkan berjalan selama <strong>15 Menit</strong>.</p></div>
                             </div>
-                            
                             <div class="bg-white dark:bg-slate-800 p-3 rounded-lg border border-slate-200 dark:border-slate-700 shadow-sm flex items-start gap-3">
                                 <div class="bg-cyan-100 dark:bg-cyan-900/50 text-cyan-700 dark:text-cyan-300 font-bold w-6 h-6 rounded-full flex items-center justify-center shrink-0 text-xs">4</div>
-                                <div>
-                                    <p class="text-sm font-bold text-slate-800 dark:text-slate-200">Kembalikan ke Posisi Normal (Akhir)</p>
-                                    <p class="text-xs text-slate-600 dark:text-slate-400 mt-1">Setelah selesai, pastikan kedua tuas (Tabung 1 & Tabung 2) diputar kembali ke <strong>Posisi Filter</strong>.</p>
-                                </div>
+                                <div><p class="text-sm font-bold text-slate-800 dark:text-slate-200">Kembalikan ke Posisi Normal (Akhir)</p><p class="text-xs text-slate-600 dark:text-slate-400 mt-1">Setelah selesai, pastikan kedua tuas (Tabung 1 & Tabung 2) diputar kembali ke <strong>Posisi Filter</strong>.</p></div>
                             </div>
                         </div>
                     </div>
@@ -382,9 +285,7 @@
                     </label>
                 </div>
                 <div class="w-full sm:w-auto sm:ml-auto">
-                    <button id="btnAcceptSop" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-8 rounded-xl shadow-md transition-all duration-300 w-full sm:w-auto">
-                        Tutup
-                    </button>
+                    <button id="btnAcceptSop" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-8 rounded-xl shadow-md transition-all duration-300 w-full sm:w-auto">Tutup</button>
                 </div>
             </div>
         </div>
@@ -392,21 +293,12 @@
 
     <script>
     const MEMBERS = ["Agus", "Aziz", "Bowo", "Fajar M", "Fajar R", "Zakaria"];
-    // 5 members excluding Bowo
     const IPAL_MEMBERS = ["Agus", "Aziz", "Fajar M", "Fajar R", "Zakaria"];
-    
-    // Mengubah tanggal start untuk memulai rotasi baru agar sejalan dengan formasi baru
+    const DAILY_SCHEDULE = [{"week": 1, "days": [{"day": "Senin", "angkut": ["Bowo", "Fajar M"], "bilas": ["Agus", "Aziz"], "tasks": [{"name": "Agus", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep"}, {"name": "Aziz", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel"}, {"name": "Bowo", "task": "Bawa Ompreng + cek ompreng", "type": "ompreng"}, {"name": "Fajar M", "task": "Bawa Tutup + merendam ompreng", "type": "ompreng"}, {"name": "Fajar R", "task": "Sikat Lantai + pengering lantai", "type": "lantai"}, {"name": "Zakaria", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan"}]}, {"day": "Selasa", "angkut": ["Fajar M", "Fajar R"], "bilas": ["Aziz", "Bowo"], "tasks": [{"name": "Aziz", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep"}, {"name": "Bowo", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel"}, {"name": "Fajar M", "task": "Bawa Ompreng + cek ompreng", "type": "ompreng"}, {"name": "Fajar R", "task": "Bawa Tutup + merendam ompreng", "type": "ompreng"}, {"name": "Zakaria", "task": "Sikat Lantai + pengering lantai", "type": "lantai"}, {"name": "Agus", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan"}]}, {"day": "Rabu", "angkut": ["Fajar R", "Zakaria"], "bilas": ["Bowo", "Fajar M"], "tasks": [{"name": "Bowo", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep"}, {"name": "Fajar M", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel"}, {"name": "Fajar R", "task": "Bawa Ompreng + cek ompreng", "type": "ompreng"}, {"name": "Zakaria", "task": "Bawa Tutup + merendam ompreng", "type": "ompreng"}, {"name": "Agus", "task": "Sikat Lantai + pengering lantai", "type": "lantai"}, {"name": "Aziz", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan"}]}, {"day": "Kamis", "angkut": ["Zakaria", "Agus"], "bilas": ["Fajar M", "Fajar R"], "tasks": [{"name": "Fajar M", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep"}, {"name": "Fajar R", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel"}, {"name": "Zakaria", "task": "Bawa Ompreng + cek ompreng", "type": "ompreng"}, {"name": "Agus", "task": "Bawa Tutup + merendam ompreng", "type": "ompreng"}, {"name": "Aziz", "task": "Sikat Lantai + pengering lantai", "type": "lantai"}, {"name": "Bowo", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan"}]}]}, {"week": 2, "days": [{"day": "Senin", "angkut": ["Aziz", "Bowo"], "bilas": ["Zakaria", "Agus"], "tasks": [{"name": "Zakaria", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep"}, {"name": "Agus", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel"}, {"name": "Aziz", "task": "Bawa Ompreng + cek ompreng", "type": "ompreng"}, {"name": "Bowo", "task": "Bawa Tutup + merendam ompreng", "type": "ompreng"}, {"name": "Fajar M", "task": "Sikat Lantai + pengering lantai", "type": "lantai"}, {"name": "Fajar R", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan"}]}, {"day": "Selasa", "angkut": ["Bowo", "Fajar M"], "bilas": ["Agus", "Aziz"], "tasks": [{"name": "Agus", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep"}, {"name": "Aziz", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel"}, {"name": "Bowo", "task": "Bawa Ompreng + cek ompreng", "type": "ompreng"}, {"name": "Fajar M", "task": "Bawa Tutup + merendam ompreng", "type": "ompreng"}, {"name": "Fajar R", "task": "Sikat Lantai + pengering lantai", "type": "lantai"}, {"name": "Zakaria", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan"}]}, {"day": "Rabu", "angkut": ["Fajar M", "Fajar R"], "bilas": ["Aziz", "Bowo"], "tasks": [{"name": "Aziz", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep"}, {"name": "Bowo", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel"}, {"name": "Fajar M", "task": "Bawa Ompreng + cek ompreng", "type": "ompreng"}, {"name": "Fajar R", "task": "Bawa Tutup + merendam ompreng", "type": "ompreng"}, {"name": "Zakaria", "task": "Sikat Lantai + pengering lantai", "type": "lantai"}, {"name": "Agus", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan"}]}, {"day": "Kamis", "angkut": ["Fajar R", "Zakaria"], "bilas": ["Bowo", "Fajar M"], "tasks": [{"name": "Bowo", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep"}, {"name": "Fajar M", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel"}, {"name": "Fajar R", "task": "Bawa Ompreng + cek ompreng", "type": "ompreng"}, {"name": "Zakaria", "task": "Bawa Tutup + merendam ompreng", "type": "ompreng"}, {"name": "Agus", "task": "Sikat Lantai + pengering lantai", "type": "lantai"}, {"name": "Aziz", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan"}]}]}, {"week": 3, "days": [{"day": "Senin", "angkut": ["Agus", "Aziz"], "bilas": ["Fajar R", "Zakaria"], "tasks": [{"name": "Fajar R", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep"}, {"name": "Zakaria", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel"}, {"name": "Agus", "task": "Bawa Ompreng + cek ompreng", "type": "ompreng"}, {"name": "Aziz", "task": "Bawa Tutup + merendam ompreng", "type": "ompreng"}, {"name": "Bowo", "task": "Sikat Lantai + pengering lantai", "type": "lantai"}, {"name": "Fajar M", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan"}]}, {"day": "Selasa", "angkut": ["Aziz", "Bowo"], "bilas": ["Zakaria", "Agus"], "tasks": [{"name": "Zakaria", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep"}, {"name": "Agus", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel"}, {"name": "Aziz", "task": "Bawa Ompreng + cek ompreng", "type": "ompreng"}, {"name": "Bowo", "task": "Bawa Tutup + merendam ompreng", "type": "ompreng"}, {"name": "Fajar M", "task": "Sikat Lantai + pengering lantai", "type": "lantai"}, {"name": "Fajar R", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan"}]}, {"day": "Rabu", "angkut": ["Bowo", "Fajar M"], "bilas": ["Agus", "Aziz"], "tasks": [{"name": "Agus", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep"}, {"name": "Aziz", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel"}, {"name": "Bowo", "task": "Bawa Ompreng + cek ompreng", "type": "ompreng"}, {"name": "Fajar M", "task": "Bawa Tutup + merendam ompreng", "type": "ompreng"}, {"name": "Fajar R", "task": "Sikat Lantai + pengering lantai", "type": "lantai"}, {"name": "Zakaria", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan"}]}, {"day": "Kamis", "angkut": ["Fajar M", "Fajar R"], "bilas": ["Aziz", "Bowo"], "tasks": [{"name": "Aziz", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep"}, {"name": "Bowo", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel"}, {"name": "Fajar M", "task": "Bawa Ompreng + cek ompreng", "type": "ompreng"}, {"name": "Fajar R", "task": "Bawa Tutup + merendam ompreng", "type": "ompreng"}, {"name": "Zakaria", "task": "Sikat Lantai + pengering lantai", "type": "lantai"}, {"name": "Agus", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan"}]}]}, {"week": 4, "days": [{"day": "Senin", "angkut": ["Zakaria", "Agus"], "bilas": ["Fajar M", "Fajar R"], "tasks": [{"name": "Fajar M", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep"}, {"name": "Fajar R", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel"}, {"name": "Zakaria", "task": "Bawa Ompreng + cek ompreng", "type": "ompreng"}, {"name": "Agus", "task": "Bawa Tutup + merendam ompreng", "type": "ompreng"}, {"name": "Aziz", "task": "Sikat Lantai + pengering lantai", "type": "lantai"}, {"name": "Bowo", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan"}]}, {"day": "Selasa", "angkut": ["Agus", "Aziz"], "bilas": ["Fajar R", "Zakaria"], "tasks": [{"name": "Fajar R", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep"}, {"name": "Zakaria", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel"}, {"name": "Agus", "task": "Bawa Ompreng + cek ompreng", "type": "ompreng"}, {"name": "Aziz", "task": "Bawa Tutup + merendam ompreng", "type": "ompreng"}, {"name": "Bowo", "task": "Sikat Lantai + pengering lantai", "type": "lantai"}, {"name": "Fajar M", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan"}]}, {"day": "Rabu", "angkut": ["Aziz", "Bowo"], "bilas": ["Zakaria", "Agus"], "tasks": [{"name": "Zakaria", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep"}, {"name": "Agus", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel"}, {"name": "Aziz", "task": "Bawa Ompreng + cek ompreng", "type": "ompreng"}, {"name": "Bowo", "task": "Bawa Tutup + merendam ompreng", "type": "ompreng"}, {"name": "Fajar M", "task": "Sikat Lantai + pengering lantai", "type": "lantai"}, {"name": "Fajar R", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan"}]}, {"day": "Kamis", "angkut": ["Bowo", "Fajar M"], "bilas": ["Agus", "Aziz"], "tasks": [{"name": "Agus", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep"}, {"name": "Aziz", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel"}, {"name": "Bowo", "task": "Bawa Ompreng + cek ompreng", "type": "ompreng"}, {"name": "Fajar M", "task": "Bawa Tutup + merendam ompreng", "type": "ompreng"}, {"name": "Fajar R", "task": "Sikat Lantai + pengering lantai", "type": "lantai"}, {"name": "Zakaria", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan"}]}]}, {"week": 5, "days": [{"day": "Senin", "angkut": ["Fajar R", "Zakaria"], "bilas": ["Bowo", "Fajar M"], "tasks": [{"name": "Bowo", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep"}, {"name": "Fajar M", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel"}, {"name": "Fajar R", "task": "Bawa Ompreng + cek ompreng", "type": "ompreng"}, {"name": "Zakaria", "task": "Bawa Tutup + merendam ompreng", "type": "ompreng"}, {"name": "Agus", "task": "Sikat Lantai + pengering lantai", "type": "lantai"}, {"name": "Aziz", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan"}]}, {"day": "Selasa", "angkut": ["Zakaria", "Agus"], "bilas": ["Fajar M", "Fajar R"], "tasks": [{"name": "Fajar M", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep"}, {"name": "Fajar R", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel"}, {"name": "Zakaria", "task": "Bawa Ompreng + cek ompreng", "type": "ompreng"}, {"name": "Agus", "task": "Bawa Tutup + merendam ompreng", "type": "ompreng"}, {"name": "Aziz", "task": "Sikat Lantai + pengering lantai", "type": "lantai"}, {"name": "Bowo", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan"}]}, {"day": "Rabu", "angkut": ["Agus", "Aziz"], "bilas": ["Fajar R", "Zakaria"], "tasks": [{"name": "Fajar R", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep"}, {"name": "Zakaria", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel"}, {"name": "Agus", "task": "Bawa Ompreng + cek ompreng", "type": "ompreng"}, {"name": "Aziz", "task": "Bawa Tutup + merendam ompreng", "type": "ompreng"}, {"name": "Bowo", "task": "Sikat Lantai + pengering lantai", "type": "lantai"}, {"name": "Fajar M", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan"}]}, {"day": "Kamis", "angkut": ["Aziz", "Bowo"], "bilas": ["Zakaria", "Agus"], "tasks": [{"name": "Zakaria", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep"}, {"name": "Agus", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel"}, {"name": "Aziz", "task": "Bawa Ompreng + cek ompreng", "type": "ompreng"}, {"name": "Bowo", "task": "Bawa Tutup + merendam ompreng", "type": "ompreng"}, {"name": "Fajar M", "task": "Sikat Lantai + pengering lantai", "type": "lantai"}, {"name": "Fajar R", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan"}]}]}, {"week": 6, "days": [{"day": "Senin", "angkut": ["Fajar M", "Fajar R"], "bilas": ["Aziz", "Bowo"], "tasks": [{"name": "Aziz", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep"}, {"name": "Bowo", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel"}, {"name": "Fajar M", "task": "Bawa Ompreng + cek ompreng", "type": "ompreng"}, {"name": "Fajar R", "task": "Bawa Tutup + merendam ompreng", "type": "ompreng"}, {"name": "Zakaria", "task": "Sikat Lantai + pengering lantai", "type": "lantai"}, {"name": "Agus", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan"}]}, {"day": "Selasa", "angkut": ["Fajar R", "Zakaria"], "bilas": ["Bowo", "Fajar M"], "tasks": [{"name": "Bowo", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep"}, {"name": "Fajar M", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel"}, {"name": "Fajar R", "task": "Bawa Ompreng + cek ompreng", "type": "ompreng"}, {"name": "Zakaria", "task": "Bawa Tutup + merendam ompreng", "type": "ompreng"}, {"name": "Agus", "task": "Sikat Lantai + pengering lantai", "type": "lantai"}, {"name": "Aziz", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan"}]}, {"day": "Rabu", "angkut": ["Zakaria", "Agus"], "bilas": ["Fajar M", "Fajar R"], "tasks": [{"name": "Fajar M", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep"}, {"name": "Fajar R", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel"}, {"name": "Zakaria", "task": "Bawa Ompreng + cek ompreng", "type": "ompreng"}, {"name": "Agus", "task": "Bawa Tutup + merendam ompreng", "type": "ompreng"}, {"name": "Aziz", "task": "Sikat Lantai + pengering lantai", "type": "lantai"}, {"name": "Bowo", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan"}]}, {"day": "Kamis", "angkut": ["Agus", "Aziz"], "bilas": ["Fajar R", "Zakaria"], "tasks": [{"name": "Fajar R", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep"}, {"name": "Zakaria", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel"}, {"name": "Agus", "task": "Bawa Ompreng + cek ompreng", "type": "ompreng"}, {"name": "Aziz", "task": "Bawa Tutup + merendam ompreng", "type": "ompreng"}, {"name": "Bowo", "task": "Sikat Lantai + pengering lantai", "type": "lantai"}, {"name": "Fajar M", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan"}]}]}];
+    const FRIDAY_SCHEDULE = [{"week": 1, "angkut": ["Agus", "Aziz"], "bilas": ["Fajar R", "Zakaria"], "tasks": [{"name": "Fajar R", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep"}, {"name": "Zakaria", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel"}, {"name": "Agus", "task": "Bawa Ompreng + cek ompreng", "type": "ompreng"}, {"name": "Aziz", "task": "Bawa Tutup + merendam ompreng", "type": "ompreng"}, {"name": "Bowo", "task": "Sikat Lantai + pengering lantai", "type": "lantai"}, {"name": "Fajar M", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan"}]}, {"week": 2, "angkut": ["Zakaria", "Agus"], "bilas": ["Fajar M", "Fajar R"], "tasks": [{"name": "Fajar M", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep"}, {"name": "Fajar R", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel"}, {"name": "Zakaria", "task": "Bawa Ompreng + cek ompreng", "type": "ompreng"}, {"name": "Agus", "task": "Bawa Tutup + merendam ompreng", "type": "ompreng"}, {"name": "Aziz", "task": "Sikat Lantai + pengering lantai", "type": "lantai"}, {"name": "Bowo", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan"}]}, {"week": 3, "angkut": ["Fajar R", "Zakaria"], "bilas": ["Bowo", "Fajar M"], "tasks": [{"name": "Bowo", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep"}, {"name": "Fajar M", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel"}, {"name": "Fajar R", "task": "Bawa Ompreng + cek ompreng", "type": "ompreng"}, {"name": "Zakaria", "task": "Bawa Tutup + merendam ompreng", "type": "ompreng"}, {"name": "Agus", "task": "Sikat Lantai + pengering lantai", "type": "lantai"}, {"name": "Aziz", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan"}]}, {"week": 4, "angkut": ["Fajar M", "Fajar R"], "bilas": ["Aziz", "Bowo"], "tasks": [{"name": "Aziz", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep"}, {"name": "Bowo", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel"}, {"name": "Fajar M", "task": "Bawa Ompreng + cek ompreng", "type": "ompreng"}, {"name": "Fajar R", "task": "Bawa Tutup + merendam ompreng", "type": "ompreng"}, {"name": "Zakaria", "task": "Sikat Lantai + pengering lantai", "type": "lantai"}, {"name": "Agus", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan"}]}, {"week": 5, "angkut": ["Bowo", "Fajar M"], "bilas": ["Agus", "Aziz"], "tasks": [{"name": "Agus", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep"}, {"name": "Aziz", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel"}, {"name": "Bowo", "task": "Bawa Ompreng + cek ompreng", "type": "ompreng"}, {"name": "Fajar M", "task": "Bawa Tutup + merendam ompreng", "type": "ompreng"}, {"name": "Fajar R", "task": "Sikat Lantai + pengering lantai", "type": "lantai"}, {"name": "Zakaria", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan"}]}, {"week": 6, "angkut": ["Aziz", "Bowo"], "bilas": ["Zakaria", "Agus"], "tasks": [{"name": "Zakaria", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep"}, {"name": "Agus", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel"}, {"name": "Aziz", "task": "Bawa Ompreng + cek ompreng", "type": "ompreng"}, {"name": "Bowo", "task": "Bawa Tutup + merendam ompreng", "type": "ompreng"}, {"name": "Fajar M", "task": "Sikat Lantai + pengering lantai", "type": "lantai"}, {"name": "Fajar R", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan"}]}];
     const CYCLE_START_DATE = '2026-11-09'; 
-    
-    const MANUAL_DAILY_WEEK = null;
-    const MANUAL_FRIDAY_WEEK = null;
-    
     let activeFridayGlobal = 1; 
     let showAllFriday = false;
-
-    const DAILY_SCHEDULE = [{"week": 1, "days": [{"day": "Senin", "angkut": ["Bowo", "Fajar M"], "bilas": ["Agus", "Aziz"], "tasks": [{"name": "Agus", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep"}, {"name": "Aziz", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel"}, {"name": "Bowo", "task": "Bawa Ompreng + cek ompreng", "type": "ompreng"}, {"name": "Fajar M", "task": "Bawa Tutup + merendam ompreng", "type": "ompreng"}, {"name": "Fajar R", "task": "Sikat Lantai + pengering lantai", "type": "lantai"}, {"name": "Zakaria", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan"}]}, {"day": "Selasa", "angkut": ["Fajar M", "Fajar R"], "bilas": ["Aziz", "Bowo"], "tasks": [{"name": "Aziz", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep"}, {"name": "Bowo", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel"}, {"name": "Fajar M", "task": "Bawa Ompreng + cek ompreng", "type": "ompreng"}, {"name": "Fajar R", "task": "Bawa Tutup + merendam ompreng", "type": "ompreng"}, {"name": "Zakaria", "task": "Sikat Lantai + pengering lantai", "type": "lantai"}, {"name": "Agus", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan"}]}, {"day": "Rabu", "angkut": ["Fajar R", "Zakaria"], "bilas": ["Bowo", "Fajar M"], "tasks": [{"name": "Bowo", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep"}, {"name": "Fajar M", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel"}, {"name": "Fajar R", "task": "Bawa Ompreng + cek ompreng", "type": "ompreng"}, {"name": "Zakaria", "task": "Bawa Tutup + merendam ompreng", "type": "ompreng"}, {"name": "Agus", "task": "Sikat Lantai + pengering lantai", "type": "lantai"}, {"name": "Aziz", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan"}]}, {"day": "Kamis", "angkut": ["Zakaria", "Agus"], "bilas": ["Fajar M", "Fajar R"], "tasks": [{"name": "Fajar M", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep"}, {"name": "Fajar R", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel"}, {"name": "Zakaria", "task": "Bawa Ompreng + cek ompreng", "type": "ompreng"}, {"name": "Agus", "task": "Bawa Tutup + merendam ompreng", "type": "ompreng"}, {"name": "Aziz", "task": "Sikat Lantai + pengering lantai", "type": "lantai"}, {"name": "Bowo", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan"}]}]}, {"week": 2, "days": [{"day": "Senin", "angkut": ["Aziz", "Bowo"], "bilas": ["Zakaria", "Agus"], "tasks": [{"name": "Zakaria", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep"}, {"name": "Agus", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel"}, {"name": "Aziz", "task": "Bawa Ompreng + cek ompreng", "type": "ompreng"}, {"name": "Bowo", "task": "Bawa Tutup + merendam ompreng", "type": "ompreng"}, {"name": "Fajar M", "task": "Sikat Lantai + pengering lantai", "type": "lantai"}, {"name": "Fajar R", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan"}]}, {"day": "Selasa", "angkut": ["Bowo", "Fajar M"], "bilas": ["Agus", "Aziz"], "tasks": [{"name": "Agus", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep"}, {"name": "Aziz", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel"}, {"name": "Bowo", "task": "Bawa Ompreng + cek ompreng", "type": "ompreng"}, {"name": "Fajar M", "task": "Bawa Tutup + merendam ompreng", "type": "ompreng"}, {"name": "Fajar R", "task": "Sikat Lantai + pengering lantai", "type": "lantai"}, {"name": "Zakaria", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan"}]}, {"day": "Rabu", "angkut": ["Fajar M", "Fajar R"], "bilas": ["Aziz", "Bowo"], "tasks": [{"name": "Aziz", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep"}, {"name": "Bowo", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel"}, {"name": "Fajar M", "task": "Bawa Ompreng + cek ompreng", "type": "ompreng"}, {"name": "Fajar R", "task": "Bawa Tutup + merendam ompreng", "type": "ompreng"}, {"name": "Zakaria", "task": "Sikat Lantai + pengering lantai", "type": "lantai"}, {"name": "Agus", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan"}]}, {"day": "Kamis", "angkut": ["Fajar R", "Zakaria"], "bilas": ["Bowo", "Fajar M"], "tasks": [{"name": "Bowo", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep"}, {"name": "Fajar M", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel"}, {"name": "Fajar R", "task": "Bawa Ompreng + cek ompreng", "type": "ompreng"}, {"name": "Zakaria", "task": "Bawa Tutup + merendam ompreng", "type": "ompreng"}, {"name": "Agus", "task": "Sikat Lantai + pengering lantai", "type": "lantai"}, {"name": "Aziz", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan"}]}]}, {"week": 3, "days": [{"day": "Senin", "angkut": ["Agus", "Aziz"], "bilas": ["Fajar R", "Zakaria"], "tasks": [{"name": "Fajar R", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep"}, {"name": "Zakaria", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel"}, {"name": "Agus", "task": "Bawa Ompreng + cek ompreng", "type": "ompreng"}, {"name": "Aziz", "task": "Bawa Tutup + merendam ompreng", "type": "ompreng"}, {"name": "Bowo", "task": "Sikat Lantai + pengering lantai", "type": "lantai"}, {"name": "Fajar M", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan"}]}, {"day": "Selasa", "angkut": ["Aziz", "Bowo"], "bilas": ["Zakaria", "Agus"], "tasks": [{"name": "Zakaria", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep"}, {"name": "Agus", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel"}, {"name": "Aziz", "task": "Bawa Ompreng + cek ompreng", "type": "ompreng"}, {"name": "Bowo", "task": "Bawa Tutup + merendam ompreng", "type": "ompreng"}, {"name": "Fajar M", "task": "Sikat Lantai + pengering lantai", "type": "lantai"}, {"name": "Fajar R", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan"}]}, {"day": "Rabu", "angkut": ["Bowo", "Fajar M"], "bilas": ["Agus", "Aziz"], "tasks": [{"name": "Agus", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep"}, {"name": "Aziz", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel"}, {"name": "Bowo", "task": "Bawa Ompreng + cek ompreng", "type": "ompreng"}, {"name": "Fajar M", "task": "Bawa Tutup + merendam ompreng", "type": "ompreng"}, {"name": "Fajar R", "task": "Sikat Lantai + pengering lantai", "type": "lantai"}, {"name": "Zakaria", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan"}]}, {"day": "Kamis", "angkut": ["Fajar M", "Fajar R"], "bilas": ["Aziz", "Bowo"], "tasks": [{"name": "Aziz", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep"}, {"name": "Bowo", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel"}, {"name": "Fajar M", "task": "Bawa Ompreng + cek ompreng", "type": "ompreng"}, {"name": "Fajar R", "task": "Bawa Tutup + merendam ompreng", "type": "ompreng"}, {"name": "Zakaria", "task": "Sikat Lantai + pengering lantai", "type": "lantai"}, {"name": "Agus", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan"}]}]}, {"week": 4, "days": [{"day": "Senin", "angkut": ["Zakaria", "Agus"], "bilas": ["Fajar M", "Fajar R"], "tasks": [{"name": "Fajar M", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep"}, {"name": "Fajar R", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel"}, {"name": "Zakaria", "task": "Bawa Ompreng + cek ompreng", "type": "ompreng"}, {"name": "Agus", "task": "Bawa Tutup + merendam ompreng", "type": "ompreng"}, {"name": "Aziz", "task": "Sikat Lantai + pengering lantai", "type": "lantai"}, {"name": "Bowo", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan"}]}, {"day": "Selasa", "angkut": ["Agus", "Aziz"], "bilas": ["Fajar R", "Zakaria"], "tasks": [{"name": "Fajar R", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep"}, {"name": "Zakaria", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel"}, {"name": "Agus", "task": "Bawa Ompreng + cek ompreng", "type": "ompreng"}, {"name": "Aziz", "task": "Bawa Tutup + merendam ompreng", "type": "ompreng"}, {"name": "Bowo", "task": "Sikat Lantai + pengering lantai", "type": "lantai"}, {"name": "Fajar M", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan"}]}, {"day": "Rabu", "angkut": ["Aziz", "Bowo"], "bilas": ["Zakaria", "Agus"], "tasks": [{"name": "Zakaria", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep"}, {"name": "Agus", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel"}, {"name": "Aziz", "task": "Bawa Ompreng + cek ompreng", "type": "ompreng"}, {"name": "Bowo", "task": "Bawa Tutup + merendam ompreng", "type": "ompreng"}, {"name": "Fajar M", "task": "Sikat Lantai + pengering lantai", "type": "lantai"}, {"name": "Fajar R", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan"}]}, {"day": "Kamis", "angkut": ["Bowo", "Fajar M"], "bilas": ["Agus", "Aziz"], "tasks": [{"name": "Agus", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep"}, {"name": "Aziz", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel"}, {"name": "Bowo", "task": "Bawa Ompreng + cek ompreng", "type": "ompreng"}, {"name": "Fajar M", "task": "Bawa Tutup + merendam ompreng", "type": "ompreng"}, {"name": "Fajar R", "task": "Sikat Lantai + pengering lantai", "type": "lantai"}, {"name": "Zakaria", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan"}]}]}, {"week": 5, "days": [{"day": "Senin", "angkut": ["Fajar R", "Zakaria"], "bilas": ["Bowo", "Fajar M"], "tasks": [{"name": "Bowo", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep"}, {"name": "Fajar M", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel"}, {"name": "Fajar R", "task": "Bawa Ompreng + cek ompreng", "type": "ompreng"}, {"name": "Zakaria", "task": "Bawa Tutup + merendam ompreng", "type": "ompreng"}, {"name": "Agus", "task": "Sikat Lantai + pengering lantai", "type": "lantai"}, {"name": "Aziz", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan"}]}, {"day": "Selasa", "angkut": ["Zakaria", "Agus"], "bilas": ["Fajar M", "Fajar R"], "tasks": [{"name": "Fajar M", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep"}, {"name": "Fajar R", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel"}, {"name": "Zakaria", "task": "Bawa Ompreng + cek ompreng", "type": "ompreng"}, {"name": "Agus", "task": "Bawa Tutup + merendam ompreng", "type": "ompreng"}, {"name": "Aziz", "task": "Sikat Lantai + pengering lantai", "type": "lantai"}, {"name": "Bowo", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan"}]}, {"day": "Rabu", "angkut": ["Agus", "Aziz"], "bilas": ["Fajar R", "Zakaria"], "tasks": [{"name": "Fajar R", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep"}, {"name": "Zakaria", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel"}, {"name": "Agus", "task": "Bawa Ompreng + cek ompreng", "type": "ompreng"}, {"name": "Aziz", "task": "Bawa Tutup + merendam ompreng", "type": "ompreng"}, {"name": "Bowo", "task": "Sikat Lantai + pengering lantai", "type": "lantai"}, {"name": "Fajar M", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan"}]}, {"day": "Kamis", "angkut": ["Aziz", "Bowo"], "bilas": ["Zakaria", "Agus"], "tasks": [{"name": "Zakaria", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep"}, {"name": "Agus", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel"}, {"name": "Aziz", "task": "Bawa Ompreng + cek ompreng", "type": "ompreng"}, {"name": "Bowo", "task": "Bawa Tutup + merendam ompreng", "type": "ompreng"}, {"name": "Fajar M", "task": "Sikat Lantai + pengering lantai", "type": "lantai"}, {"name": "Fajar R", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan"}]}]}, {"week": 6, "days": [{"day": "Senin", "angkut": ["Fajar M", "Fajar R"], "bilas": ["Aziz", "Bowo"], "tasks": [{"name": "Aziz", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep"}, {"name": "Bowo", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel"}, {"name": "Fajar M", "task": "Bawa Ompreng + cek ompreng", "type": "ompreng"}, {"name": "Fajar R", "task": "Bawa Tutup + merendam ompreng", "type": "ompreng"}, {"name": "Zakaria", "task": "Sikat Lantai + pengering lantai", "type": "lantai"}, {"name": "Agus", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan"}]}, {"day": "Selasa", "angkut": ["Fajar R", "Zakaria"], "bilas": ["Bowo", "Fajar M"], "tasks": [{"name": "Bowo", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep"}, {"name": "Fajar M", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel"}, {"name": "Fajar R", "task": "Bawa Ompreng + cek ompreng", "type": "ompreng"}, {"name": "Zakaria", "task": "Bawa Tutup + merendam ompreng", "type": "ompreng"}, {"name": "Agus", "task": "Sikat Lantai + pengering lantai", "type": "lantai"}, {"name": "Aziz", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan"}]}, {"day": "Rabu", "angkut": ["Zakaria", "Agus"], "bilas": ["Fajar M", "Fajar R"], "tasks": [{"name": "Fajar M", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep"}, {"name": "Fajar R", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel"}, {"name": "Zakaria", "task": "Bawa Ompreng + cek ompreng", "type": "ompreng"}, {"name": "Agus", "task": "Bawa Tutup + merendam ompreng", "type": "ompreng"}, {"name": "Aziz", "task": "Sikat Lantai + pengering lantai", "type": "lantai"}, {"name": "Bowo", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan"}]}, {"day": "Kamis", "angkut": ["Agus", "Aziz"], "bilas": ["Fajar R", "Zakaria"], "tasks": [{"name": "Fajar R", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep"}, {"name": "Zakaria", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel"}, {"name": "Agus", "task": "Bawa Ompreng + cek ompreng", "type": "ompreng"}, {"name": "Aziz", "task": "Bawa Tutup + merendam ompreng", "type": "ompreng"}, {"name": "Bowo", "task": "Sikat Lantai + pengering lantai", "type": "lantai"}, {"name": "Fajar M", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan"}]}]}];
-    const BILAS_SCHEDULE = [{"week": 1, "days": [{"day": "SEN", "p1": {"name": "Agus", "task": "Ompreng"}, "p2": {"name": "Aziz", "task": "Tutup"}}, {"day": "SEL", "p1": {"name": "Aziz", "task": "Ompreng"}, "p2": {"name": "Bowo", "task": "Tutup"}}, {"day": "RAB", "p1": {"name": "Bowo", "task": "Ompreng"}, "p2": {"name": "Fajar M", "task": "Tutup"}}, {"day": "KAM", "p1": {"name": "Fajar M", "task": "Ompreng"}, "p2": {"name": "Fajar R", "task": "Tutup"}}]}, {"week": 2, "days": [{"day": "SEN", "p1": {"name": "Zakaria", "task": "Ompreng"}, "p2": {"name": "Agus", "task": "Tutup"}}, {"day": "SEL", "p1": {"name": "Agus", "task": "Ompreng"}, "p2": {"name": "Aziz", "task": "Tutup"}}, {"day": "RAB", "p1": {"name": "Aziz", "task": "Ompreng"}, "p2": {"name": "Bowo", "task": "Tutup"}}, {"day": "KAM", "p1": {"name": "Bowo", "task": "Ompreng"}, "p2": {"name": "Fajar M", "task": "Tutup"}}]}, {"week": 3, "days": [{"day": "SEN", "p1": {"name": "Fajar R", "task": "Ompreng"}, "p2": {"name": "Zakaria", "task": "Tutup"}}, {"day": "SEL", "p1": {"name": "Zakaria", "task": "Ompreng"}, "p2": {"name": "Agus", "task": "Tutup"}}, {"day": "RAB", "p1": {"name": "Agus", "task": "Ompreng"}, "p2": {"name": "Aziz", "task": "Tutup"}}, {"day": "KAM", "p1": {"name": "Aziz", "task": "Ompreng"}, "p2": {"name": "Bowo", "task": "Tutup"}}]}, {"week": 4, "days": [{"day": "SEN", "p1": {"name": "Fajar M", "task": "Ompreng"}, "p2": {"name": "Fajar R", "task": "Tutup"}}, {"day": "SEL", "p1": {"name": "Fajar R", "task": "Ompreng"}, "p2": {"name": "Zakaria", "task": "Tutup"}}, {"day": "RAB", "p1": {"name": "Zakaria", "task": "Ompreng"}, "p2": {"name": "Agus", "task": "Tutup"}}, {"day": "KAM", "p1": {"name": "Agus", "task": "Ompreng"}, "p2": {"name": "Aziz", "task": "Tutup"}}]}, {"week": 5, "days": [{"day": "SEN", "p1": {"name": "Bowo", "task": "Ompreng"}, "p2": {"name": "Fajar M", "task": "Tutup"}}, {"day": "SEL", "p1": {"name": "Fajar M", "task": "Ompreng"}, "p2": {"name": "Fajar R", "task": "Tutup"}}, {"day": "RAB", "p1": {"name": "Fajar R", "task": "Ompreng"}, "p2": {"name": "Zakaria", "task": "Tutup"}}, {"day": "KAM", "p1": {"name": "Zakaria", "task": "Ompreng"}, "p2": {"name": "Agus", "task": "Tutup"}}]}, {"week": 6, "days": [{"day": "SEN", "p1": {"name": "Aziz", "task": "Ompreng"}, "p2": {"name": "Bowo", "task": "Tutup"}}, {"day": "SEL", "p1": {"name": "Bowo", "task": "Ompreng"}, "p2": {"name": "Fajar M", "task": "Tutup"}}, {"day": "RAB", "p1": {"name": "Fajar M", "task": "Ompreng"}, "p2": {"name": "Fajar R", "task": "Tutup"}}, {"day": "KAM", "p1": {"name": "Fajar R", "task": "Ompreng"}, "p2": {"name": "Zakaria", "task": "Tutup"}}]}];
-    const BILAS_FRIDAY_SCHEDULE = [{"week": 1, "p1": {"name": "Fajar R", "task": "Ompreng"}, "p2": {"name": "Zakaria", "task": "Tutup"}}, {"week": 2, "p1": {"name": "Fajar M", "task": "Ompreng"}, "p2": {"name": "Fajar R", "task": "Tutup"}}, {"week": 3, "p1": {"name": "Bowo", "task": "Ompreng"}, "p2": {"name": "Fajar M", "task": "Tutup"}}, {"week": 4, "p1": {"name": "Aziz", "task": "Ompreng"}, "p2": {"name": "Bowo", "task": "Tutup"}}, {"week": 5, "p1": {"name": "Agus", "task": "Ompreng"}, "p2": {"name": "Aziz", "task": "Tutup"}}, {"week": 6, "p1": {"name": "Zakaria", "task": "Ompreng"}, "p2": {"name": "Agus", "task": "Tutup"}}];
 
     function mod(n, m) { return ((n % m) + m) % m; }
 
@@ -415,23 +307,12 @@
         const now = new Date();
         const utcStart = Date.UTC(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
         const utcNow = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
-        
         const diffDays = Math.floor((utcNow - utcStart) / 86400000);
         const daysSinceStart = diffDays >= 0 ? diffDays : 0;
-        
-        const autoDaily = Math.floor(mod(daysSinceStart, 42) / 7) + 1;
-        const autoFriday = Math.floor(mod(daysSinceStart, 42) / 7) + 1;
         const cycleCount = Math.floor(daysSinceStart / 42);
         const absoluteWeek = Math.floor(daysSinceStart / 7) + 1;
-
-        const urlParams = new URLSearchParams(window.location.search);
-        const paramDaily = parseInt(urlParams.get('daily'));
-        const paramFriday = parseInt(urlParams.get('friday'));
-
-        const finalDaily = (!isNaN(paramDaily) && paramDaily >= 1 && paramDaily <= 6) ? paramDaily : autoDaily;
-        const finalFriday = (!isNaN(paramFriday) && paramFriday >= 1 && paramFriday <= 6) ? paramFriday : autoFriday;
-
-        return { daily: finalDaily, friday: finalFriday, diffDays: daysSinceStart, cycleCount, absoluteWeek };
+        const autoWeek = ((absoluteWeek - 1) % 6) + 1;
+        return { daily: autoWeek, diffDays: daysSinceStart, cycleCount };
     }
 
     function getBadgeClass(type) {
@@ -441,124 +322,77 @@
 
     function renderMembers() {
         const el = document.getElementById('memberList');
-        el.innerHTML = MEMBERS.map(m =>
-            `<button type="button" id="btn-member-${m}" onclick="toggleMemberFilter('${m}')" class="member-btn bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:border-indigo-200 dark:hover:border-indigo-700 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors cursor-pointer px-3 py-1.5 rounded-lg text-sm font-semibold text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500">${m}</button>`
-        ).join('');
+        el.innerHTML = MEMBERS.map(m => `<button type="button" id="btn-member-${m}" class="member-btn bg-slate-50 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 hover:bg-indigo-50 dark:hover:bg-indigo-900/30 hover:border-indigo-200 dark:hover:border-indigo-700 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors cursor-pointer px-3 py-1.5 rounded-lg text-sm font-semibold text-slate-700 dark:text-slate-300 focus:outline-none focus:ring-2 focus:ring-indigo-500">${m}</button>`).join('');
+        const filter = document.getElementById('memberFilter');
+        MEMBERS.forEach(m => filter.appendChild(new Option(m, m)));
+        
+        document.querySelectorAll('.member-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => toggleMemberFilter(e.target.innerText));
+        });
     }
 
     function renderOmpreng() {
-        const el = document.getElementById('omprengSchedule');
         const { daily } = getActiveWeeks();
-        const activeWeek = MANUAL_DAILY_WEEK ?? daily;
-        const weekData = DAILY_SCHEDULE.find(w => w.week === activeWeek);
-
+        const weekData = DAILY_SCHEDULE.find(w => w.week === daily);
+        const fData = FRIDAY_SCHEDULE.find(w => w.week === daily);
+        
         let html = '';
         if (weekData) {
-            html = weekData.days.map(d =>
-                `<div class="flex justify-between items-center pb-3 border-b border-slate-100 dark:border-slate-700">
-                    <span class="font-semibold text-slate-900 dark:text-white">${d.day}</span>
-                    <span class="text-sm text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-700 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-600">${d.angkut.join(' & ')}</span>
-                </div>`
-            ).join('');
+            html += weekData.days.map(d => `<div class="flex justify-between items-center pb-3 border-b border-slate-100 dark:border-slate-700"><span class="font-semibold text-slate-900 dark:text-white">${d.day}</span><span class="text-sm text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-700 px-2 py-0.5 rounded border border-slate-200 dark:border-slate-600">${d.angkut.join(' & ')}</span></div>`).join('');
         }
-
-        const fridayData = BILAS_FRIDAY_SCHEDULE.find(w => w.week === activeWeek);
-        if (fridayData) {
-            html += `<div class="bg-indigo-50/50 dark:bg-indigo-900/20 p-3 rounded-xl border border-indigo-100 dark:border-indigo-800 mt-2">
-                <span class="block font-semibold text-indigo-700 dark:text-indigo-300 mb-1">Jum'at</span>
-                <span class="block text-sm text-indigo-900/70 dark:text-indigo-300/70">• ${fridayData.p1.name} & ${fridayData.p2.name}</span>
-            </div>`;
+        if (fData) {
+            html += `<div class="bg-indigo-50/50 dark:bg-indigo-900/20 p-3 rounded-xl border border-indigo-100 dark:border-indigo-800 mt-2"><span class="block font-semibold text-indigo-700 dark:text-indigo-300 mb-1">Jum'at</span><span class="block text-sm text-indigo-900/70 dark:text-indigo-300/70">• ${fData.angkut.join(' & ')}</span></div>`;
         }
-        el.innerHTML = html;
+        document.getElementById('omprengSchedule').innerHTML = html;
     }
     
     function renderIpalSidebar() {
-        const el = document.getElementById('ipalSidebar');
-        if(!el) return;
-        const { cycleCount, friday } = getActiveWeeks();
-        const activeFriday = MANUAL_FRIDAY_WEEK ?? friday;
-        const absoluteWeekForCard = (cycleCount * 6) + activeFriday;
-        
+        const { cycleCount, daily } = getActiveWeeks();
+        const absoluteWeekForCard = (cycleCount * 6) + daily;
         const currentIpal = IPAL_MEMBERS[(absoluteWeekForCard - 1) % 5];
-        
-        el.innerHTML = `
-            <div class="flex items-center justify-between border-b border-slate-700/50 pb-2">
-                <span class="text-slate-500 font-mono text-xs bg-slate-800 px-2 py-1 rounded">Minggu Ini</span> 
-                <span class="font-bold text-cyan-400 text-xs flex items-center gap-1" data-member="${currentIpal}"><i class="ph-bold ph-waves"></i> ${currentIpal}</span>
-            </div>
-        `;
-    }
-
-    function renderFridayRotation() {
-        const el = document.getElementById('fridayRotation');
-        el.innerHTML = BILAS_FRIDAY_SCHEDULE.map(w =>
-            `<div class="flex items-center justify-between border-b border-slate-700/50 pb-2">
-                <span class="text-slate-500 font-mono text-xs bg-slate-800 px-2 py-1 rounded">M${w.week}</span> 
-                <span class="font-medium text-white text-xs">${w.p1.name} & ${w.p2.name}</span>
-            </div>`
-        ).join('');
+        document.getElementById('ipalSidebar').innerHTML = `<div class="flex items-center justify-between border-b border-slate-700/50 pb-2"><span class="text-slate-500 font-mono text-xs bg-slate-800 px-2 py-1 rounded">Minggu Ini</span><span class="font-bold text-cyan-400 text-xs flex items-center gap-1" data-member="${currentIpal}"><i class="ph-bold ph-waves"></i> ${currentIpal}</span></div>`;
     }
 
     function renderBilas() {
-        const el = document.getElementById('bilasSchedule');
-        el.innerHTML = BILAS_SCHEDULE.map(w => {
-            const rows = w.days.map(d =>
-                `<div class="grid grid-cols-12 gap-2 ${d.day !== 'KAM' ? 'border-b border-slate-100 dark:border-slate-700 pb-1.5' : ''} items-center">
-                    <span class="col-span-3 font-bold text-slate-500 dark:text-slate-400">${d.day}</span>
-                    <div class="col-span-5 flex flex-col font-medium dark:text-slate-200" data-member="${d.p1.name}">
-                        <span>${d.p1.name}</span><span class="text-[10px] text-slate-500 dark:text-slate-400 font-normal">${d.p1.task}</span>
-                    </div>
-                    <div class="col-span-4 flex flex-col font-medium dark:text-slate-200" data-member="${d.p2.name}">
-                        <span>${d.p2.name}</span><span class="text-[10px] text-slate-500 dark:text-slate-400 font-normal">${d.p2.task}</span>
-                    </div>
-                </div>`
-            ).join('');
-            return `<div class="border border-slate-200 dark:border-slate-600 rounded-2xl overflow-hidden">
-                <div class="bg-slate-50 dark:bg-slate-700 text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 p-2.5 text-center border-b border-slate-200 dark:border-slate-600">Minggu ${w.week}</div>
-                <div class="p-3 text-xs space-y-2">${rows}</div>
-            </div>`;
+        document.getElementById('bilasSchedule').innerHTML = DAILY_SCHEDULE.map(w => {
+            const rows = w.days.map(d => `<div class="grid grid-cols-12 gap-2 ${d.day !== 'Kamis' ? 'border-b border-slate-100 dark:border-slate-700 pb-1.5' : ''} items-center">
+                    <span class="col-span-3 font-bold text-slate-500 dark:text-slate-400">${d.day.substring(0,3).toUpperCase()}</span>
+                    <div class="col-span-9 flex items-center justify-between text-sm font-medium dark:text-slate-200" data-member="${d.bilas.join(',')}"><span>${d.bilas.join(' & ')}</span></div>
+                </div>`).join('');
+            return `<div class="border border-slate-200 dark:border-slate-600 rounded-2xl overflow-hidden mb-4 last:mb-0"><div class="bg-slate-50 dark:bg-slate-700 text-xs font-bold uppercase tracking-wider text-slate-600 dark:text-slate-300 p-2.5 text-center border-b border-slate-200 dark:border-slate-600">Minggu ${w.week}</div><div class="p-3 text-xs space-y-2">${rows}</div></div>`;
         }).join('');
     }
 
-    function renderDailySchedule() {
-        const el = document.getElementById('dailyGrid');
-        const { diffDays } = getActiveWeeks();
-        const actualDailyDayIndex = mod(diffDays, 42); 
-        const dayOffset = { 'Senin': 0, 'Selasa': 1, 'Rabu': 2, 'Kamis': 3, 'Jumat': 4, 'Sabtu': 5, 'Minggu': 6 };
+    function renderFridayRotation() {
+        document.getElementById('fridayRotation').innerHTML = FRIDAY_SCHEDULE.map(w => `<div class="flex items-center justify-between border-b border-slate-700/50 pb-2 mb-2 last:mb-0 last:pb-0 last:border-0"><span class="text-slate-500 font-mono text-xs bg-slate-800 px-2 py-1 rounded">M${w.week}</span><span class="font-medium text-white text-xs" data-member="${w.bilas.join(',')}">${w.bilas.join(' & ')}</span></div>`).join('');
+    }
 
-        el.innerHTML = DAILY_SCHEDULE.map(w => {
+    function renderDailySchedule() {
+        const { diffDays } = getActiveWeeks();
+        const actualDailyDayIndex = diffDays % 42; 
+        const dayOffset = { 'Senin': 0, 'Selasa': 1, 'Rabu': 2, 'Kamis': 3 };
+
+        document.getElementById('dailyGrid').innerHTML = DAILY_SCHEDULE.map(w => {
             const daysHtml = w.days.map(d => {
                 const blockAbsoluteIndex = ((w.week - 1) * 7) + dayOffset[d.day];
                 const isTrulyToday = (blockAbsoluteIndex === actualDailyDayIndex);
 
-                const tasksHtml = d.tasks.map(t => {
-                    const badge = `<span class="${getBadgeClass(t.type)} whitespace-normal text-right ml-2">${t.task}</span>`;
-                    return `<div class="flex justify-between items-start transition-all duration-300 py-1" data-member="${t.name}">
-                                <span class="font-semibold text-slate-900 dark:text-white shrink-0 text-base mt-0.5">${t.name}</span>
-                                ${badge}
-                            </div>`;
-                }).join('');
+                const tasksHtml = d.tasks.map(t => `<div class="flex justify-between items-start transition-all duration-300 py-1" data-member="${t.name}"><span class="font-semibold text-slate-900 dark:text-white shrink-0 mt-0.5">${t.name}</span><span class="${getBadgeClass(t.type)} whitespace-normal text-right ml-2">${t.task}</span></div>`).join('');
 
-                let angkutHtml = '';
-                if (d.angkut && d.bilas) {
-                    angkutHtml = `<div class="mt-3 pt-3 border-t border-slate-100 dark:border-slate-700/50 flex justify-between gap-2">
-                        <div>
+                const angkutHtml = `<div class="mt-3 pt-3 border-t border-slate-100 dark:border-slate-700/50 flex justify-between gap-2">
+                        <div data-member="${d.angkut.join(',')}">
                             <span class="text-[10px] font-bold text-indigo-500 uppercase flex items-center gap-1"><i class="ph-bold ph-shopping-cart"></i> Tim Angkut:</span>
                             <div class="text-sm font-bold text-indigo-800 dark:text-indigo-300 mt-1">${d.angkut.join(' & ')}</div>
                         </div>
-                        <div class="text-right">
+                        <div class="text-right" data-member="${d.bilas.join(',')}">
                             <span class="text-[10px] font-bold text-blue-500 uppercase flex items-center justify-end gap-1"><i class="ph-bold ph-drop"></i> Tim Bilas:</span>
                             <div class="text-sm font-bold text-blue-800 dark:text-blue-300 mt-1">${d.bilas.join(' & ')}</div>
                         </div>
                     </div>`;
-                }
                 
                 return `<div id="day-block-${blockAbsoluteIndex}" class="grid grid-cols-[80px_1fr] gap-4 items-start ${d.day !== 'Kamis' ? 'border-b border-slate-100 dark:border-slate-700 pb-4' : ''} ${isTrulyToday ? 'today-highlight ring-2 ring-indigo-400 ring-offset-2 dark:ring-offset-slate-800 rounded-xl p-3 -mx-3 relative z-10' : ''}">
                     <div class="font-bold text-slate-700 dark:text-slate-300 bg-slate-100/80 dark:bg-slate-700/80 px-2 py-1.5 rounded-lg text-center text-sm border border-slate-200 dark:border-slate-600 uppercase tracking-wide sticky top-16">${d.day}</div>
-                    <div class="text-sm text-slate-600 dark:text-slate-300 w-full flex flex-col justify-between">
-                        <div class="space-y-1.5 leading-relaxed">${tasksHtml}</div>
-                        ${angkutHtml}
-                    </div>
+                    <div class="text-sm text-slate-600 dark:text-slate-300 w-full flex flex-col justify-between"><div class="space-y-1.5 leading-relaxed">${tasksHtml}</div>${angkutHtml}</div>
                 </div>`;
             }).join('');
 
@@ -570,10 +404,9 @@
     }
 
     function renderFridaySchedule() {
-        const el = document.getElementById('fridayGrid');
         const { cycleCount } = getActiveWeeks();
         
-        el.innerHTML = FRIDAY_SCHEDULE.map(w => {
+        document.getElementById('fridayGrid').innerHTML = FRIDAY_SCHEDULE.map(w => {
             const absoluteWeekForCard = (cycleCount * 6) + w.week;
             const ipalMember = IPAL_MEMBERS[(absoluteWeekForCard - 1) % 5];
             
@@ -581,26 +414,22 @@
                 <span class="font-bold text-cyan-700 dark:text-cyan-400 shrink-0 flex items-center gap-1.5"><i class="ph-bold ph-waves"></i> ${ipalMember}</span>
                 <span class="font-bold text-cyan-800 dark:text-cyan-200 bg-cyan-200 dark:bg-cyan-800/50 rounded text-[9px] py-1 px-2 text-right ml-2 whitespace-normal border border-cyan-300 dark:border-cyan-700">IPAL (13:00 & Akhir)</span>
             </div>`;
-
             
-            const angkutHtml = (w.angkut && w.bilas) ? `<div class="mt-3 pt-3 border-t border-slate-100 dark:border-slate-700/50 flex justify-between gap-2">
-                <div>
+            const angkutHtml = `<div class="mt-3 pt-3 border-t border-slate-100 dark:border-slate-700/50 flex justify-between gap-2">
+                <div data-member="${w.angkut.join(',')}">
                     <span class="text-[10px] font-bold text-indigo-500 uppercase flex items-center gap-1"><i class="ph-bold ph-shopping-cart"></i> Tim Angkut:</span>
                     <div class="text-sm font-bold text-indigo-800 dark:text-indigo-300 mt-1">${w.angkut.join(' & ')}</div>
                 </div>
-                <div class="text-right">
+                <div class="text-right" data-member="${w.bilas.join(',')}">
                     <span class="text-[10px] font-bold text-blue-500 uppercase flex items-center justify-end gap-1"><i class="ph-bold ph-drop"></i> Tim Bilas:</span>
                     <div class="text-sm font-bold text-blue-800 dark:text-blue-300 mt-1">${w.bilas.join(' & ')}</div>
                 </div>
-            </div>` : '';
+            </div>`;
 
-            const tasksHtml = w.tasks.map(t => {
-                const badge = `<span class="${getBadgeClass(t.type)} text-[9px] py-0.5 px-1.5 text-right ml-2 whitespace-normal">${t.task}</span>`;
-                return `<div class="flex justify-between items-start transition-all duration-300 py-1 border-b border-slate-50 dark:border-slate-700/50 last:border-0" data-member="${t.name}">
+            const tasksHtml = w.tasks.map(t => `<div class="flex justify-between items-start transition-all duration-300 py-1 border-b border-slate-50 dark:border-slate-700/50 last:border-0" data-member="${t.name}">
                             <span class="font-semibold text-slate-900 dark:text-white shrink-0 mt-0.5">${t.name}</span>
-                            ${badge}
-                        </div>`;
-            }).join('');
+                            <span class="${getBadgeClass(t.type)} text-[9px] py-0.5 px-1.5 text-right ml-2 whitespace-normal">${t.task}</span>
+                        </div>`).join('');
             
             return `<article id="friday-m${w.week}" data-friday-week="${w.week}" class="friday-card bg-white dark:bg-slate-800 rounded-2xl p-5 shadow-sm border border-slate-200 dark:border-slate-700 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg relative">
                 <h3 class="text-indigo-600 dark:text-indigo-400 font-bold mb-3 border-b border-indigo-100 dark:border-indigo-800 pb-2 flex items-center justify-between">Jum'at <span class="bg-indigo-600 text-white text-[11px] px-2.5 py-0.5 rounded-full shadow-sm">M${w.week}</span></h3>
@@ -610,200 +439,29 @@
                     ${angkutHtml}
                 </div>
             </article>`;
-
         }).join('');
     }
 
-    function renderMemberFilter() {
-        const el = document.getElementById('memberFilter');
-        MEMBERS.forEach(m => {
-            const opt = document.createElement('option'); opt.value = m; opt.textContent = m;
-            el.appendChild(opt);
-        });
-    }
-
-    const modal = document.getElementById('guideModal');
-    const modalContent = document.getElementById('modalContent');
-    const modalOverlay = document.getElementById('modalOverlay');
-    const modalCloseTop = document.getElementById('modalCloseTop');
-    const cbContainer = document.getElementById('cbContainer');
-    const sopCheckbox = document.getElementById('sopCheckbox');
-    const btnAcceptSop = document.getElementById('btnAcceptSop');
-
-    function checkSOPStatus() {
-        const hasRead = localStorage.getItem('satset_sop_read_v9_jumat_tampil'); 
-        if (!hasRead) {
-            forceReadSOP();
-        }
-    }
-
-    function forceReadSOP() {
-        document.body.classList.add('modal-forced-open');
-        modalCloseTop.classList.add('hidden');
-        modalOverlay.onclick = null;
-        cbContainer.classList.remove('hidden');
-        
-        btnAcceptSop.disabled = true;
-        btnAcceptSop.className = "bg-slate-400 cursor-not-allowed text-white font-semibold py-3 px-8 rounded-xl shadow-md w-full sm:w-auto transition-colors";
-        btnAcceptSop.textContent = "Lihat Jadwal Baru";
-
-        sopCheckbox.checked = false;
-        sopCheckbox.addEventListener('change', function() {
-            if(this.checked) {
-                btnAcceptSop.disabled = false;
-                btnAcceptSop.className = "bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-8 rounded-xl shadow-md transition-colors w-full sm:w-auto";
-            } else {
-                btnAcceptSop.disabled = true;
-                btnAcceptSop.className = "bg-slate-400 cursor-not-allowed text-white font-semibold py-3 px-8 rounded-xl shadow-md w-full sm:w-auto transition-colors";
-            }
-        });
-
-        btnAcceptSop.onclick = function() {
-            if(sopCheckbox.checked) {
-                localStorage.setItem('satset_sop_read_v9_jumat_tampil', 'true');
-                document.body.classList.remove('modal-forced-open');
-                closeModal();
-            }
-        };
-
-        showModalAnimation();
-    }
-
-    function openModalNormal() {
-        modalCloseTop.classList.remove('hidden');
-        modalOverlay.onclick = closeModal;
-        cbContainer.classList.add('hidden');
-        
-        btnAcceptSop.disabled = false;
-        btnAcceptSop.className = "bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-8 rounded-xl shadow-md transition-colors w-full sm:w-auto";
-        btnAcceptSop.textContent = "Tutup";
-        btnAcceptSop.onclick = closeModal;
-
-        showModalAnimation();
-    }
-
-    function showModalAnimation() {
-        modal.classList.remove('hidden');
-        document.body.style.overflow = 'hidden';
-        requestAnimationFrame(() => {
-            modalOverlay.classList.add('active');
-            modalContent.classList.add('active');
-        });
-    }
-
-    function closeModal() {
-        modalOverlay.classList.remove('active');
-        modalContent.classList.remove('active');
-        document.body.style.overflow = '';
-        setTimeout(() => modal.classList.add('hidden'), 300);
-    }
-
-    function shareToWhatsApp() {
-        const todayIndex = new Date().getDay(); 
-        const dayNames = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
-        const todayName = dayNames[todayIndex];
-
-        if (todayIndex === 0 || todayIndex === 6) {
-            alert("Hari ini libur piket, selamat berakhir pekan! 🎉");
-            return;
-        }
-
-        const { daily, friday } = getActiveWeeks();
-        const finalDaily = MANUAL_DAILY_WEEK ?? daily;
-        const finalFriday = MANUAL_FRIDAY_WEEK ?? friday;
-        
-        let text = `*Jadwal Piket SatsetDasdes (Update IPAL) - Hari Ini (${todayName})*
-
-`;
-
-        if (todayIndex >= 1 && todayIndex <= 4) {
-            text += ` *Siklus Harian: Minggu ${finalDaily}*
-
-`;
-            
-            const weekData = DAILY_SCHEDULE.find(w => w.week === finalDaily);
-            const dayData = weekData.days.find(d => d.day.toLowerCase() === todayName.toLowerCase());
-            
-            if (dayData) {
-                text += `🧹 *Tugas Tim:*
-`;
-                dayData.tasks.forEach(t => { text += `* *${t.name}*: ${t.task}
-`; });
-                if (dayData.angkut && dayData.bilas) {
-                    text += `
-🛒 *Tim Angkut:* ${dayData.angkut.join(' & ')}
-💧 *Tim Bilas:* ${dayData.bilas.join(' & ')}
-`;
-                }
-            }
-
-        } else if (todayIndex === 5) {
-            text += ` *Siklus Jum'at: Minggu ${finalFriday}*
-
-`;
-            
-            const { cycleCount } = getActiveWeeks();
-            const absoluteWeekForCard = (cycleCount * 6) + finalFriday;
-            const ipalMember = IPAL_MEMBERS[(absoluteWeekForCard - 1) % 5];
-            
-            text += `🌊 *Tugas Tambahan IPAL:*
-* *${ipalMember}*: Bersihkan IPAL (Jam 13:00 & Akhir Shift)
-
-`;
-
-            const fridayData = FRIDAY_SCHEDULE.find(w => w.week === finalFriday);
-            if (fridayData) {
-                text += `🧹 *Tugas Utama:*
-`;
-                fridayData.tasks.forEach(t => { text += `* *${t.name}*: ${t.task}
-`; });
-                if (fridayData.angkut && fridayData.bilas) {
-                    text += `
-🛒 *Tim Angkut:* ${fridayData.angkut.join(' & ')}
-💧 *Tim Bilas:* ${fridayData.bilas.join(' & ')}
-`;
-                }
-            }
-        }
-        
-        if (navigator.share && /mobile|android|iphone/i.test(navigator.userAgent)) {
-            navigator.share({ title: 'Jadwal Piket Hari Ini', text: text }).catch(console.error);
-        } else {
-            const encodedText = encodeURIComponent(text);
-            const waUrl = `https://wa.me/?text=${encodedText}`;
-            window.open(waUrl, '_blank');
-        }
-    }
-
     function highlightActiveWeek() {
-        const { daily: activeDaily, friday: activeFriday, diffDays } = getActiveWeeks();
-        
-        const finalDaily = MANUAL_DAILY_WEEK ?? activeDaily;
-        const finalFriday = MANUAL_FRIDAY_WEEK ?? activeFriday;
-        
-        activeFridayGlobal = finalFriday;
+        const { daily, diffDays } = getActiveWeeks();
+        activeFridayGlobal = daily;
 
         document.querySelectorAll('.week-active').forEach(e => e.classList.remove('week-active'));
 
-        const weekEl = document.getElementById('week-' + finalDaily);
+        const weekEl = document.getElementById('week-' + daily);
         if (weekEl) weekEl.classList.add('week-active');
 
-        const fridayEl = document.getElementById('friday-m' + finalFriday);
+        const fridayEl = document.getElementById('friday-m' + daily);
         if (fridayEl) fridayEl.classList.add('week-active');
 
         const todayNames = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
         const currentDayIndex = new Date().getDay();
-        const todayEl = document.getElementById('todayText');
-        if (todayEl) {
-            todayEl.textContent = `${todayNames[currentDayIndex]}, M${finalDaily}`;
-        }
+        document.getElementById('todayText').textContent = `${todayNames[currentDayIndex]}, M${daily}`;
         
-        renderOmpreng();
-        renderIpalSidebar();
         updateFridayVisibility();
 
         setTimeout(() => {
-            const actualDailyDayIndex = mod(diffDays, 42); 
+            const actualDailyDayIndex = diffDays % 42; 
             const todayBlock = document.getElementById(`day-block-${actualDailyDayIndex}`);
             if(currentDayIndex >= 1 && currentDayIndex <= 4 && todayBlock){
                 todayBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -813,22 +471,20 @@
         }, 500);
     }
 
-    function toggleMemberFilter(name) {
-        const select = document.getElementById('memberFilter');
-        if (select.value === name) {
-            select.value = ""; 
-            filterByMember("");
-        } else {
-            select.value = name;
-            filterByMember(name);
-        }
+    function updateFridayVisibility() {
+        document.querySelectorAll('.friday-card').forEach(card => {
+            const week = parseInt(card.getAttribute('data-friday-week'));
+            if (!showAllFriday && week !== activeFridayGlobal) {
+                card.style.display = 'none';
+            } else {
+                card.style.display = 'block';
+            }
+        });
     }
 
     function filterByMember(name) {
         document.querySelectorAll('.member-highlight').forEach(el => el.classList.remove('member-highlight'));
-        document.querySelectorAll('.member-btn').forEach(btn => {
-            btn.classList.remove('bg-indigo-100', 'border-indigo-400', 'text-indigo-800', 'dark:bg-indigo-900/50', 'dark:border-indigo-500', 'dark:text-indigo-200');
-        });
+        document.querySelectorAll('.member-btn').forEach(btn => btn.classList.remove('bg-indigo-100', 'border-indigo-400', 'text-indigo-800', 'dark:bg-indigo-900/50', 'dark:border-indigo-500', 'dark:text-indigo-200'));
 
         const resetBtn = document.getElementById('resetFilterBtn');
 
@@ -841,12 +497,21 @@
         document.body.classList.add('filter-active');
         if(resetBtn) resetBtn.classList.remove('hidden');
 
-        document.querySelectorAll(`[data-member="${name}"]`).forEach(el => { el.classList.add('member-highlight'); });
+        document.querySelectorAll(`[data-member]`).forEach(el => {
+            const membersList = el.getAttribute('data-member').split(',');
+            if (membersList.includes(name)) {
+                el.classList.add('member-highlight');
+            }
+        });
         
         const activeBtn = document.getElementById(`btn-member-${name}`);
-        if (activeBtn) {
-            activeBtn.classList.add('bg-indigo-100', 'border-indigo-400', 'text-indigo-800', 'dark:bg-indigo-900/50', 'dark:border-indigo-500', 'dark:text-indigo-200');
-        }
+        if (activeBtn) activeBtn.classList.add('bg-indigo-100', 'border-indigo-400', 'text-indigo-800', 'dark:bg-indigo-900/50', 'dark:border-indigo-500', 'dark:text-indigo-200');
+    }
+
+    function toggleMemberFilter(name) {
+        const select = document.getElementById('memberFilter');
+        select.value = select.value === name ? "" : name;
+        filterByMember(select.value);
     }
 
     function toggleFridayVisibility() {
@@ -856,54 +521,122 @@
         updateFridayVisibility();
     }
 
-    function updateFridayVisibility() {
-        document.querySelectorAll('.friday-card').forEach(card => {
-            const week = parseInt(card.dataset.fridayWeek);
-            if (!showAllFriday && week !== activeFridayGlobal) {
-                card.classList.add('friday-hidden');
-            } else {
-                card.classList.remove('friday-hidden');
-            }
-        });
-    }
-
-    function updateFooterDate() {
-        const timeEl = document.getElementById('lastUpdated');
-        if (timeEl) {
-            const now = new Date();
-            const options = { year: 'numeric', month: 'long', day: 'numeric' };
-            timeEl.textContent = now.toLocaleDateString('id-ID', options);
-            timeEl.setAttribute('datetime', now.toISOString().split('T')[0]);
-        }
-    }
-
     function toggleDarkMode() {
         document.documentElement.classList.toggle('dark');
         localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'));
     }
 
-    (function initDarkMode() {
-        const saved = localStorage.getItem('darkMode');
-        if (saved === 'true' || (!saved && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+    function shareToWhatsApp() {
+        const todayIndex = new Date().getDay(); 
+        const dayNames = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+        const todayName = dayNames[todayIndex];
+
+        if (todayIndex === 0 || todayIndex === 6) {
+            alert("Hari ini libur piket, selamat berakhir pekan! 🎉");
+            return;
+        }
+
+        const { daily, cycleCount } = getActiveWeeks();
+        
+        let text = `*Jadwal Piket SatsetDasdes - Hari Ini (${todayName})*\n\n`;
+
+        if (todayIndex >= 1 && todayIndex <= 4) {
+            text += ` *Siklus Harian: Minggu ${daily}*\n\n`;
+            const weekData = DAILY_SCHEDULE.find(w => w.week === daily);
+            const dayData = weekData.days.find(d => d.day.toLowerCase() === todayName.toLowerCase());
+            
+            if (dayData) {
+                text += `🧹 *Tugas Tim:*\n`;
+                dayData.tasks.forEach(t => { text += `* *${t.name}*: ${t.task}\n`; });
+                text += `\n🛒 *Tim Angkut:* ${dayData.angkut.join(' & ')}\n💧 *Tim Bilas:* ${dayData.bilas.join(' & ')}\n`;
+            }
+        } else if (todayIndex === 5) {
+            text += ` *Siklus Jum'at: Minggu ${daily}*\n\n`;
+            const absoluteWeekForCard = (cycleCount * 6) + daily;
+            const ipalMember = IPAL_MEMBERS[(absoluteWeekForCard - 1) % 5];
+            text += `🌊 *Tugas Tambahan IPAL:*\n* *${ipalMember}*: Bersihkan IPAL (Jam 13:00 & Akhir Shift)\n\n`;
+
+            const fData = FRIDAY_SCHEDULE.find(w => w.week === daily);
+            if (fData) {
+                text += `🧹 *Tugas Utama:*\n`;
+                fData.tasks.forEach(t => { text += `* *${t.name}*: ${t.task}\n`; });
+                text += `\n🛒 *Tim Angkut:* ${fData.angkut.join(' & ')}\n💧 *Tim Bilas:* ${fData.bilas.join(' & ')}\n`;
+            }
+        }
+        window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+    }
+
+    function openModalNormal() {
+        document.getElementById('guideModal').classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+        requestAnimationFrame(() => { document.getElementById('modalOverlay').classList.add('active'); document.getElementById('modalContent').classList.add('active'); });
+    }
+
+    function closeModal() {
+        document.getElementById('modalOverlay').classList.remove('active');
+        document.getElementById('modalContent').classList.remove('active');
+        document.body.style.overflow = '';
+        setTimeout(() => document.getElementById('guideModal').classList.add('hidden'), 300);
+    }
+
+    function checkSOPStatus() {
+        if (!localStorage.getItem('satset_sop_read_v10_final')) {
+            document.body.classList.add('modal-forced-open');
+            document.getElementById('cbContainer').classList.remove('hidden');
+            const btnAcceptSop = document.getElementById('btnAcceptSop');
+            btnAcceptSop.disabled = true;
+            btnAcceptSop.className = "bg-slate-400 cursor-not-allowed text-white font-semibold py-3 px-8 rounded-xl shadow-md w-full sm:w-auto ml-auto";
+            btnAcceptSop.textContent = "Lihat Jadwal Baru";
+
+            const cb = document.getElementById('sopCheckbox');
+            cb.checked = false;
+            cb.addEventListener('change', function() {
+                btnAcceptSop.disabled = !this.checked;
+                btnAcceptSop.className = this.checked ? "bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-8 rounded-xl shadow-md transition-colors w-full sm:w-auto ml-auto" : "bg-slate-400 cursor-not-allowed text-white font-semibold py-3 px-8 rounded-xl shadow-md w-full sm:w-auto transition-colors ml-auto";
+            });
+
+            btnAcceptSop.onclick = function() {
+                if(cb.checked) {
+                    localStorage.setItem('satset_sop_read_v10_final', 'true');
+                    document.body.classList.remove('modal-forced-open');
+                    closeModal();
+                }
+            };
+            openModalNormal();
+        } else {
+            document.getElementById('modalCloseTop').classList.remove('hidden');
+            document.getElementById('btnAcceptSop').onclick = closeModal;
+            document.getElementById('modalOverlay').onclick = closeModal;
+        }
+    }
+
+    (function init() {
+        if (localStorage.getItem('darkMode') === 'true' || (!localStorage.getItem('darkMode') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
         }
+        document.addEventListener('DOMContentLoaded', () => {
+            renderMembers(); renderDailySchedule(); renderFridaySchedule(); renderOmpreng(); renderIpalSidebar(); renderBilas(); renderFridayRotation();
+            highlightActiveWeek();
+            const now = new Date();
+            document.getElementById('lastUpdated').textContent = now.toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' });
+            document.getElementById('memberFilter').addEventListener('change', (e) => filterByMember(e.target.value));
+            document.getElementById('resetFilterBtn').addEventListener('click', () => { document.getElementById('memberFilter').value = ""; filterByMember(""); });
+            document.getElementById('toggleFridayBtn').addEventListener('click', toggleFridayVisibility);
+            document.getElementById('darkModeToggle').addEventListener('click', toggleDarkMode);
+            document.getElementById('btnShareWA').addEventListener('click', shareToWhatsApp);
+            document.getElementById('btnOpenModal').addEventListener('click', () => {
+                document.getElementById('modalCloseTop').classList.remove('hidden');
+                document.getElementById('cbContainer').classList.add('hidden');
+                const btn = document.getElementById('btnAcceptSop');
+                btn.disabled = false; btn.textContent = "Tutup"; btn.className = "bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-8 rounded-xl shadow-md transition-colors w-full sm:w-auto ml-auto";
+                btn.onclick = closeModal;
+                document.getElementById('modalOverlay').onclick = closeModal;
+                openModalNormal();
+            });
+            document.getElementById('modalCloseTop').addEventListener('click', closeModal);
+            checkSOPStatus();
+        });
     })();
-
-    document.addEventListener('DOMContentLoaded', () => {
-        renderMembers();
-        renderFridayRotation();
-        renderBilas();
-        renderDailySchedule();
-        renderFridaySchedule();
-        renderMemberFilter();
-        
-        highlightActiveWeek();
-        updateFooterDate();
-
-        document.getElementById('memberFilter').addEventListener('change', (e) => filterByMember(e.target.value));
-
-        checkSOPStatus();
-    });
     </script>
 </body>
 </html>
