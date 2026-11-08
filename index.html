@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Jadwal piket dan pembagian tugas tim kebersihan harian dengan siklus rotasi 6 minggu.">
+    <meta name="author" content="Tim Manajemen SatsetDasdes">
+    <meta name="theme-color" content="#1e1b4b">
+
+    <title>Jadwal Piket & Ompreng - SatsetDasdes Edition</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] }
+                }
+            }
+        };
+    </script>
+
+    <style>
+        :root { --primary: #4f46e5; }
+        .dark { --primary: #818cf8; }
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        html { scroll-behavior: smooth; scroll-padding-top: 20px; }
+
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .dark ::-webkit-scrollbar-thumb { background: #475569; }
+
+        .bottom-nav { backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+
+        .modal-overlay {
+            opacity: 0;
+            transition: opacity 250ms ease;
+            pointer-events:
