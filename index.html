@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Jadwal piket dan pembagian tugas tim kebersihan harian dengan siklus rotasi 6 minggu.">
+    <meta name="author" content="Tim Manajemen SatsetDasdes">
+    <meta name="theme-color" content="#1e1b4b">
+
+    <title>Jadwal Piket & Ompreng - SatsetDasdes Edition</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        brand: {
+                            50: '#eef2ff',
+                            100: '#e0e7ff',
+                            600: '#4f46e5',
+                            700: '#4338ca',
+                            900: '#1e1b4b',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        :root { --primary: #4f46e5; }
+        .dark { --primary: #818cf8; }
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        html { scroll-behavior: smooth; scroll-padding-top: 20px; }
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .dark ::-webkit-scrollbar-thumb { background: #475569; }
+
+        .bottom-nav { backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+        .modal-overlay { opacity: 0; transition: opacity 250ms ease; pointer-events: none; }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .modal-content { opacity: 0; transform: scale(0.95) translateY(10px); transition: all 250ms cubic-bezier(0.16, 1, 0.3, 1); }
+        .modal-content.active { opacity: 1; transform: scale(1) translateY(0); }
+
+        .today-highlight { background-color: rgba(79, 70, 229, 0.04); border-left: 3px solid var(--primary); }
+        .dark .today-highlight { background-color: rgba(79, 70, 229, 0.1); }
+
+        [data-member] { transition: opacity 0.2s ease; }
+        body.filter-active [data-member] { opacity: 0.25; filter: grayscale(100%); }
+        body.filter-active [data-member].member-highlight { opacity: 1; filter: none; background-color: #fef08a !important; border-radius: 4px; padding: 4px 6px; box-shadow: 0 1px 4px rgba(234, 179, 8, 0.3); position: relative; z-index: 10; }
+        .dark body.filter-active [data-member].member-highlight { background-color: rgba(234, 179, 8, 0.2) !important; color: #fde047; }
+
+        @keyframes alarmFlash {
+            0%, 100% { background-color: transparent; }
+            50% { background-color: rgba(239, 68, 68, 0.25); }
+        }
+        body.alarm-active { animation: alarmFlash 0.5s ease-in-out infinite; }
+        
+        /* Coordinator Mode Styles */
+        .coord-mode-banner {
+            background: linear-gradient(90deg, #dcfce7 0%, #bbf7d0 100%);
+            border-bottom: 2px solid #22c55e;
+            color: #166534;
+        }
+        .dark .coord-mode-banner {
+            background: linear-gradient(90deg, #14532d 0%, #166534 100%);
+            color: #dcfce7;
+            border-bottom: 2px solid #4ade80;
+        }
+        
+        .edit-btn-coord {
+            display: none; /* Hidden by default */
+        }
+        body.is-coordinator .edit-btn-coord {
+            display: inline-flex; /* Visible when coordinator mode is active */
+        }
+
+        @media print {
+            .no-print, .bottom-nav, .top-header, .coord-mode-banner, .edit-btn-coord { display: none !important; }
+            body { background: white !important; }
+        }
+    </style>
+</head>
+<body class="pb-24 pt-4 md:pt-6 min-h-screen text-slate-800 dark:text-slate-100 bg-slate-50 dark:bg-slate-950 transition-colors duration-200">
+
+    <!-- COORDINATOR BANNER (Hidden unless logged in) -->
+    <div id="coordBanner" class="coord-mode-banner no-print hidden px-4 py-2 flex items-center justify-between sticky top-0 z-30 shadow-sm">
+        <span class="text-xs font-bold uppercase tracking-wide flex items-center gap-2">
+            <i class="ph-fill ph-shield-check"></i> MODE KOORDINATOR AKTIF
+        </span>
+        <button onclick="logoutCoordinator()" class="text-[10px] font-bold bg-red-500/20 hover:bg-red-500/40 text-red-700 dark:text-red-300 px-3 py-1 rounded-lg transition-colors">
+            Keluar / Reset Edit
+        </button>
+    </div>
+
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 w-full mt-2">
+        <!-- TOP HEADER PRO -->
+        <header class="top-header mb-6 flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-4">
+            <div>
+                <p class="text-[11px] font-bold tracking-wider uppercase text-indigo-600 dark:text-indigo-400">SPPG Sidanegara 2</p>
+                <h1 class="text-xl sm:text-2xl font-black tracking-tight text-slate-900 dark:text-white">Jadwal SatsetDasdes</h1>
+            </div>
+            <div class="flex items-center gap-1.5 sm:gap-2">
+                <!-- Coordinator Login Button -->
+                <button id="btnCoordLogin" class="p-2 rounded-xl bg-green-50 dark:bg-green-950/40 text-green-600 dark:text-green-400 hover:bg-green-100 transition-colors" title="Login Koordinator (Bowo)">
+                    <i class="ph-bold ph-user-circle text-lg"></i>
+                </button>
+                
+                <button id="btnShareWA" class="p-2 rounded-xl bg-emerald-50 dark:bg-emerald-950/40 text-emerald-600 dark:text-emerald-400 hover:bg-emerald-100 transition-colors" title="Bagikan ke WhatsApp">
+                    <i class="ph-bold ph-whatsapp-logo text-lg"></i>
+                </button>
+                <button id="darkModeToggle" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 transition-colors" title="Mode Gelap/Terang">
+                    <i class="ph-bold ph-moon text-lg dark:hidden"></i>
+                    <i class="ph-bold ph-sun text-lg hidden dark:inline"></i>
+                </button>
+                <button onclick="window.print()" class="hidden sm:block p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:bg-slate-200 transition-colors">
+                    <i class="ph-bold ph-printer text-lg"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- KONTROL PENCARIAN & STATUS -->
+        <div class="mb-6 flex flex-wrap items-center justify-between gap-3 bg-white dark:bg-slate-900 p-3 sm:p-4 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-sm">
+            <div class="flex items-center gap-2">
+                <span class="text-xs font-bold text-slate-500 uppercase tracking-wide">Filter Anggota:</span>
+                <div class="relative">
+                    <select id="memberFilter" class="text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-200 border border-slate-200 dark:border-slate-700 rounded-xl px-3 py-1.5 pr-8 cursor-pointer focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        <option value="">Semua Anggota</option>
+                    </select>
+                    <button id="resetFilterBtn" class="hidden absolute -right-2 -top-2 bg-red-100 text-red-600 rounded-full p-0.5 shadow-sm">
+                        <i class="ph-bold ph-x text-[10px]"></i>
+                    </button>
+                </div>
+            </div>
+            <button id="btnSubstitute" class="text-xs font-bold bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 text-amber-700 dark:text-amber-400 rounded-xl px-3.5 py-1.5 flex items-center gap-1.5 hover:bg-amber-100 transition-colors">
+                <i class="ph-bold ph-user-switch"></i> <span id="subBtnText">Substitusi Izin</span>
+            </button>
+        </div>
+
+        <!-- MAIN VIEWS CONTAINER -->
+        <main class="space-y-6">
+            <!-- TAB 1: HARIAN -->
+            <section id="view-daily" class="space-y-4">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Jadwal Piket Harian (Senin - Kamis)</h2>
+                    <span id="todayBadge" class="text-[10px] font-bold bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 px-2.5 py-1 rounded-lg border border-indigo-100 dark:border-indigo-900">...</span>
+                </div>
+                <div class="space-y-4" id="dailyGrid"></div>
+            </section>
+
+            <!-- TAB 2: JUMAT -->
+            <section id="view-friday" class="space-y-4 hidden">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Jadwal Piket Khusus Jumat & IPAL</h2>
+                    <button id="toggleFridayBtn" class="text-xs text-indigo-600 dark:text-indigo-400 font-bold hover:underline flex items-center gap-1">
+                        <i class="ph-bold ph-target"></i> Ke Minggu Aktif
+                    </button>
+                </div>
+                <div class="space-y-4" id="fridayGrid"></div>
+            </section>
+
+            <!-- TAB 3: SOP & IPAL -->
+            <section id="view-sop" class="space-y-4 hidden">
+                <h2 class="text-sm font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Panduan & Timer IPAL (Backwash)</h2>
+                
+                <!-- Timer Card -->
+                <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+                    <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-800 pb-3">
+                        <span class="text-xs font-bold uppercase text-amber-500 flex items-center gap-1.5"><i class="ph-bold ph-hourglass-high text-base"></i> Timer Backwash 15 Menit</span>
+                        <span id="sopTimerDisplay" class="font-mono text-2xl font-black text-slate-900 dark:text-white">15:00</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[10px] font-bold uppercase tracking-wider text-slate-400 mb-1">Pilih Nada Alarm</label>
+                            <div class="flex gap-2">
+                                <select id="alarmSoundSelect" class="w-full text-xs bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 font-medium text-slate-700 dark:text-slate-200">
+                                    <option value="siren">🚨 Sirine</option>
+                                    <option value="beep">🔔 Beep Klasik</option>
+                                    <option value="bell">🔔 Lonceng</option>
+                                    <option value="digital">⏰ Digital</option>
+                                </select>
+                                <button id="btnTestSound" class="px-3 bg-indigo-50 dark:bg-indigo-950/50 text-indigo-600 dark:text-indigo-400 rounded-xl hover:bg-indigo-100 transition-colors" title="Test Suara">
+                                    <i class="ph-bold ph-speaker-high"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="flex items-end gap-2">
+                            <button id="sopTimerStartBtn" class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2.5 px-4 rounded-xl text-xs flex items-center justify-center gap-1.5 shadow-sm transition-colors">
+                                <i class="ph-bold ph-play"></i> Mulai Timer
+                            </button>
+                            <button id="sopTimerResetBtn" class="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 text-slate-700 dark:text-slate-300 font-bold py-2.5 px-3 rounded-xl text-xs transition-colors">
+                                <i class="ph-bold ph-arrow-counter-clockwise"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-1.5 overflow-hidden">
+                        <div id="sopTimerProgressBar" class="bg-indigo-600 h-full transition-all duration-300" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <!-- Diagram & Step Backwash -->
+                <div class="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-4">
+                    <h3 class="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300 flex items-center gap-1.5">
+                        <i class="ph-bold ph-camera text-indigo-500"></i> Prosedur Backwash IPAL
+                    </h3>
+                    <div class="overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 flex justify-center p-2">
+                        <img src="1002941998.jpg" loading="lazy" decoding="async" alt="SOP Backwash" class="max-h-[300px] object-contain cursor-zoom-in rounded-lg" onclick="openImageZoom(this.src)" onerror="this.parentElement.style.display='none'">
+                    </div>
+                    <div class="divide-y divide-slate-100 dark:divide-slate-800 text-xs" id="visualBackwashTable"></div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- BOTTOM NAVIGATION BAR -->
+    <nav class="bottom-nav no-print fixed bottom-0 left-0 right-0 bg-white/90 dark:bg-slate-900/90 border-t border-slate-200 dark:border-slate-800 py-2 px-6 z-40 shadow-lg">
+        <div class="max-w-md mx-auto flex justify-around items-center">
+            <button onclick="switchTab('daily')" id="nav-daily" class="flex flex-col items-center gap-1 text-indigo-600 dark:text-indigo-400 font-bold text-[11px] transition-colors">
+                <i class="ph-fill ph-calendar-blank text-xl"></i>
+                <span>Harian</span>
+            </button>
+            <button onclick="switchTab('friday')" id="nav-friday" class="flex flex-col items-center gap-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 font-medium text-[11px] transition-colors">
+                <i class="ph-bold ph-calendar-check text-xl"></i>
+                <span>Jumat</span>
+            </button>
+            <button onclick="switchTab('sop')" id="nav-sop" class="flex flex-col items-center gap-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 font-medium text-[11px] transition-colors">
+                <i class="ph-bold ph-book-open text-xl"></i>
+                <span>SOP IPAL</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- MODAL LOGIN KOORDINATOR -->
+    <div id="loginModal" class="fixed inset-0 z-[70] flex items-center justify-center p-4 hidden">
+        <div id="loginOverlay" class="modal-overlay absolute inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
+        <div id="loginContent" class="modal-content bg-white dark:bg-slate-900 rounded-3xl w-full max-w-xs shadow-2xl relative z-10 overflow-hidden border border-slate-200 dark:border-slate-800 p-6 space-y-4">
+            <div class="text-center">
+                <div class="mx-auto w-12 h-12 bg-green-100 dark:bg-green-900/50 rounded-full flex items-center justify-center mb-3">
+                    <i class="ph-bold ph-lock-key text-2xl text-green-600 dark:text-green-400"></i>
+                </div>
+                <h3 class="text-sm font-bold text-slate-900 dark:text-white">Akses Koordinator</h3>
+                <p class="text-[10px] text-slate-500 mt-1">Masukkan PIN untuk mengaktifkan mode edit jadwal.</p>
+            </div>
+            <input type="password" id="pinInput" placeholder="PIN (Default: 1234)" class="w-full text-center text-lg font-mono bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-3 text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-green-500 outline-none tracking-widest">
+            <div class="flex gap-2">
+                <button id="btnCancelLogin" class="flex-1 px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-xl font-bold text-xs hover:bg-slate-200 transition-colors">Batal</button>
+                <button id="btnConfirmPin" class="flex-1 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-xl font-bold text-xs shadow-sm transition-colors">Masuk</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL EDIT TUGAS HARIAN -->
+    <div id="editTaskModal" class="fixed inset-0 z-[60] flex items-center justify-center p-4 hidden">
+        <div id="editTaskOverlay" class="modal-overlay absolute inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
+        <div id="editTaskContent" class="modal-content bg-white dark:bg-slate-900 rounded-3xl w-full max-w-md shadow-2xl relative z-10 overflow-hidden border border-slate-200 dark:border-slate-800 p-6 space-y-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-800 pb-3 sticky top-0 bg-white dark:bg-slate-900 z-10">
+                <h3 class="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2"><i class="ph-bold ph-pencil-simple text-green-500"></i> Ubah Tugas</h3>
+                <button id="closeEditTask" class="text-slate-400 hover:text-slate-600"><i class="ph-bold ph-x text-base"></i></button>
+            </div>
+            
+            <div class="space-y-3 text-xs">
+                <div class="bg-slate-50 dark:bg-slate-800 p-3 rounded-xl border border-slate-200 dark:border-slate-700">
+                    <p class="font-bold text-slate-700 dark:text-slate-300 mb-1">Konteks Edit:</p>
+                    <p id="editContextInfo" class="text-slate-500 dark:text-slate-400 italic">Memuat...</p>
+                </div>
+
+                <div>
+                    <label class="block font-semibold mb-1 text-slate-400 uppercase tracking-wide">Nama Anggota Baru:</label>
+                    <select id="editMemberName" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-slate-700 dark:text-slate-200">
+                        <!-- Options filled by JS -->
+                    </select>
+                </div>
+                <div>
+                    <label class="block font-semibold mb-1 text-slate-400 uppercase tracking-wide">Deskripsi Tugas:</label>
+                    <textarea id="editTaskDesc" rows="2" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-slate-700 dark:text-slate-200 resize-none"></textarea>
+                </div>
+            </div>
+            <div class="pt-2 flex justify-end gap-2 sticky bottom-0 bg-white dark:bg-slate-900 pb-2">
+                <button id="btnDeleteTask" class="mr-auto px-3 py-2 bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 rounded-xl font-bold text-xs hover:bg-red-100 transition-colors">Hapus Slot</button>
+                <button id="btnSaveEdit" class="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-xl font-bold text-xs shadow-sm transition-colors">Simpan Perubahan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL SUBSTITUSI -->
+    <div id="substituteModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+        <div id="substituteOverlay" class="modal-overlay absolute inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
+        <div id="substituteContent" class="modal-content bg-white dark:bg-slate-900 rounded-3xl w-full max-w-sm shadow-2xl relative z-10 overflow-hidden border border-slate-200 dark:border-slate-800 p-6 space-y-4">
+            <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-800 pb-3">
+                <h3 class="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2"><i class="ph-bold ph-user-switch text-amber-500"></i> Substitusi Izin Piket</h3>
+                <button id="subClose" class="text-slate-400 hover:text-slate-600 transition-colors"><i class="ph-bold ph-x text-base"></i></button>
+            </div>
+            <div class="space-y-3 text-xs">
+                <div>
+                    <label class="block font-semibold mb-1 text-slate-400 uppercase tracking-wide">Anggota Izin:</label>
+                    <select id="subIzin" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none"></select>
+                </div>
+                <div>
+                    <label class="block font-semibold mb-1 text-slate-400 uppercase tracking-wide">Pengganti:</label>
+                    <select id="subPengganti" class="w-full bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-slate-700 dark:text-slate-200 focus:ring-2 focus:ring-indigo-500 outline-none"></select>
+                </div>
+            </div>
+            <div class="pt-2 flex justify-end gap-2">
+                <button id="btnSubReset" class="px-4 py-2 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-xl font-bold text-xs hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">Reset</button>
+                <button id="btnSubApply" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl font-bold text-xs shadow-sm transition-colors">Terapkan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL ZOOM GAMBAR -->
+    <div id="imageZoomModal" class="fixed inset-0 z-[60] bg-black/90 backdrop-blur-sm hidden items-center justify-center p-4 cursor-zoom-out" onclick="closeImageZoom()">
+        <img id="zoomedImage" src="" class="max-w-full max-h-[90vh] rounded-xl object-contain">
+    </div>
+
+    <!-- 🚨 MODAL ALARM -->
+    <div id="alarmModal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 hidden">
+        <div class="absolute inset-0 bg-red-950/80 backdrop-blur-sm"></div>
+        <div class="relative bg-white dark:bg-slate-900 rounded-3xl w-full max-w-sm p-6 text-center shadow-2xl border border-red-500/20 space-y-4">
+            <div class="text-5xl animate-bounce">⏰</div>
+            <h2 class="text-lg font-black text-slate-900 dark:text-white">WAKTU BACKWASH SELESAI!</h2>
+            <p class="text-xs text-slate-500 dark:text-slate-400">15 menit telah berlalu. Silakan lanjutkan langkah SOP IPAL.</p>
+            <button id="btnStopAlarm" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded-xl text-sm transition-colors shadow-lg shadow-red-500/30">
+                HENTIKAN ALARM
+            </button>
+        </div>
+    </div>
+
+    <!-- MODUL DATA JADWAL -->
+    <script id="schedule-data">
+        const CYCLE_START_DATE = '2026-11-09';
+        const MEMBERS = ["Agus", "Aziz", "Bowo", "Fajar M", "Fajar R", "Zakaria"];
+        const IPAL_MEMBERS = ["Agus", "Aziz", "Fajar M", "Fajar R", "Zakaria"]; // Bowo excluded from IPAL rotation
+        
+        // Default Schedule Data
+        const DEFAULT_DAILY_SCHEDULE = [
+            {
+                week: 1,
+                days: [
+                    { day: "Senin", angkut: ["Bowo", "Fajar M"], bilas: ["Agus (Bilas Tutup)", "Aziz (Bilas Ompreng)"], tasks: [{ name: "Agus", task: "Gestrep + cuci wadah sisa sampah ompreng", type: "gestrep" }, { name: "Aziz", task: "Westafel + merapihkan & cuci wadah sayur", type: "westafel" }, { name: "Bowo", task: "Bawa Ompreng & Tutup + merendam ompreng SD", type: "ompreng" }, { name: "Fajar M", task: "Bawa Ompreng & Tutup + merendam ompreng SMP", type: "ompreng" }, { name: "Fajar R", task: "Sikat Lantai + pengering lantai", type: "lantai" }, { name: "Zakaria", task: "Selokan + bersihkan area pilah sampah", type: "selokan" }] },
+                    { day: "Selasa", angkut: ["Fajar M", "Fajar R"], bilas: ["Aziz (Bilas Tutup)", "Bowo (Bilas Ompreng)"], tasks: [{ name: "Aziz", task: "Gestrep + cuci wadah sisa sampah ompreng", type: "gestrep" }, { name: "Bowo", task: "Westafel + merapihkan & cuci wadah sayur", type: "westafel" }, { name: "Fajar M", task: "Bawa Ompreng & Tutup + merendam ompreng SD", type: "ompreng" }, { name: "Fajar R", task: "Bawa Ompreng & Tutup + merendam ompreng SMP", type: "ompreng" }, { name: "Zakaria", task: "Sikat Lantai + pengering lantai", type: "lantai" }, { name: "Agus", task: "Selokan + bersihkan area pilah sampah", type: "selokan" }] },
+                    { day: "Rabu", angkut: ["Fajar R", "Zakaria"], bilas: ["Bowo (Bilas Tutup)", "Fajar M (Bilas Ompreng)"], tasks: [{ name: "Bowo", task: "Gestrep + cuci wadah sisa sampah ompreng", type: "gestrep" }, { name: "Fajar M", task: "Westafel + merapihkan & cuci wadah sayur", type: "westafel" }, { name: "Fajar R", task: "Bawa Ompreng & Tutup + merendam ompreng SD", type: "ompreng" }, { name: "Zakaria", task: "Bawa Ompreng & Tutup + merendam ompreng SMP", type: "ompreng" }, { name: "Agus", task: "Sikat Lantai + pengering lantai", type: "lantai" }, { name: "Aziz", task: "Selokan + bersihkan area pilah sampah", type: "selokan" }] },
+                    { day: "Kamis", angkut: ["Zakaria", "Agus"], bilas: ["Fajar M (Bilas Tutup)", "Fajar R (Bilas Ompreng)"], tasks: [{ name: "Fajar M", task: "Gestrep + cuci wadah sisa sampah ompreng", type: "gestrep" }, { name: "Fajar R", task: "Westafel + merapihkan & cuci wadah sayur", type: "westafel" }, { name: "Zakaria", task: "Bawa Ompreng & Tutup + merendam ompreng SD", type: "ompreng" }, { name: "Agus", task: "Bawa Ompreng & Tutup + merendam ompreng SMP", type: "ompreng" }, { name: "Aziz", task: "Sikat Lantai + pengering lantai", type: "lantai" }, { name: "Bowo", task: "Selokan + bersihkan area pilah sampah", type: "selokan" }] }
+                ]
+            },
+            {
+                week: 2,
+                days: [
+                    { day: "Senin", angkut: ["Aziz", "Bowo"], bilas: ["Zakaria (Bilas Tutup)", "Agus (Bilas Ompreng)"], tasks: [{ name: "Zakaria", task: "Gestrep + cuci wadah sisa sampah ompreng", type: "gestrep" }, { name: "Agus", task: "Westafel + merapihkan & cuci wadah sayur", type: "westafel" }, { name: "Aziz", task: "Bawa Ompreng & Tutup + merendam ompreng SD", type: "ompreng" }, { name: "Bowo", task: "Bawa Ompreng & Tutup + merendam ompreng SMP", type: "ompreng" }, { name: "Fajar M", task: "Sikat Lantai + pengering lantai", type: "lantai" }, { name: "Fajar R", task: "Selokan + bersihkan area pilah sampah", type: "selokan" }] },
+                    { day: "Selasa", angkut: ["Bowo", "Fajar M"], bilas: ["Agus (Bilas Tutup)", "Aziz (Bilas Ompreng)"], tasks: [{ name: "Agus", task: "Gestrep + cuci wadah sisa sampah ompreng", type: "gestrep" }, { name: "Aziz", task: "Westafel + merapihkan & cuci wadah sayur", type: "westafel" }, { name: "Bowo", task: "Bawa Ompreng & Tutup + merendam ompreng SD", type: "ompreng" }, { name: "Fajar M", task: "Bawa Ompreng & Tutup + merendam ompreng SMP", type: "ompreng" }, { name: "Fajar R", task: "Sikat Lantai + pengering lantai", type: "lantai" }, { name: "Zakaria", task: "Selokan + bersihkan area pilah sampah", type: "selokan" }] },
+                    { day: "Rabu", angkut: ["Fajar M", "Fajar R"], bilas: ["Aziz (Bilas Tutup)", "Bowo (Bilas Ompreng)"], tasks: [{ name: "Aziz", task: "Gestrep + cuci wadah sisa sampah ompreng", type: "gestrep" }, { name: "Bowo", task: "Westafel + merapihkan & cuci wadah sayur", type: "westafel" }, { name: "Fajar M", task: "Bawa Ompreng & Tutup + merendam ompreng SD", type: "ompreng" }, { name: "Fajar R", task: "Bawa Ompreng & Tutup + merendam ompreng SMP", type: "ompreng" }, { name: "Zakaria", task: "Sikat Lantai + pengering lantai", type: "lantai" }, { name: "Agus", task: "Selokan + bersihkan area pilah sampah", type: "selokan" }] },
+                    { day: "Kamis", angkut: ["Fajar R", "Zakaria"], bilas: ["Bowo (Bilas Tutup)", "Fajar M (Bilas Ompreng)"], tasks: [{ name: "Bowo", task: "Gestrep + cuci wadah sisa sampah ompreng", type: "gestrep" }, { name: "Fajar M", task: "Westafel + merapihkan & cuci wadah sayur", type: "westafel" }, { name: "Fajar R", task: "Bawa Ompreng & Tutup + merendam ompreng SD", type: "ompreng" }, { name: "Zakaria", task: "Bawa Ompreng & Tutup + merendam ompreng SMP", type: "ompreng" }, { name: "Agus", task: "Sikat Lantai + pengering lantai", type: "lantai" }, { name: "Aziz", task: "Selokan + bersihkan area pilah sampah", type: "selokan" }] }
+                ]
+            },
+            {
+                week: 3,
+                days: [
+                    { day: "Senin", angkut: ["Agus", "Aziz"], bilas: ["Fajar R (Bilas Tutup)", "Zakaria (Bilas Ompreng)"], tasks: [{ name: "Fajar R", task: "Gestrep + cuci wadah sisa sampah ompreng", type: "gestrep" }, { name: "Zakaria", task: "Westafel + merapihkan & cuci wadah sayur", type: "westafel" }, { name: "Agus", task: "Bawa Ompreng & Tutup + merendam ompreng SD", type: "ompreng" }, { name: "Aziz", task: "Bawa Ompreng & Tutup + merendam ompreng SMP", type: "ompreng" }, { name: "Bowo", task: "Sikat Lantai + pengering lantai", type: "lantai" }, { name: "Fajar M", task: "Selokan + bersihkan area pilah sampah", type: "selokan" }] },
+                    { day: "Selasa", angkut: ["Aziz", "Bowo"], bilas: ["Zakaria (Bilas Tutup)", "Agus (Bilas Ompreng)"], tasks: [{ name: "Zakaria", task: "Gestrep + cuci wadah sisa sampah ompreng", type: "gestrep" }, { name: "Agus", task: "Westafel + merapihkan & cuci wadah sayur", type: "westafel" }, { name: "Aziz", task: "Bawa Ompreng & Tutup + merendam ompreng SD", type: "ompreng" }, { name: "Bowo", task: "Bawa Ompreng & Tutup + merendam ompreng SMP", type: "ompreng" }, { name: "Fajar M", task: "Sikat Lantai + pengering lantai", type: "lantai" }, { name: "Fajar R", task: "Selokan + bersihkan area pilah sampah", type: "selokan" }] },
+                    { day: "Rabu", angkut: ["Bowo", "Fajar M"], bilas: ["Agus (Bilas Tutup)", "Aziz (Bilas Ompreng)"], tasks: [{ name: "Agus", task: "Gestrep + cuci wadah sisa sampah ompreng", type: "gestrep" }, { name: "Aziz", task: "Westafel + merapihkan & cuci wadah sayur", type: "westafel" }, { name: "Bowo", task: "Bawa Ompreng & Tutup + merendam ompreng SD", type: "ompreng" }, { name: "Fajar M", task: "Bawa Ompreng & Tutup + merendam ompreng SMP", type: "ompreng" }, { name: "Fajar R", task: "Sikat Lantai + pengering lantai", type: "lantai" }, { name: "Zakaria", task: "Selokan + bersihkan area pilah sampah", type: "selokan" }] },
+                    { day: "Kamis", angkut: ["Fajar M", "Fajar R"], bilas: ["Aziz (Bilas Tutup)", "Bowo (Bilas Ompreng)"], tasks: [{ name: "Aziz", task: "Gestrep + cuci wadah sisa sampah ompreng", type: "gestrep" }, { name: "Bowo", task: "Westafel + merapihkan & cuci wadah sayur", type: "westafel" }, { name: "Fajar M", task: "Bawa Ompreng & Tutup + merendam ompreng SD", type: "ompreng" }, { name: "Fajar R", task: "Bawa Ompreng & Tutup + merendam ompreng SMP", type: "ompreng" }, { name: "Zakaria", task: "Sikat Lantai + pengering lantai", type: "lantai" }, { name: "Agus", task: "Selokan + bersihkan area pilah sampah", type: "selokan" }] }
+                ]
+            },
+            {
+                week: 4,
+                days: [
+                    { day: "Senin", angkut: ["Zakaria", "Agus"], bilas: ["Fajar M (Bilas Tutup)", "Fajar R (Bilas Ompreng)"], tasks: [{ name: "Fajar M", task: "Gestrep + cuci wadah sisa sampah ompreng", type: "gestrep" }, { name: "Fajar R", task: "Westafel + merapihkan & cuci wadah sayur", type: "westafel" }, { name: "Zakaria", task: "Bawa Ompreng & Tutup + merendam ompreng SD", type: "ompreng" }, { name: "Agus", task: "Bawa Ompreng & Tutup + merendam ompreng SMP", type: "ompreng" }, { name: "Aziz", task: "Sikat Lantai + pengering lantai", type: "lantai" }, { name: "Bowo", task: "Selokan + bersihkan area pilah sampah", type: "selokan" }] },
+                    { day: "Selasa", angkut: ["Agus", "Aziz"], bilas: ["Fajar R (Bilas Tutup)", "Zakaria (Bilas Ompreng)"], tasks: [{ name: "Fajar R", task: "Gestrep + cuci wadah sisa sampah ompreng", type: "gestrep" }, { name: "Zakaria", task: "Westafel + merapihkan & cuci wadah sayur", type: "westafel" }, { name: "Agus", task: "Bawa Ompreng & Tutup + merendam ompreng SD", type: "ompreng" }, { name: "Aziz", task: "Bawa Ompreng & Tutup + merendam ompreng SMP", type: "ompreng" }, { name: "Bowo", task: "Sikat Lantai + pengering lantai", type: "lantai" }, { name: "Fajar M", task: "Selokan + bersihkan area pilah sampah", type: "selokan" }] },
+                    { day: "Rabu", angkut: ["Aziz", "Bowo"], bilas: ["Zakaria (Bilas Tutup)", "Agus (Bilas Ompreng)"], tasks: [{ name: "Zakaria", task: "Gestrep + cuci wadah sisa sampah ompreng", type: "gestrep" }, { name: "Agus", task: "Westafel + merapihkan & cuci wadah sayur", type: "westafel" }, { name: "Aziz", task: "Bawa Ompreng & Tutup + merendam ompreng SD", type: "ompreng" }, { name: "Bowo", task: "Bawa Ompreng & Tutup + merendam ompreng SMP", type: "ompreng" }, { name: "Fajar M", task: "Sikat Lantai + pengering lantai", type: "lantai" }, { name: "Fajar R", task: "Selokan + bersihkan area pilah sampah", type: "selokan" }] },
+                    { day: "Kamis", angkut: ["Bowo", "Fajar M"], bilas: ["Agus (Bilas Tutup)", "Aziz (Bilas Ompreng)"], tasks: [{ name: "Agus", task: "Gestrep + cuci wadah sisa sampah ompreng", type: "gestrep" }, { name: "Aziz", task: "Westafel + merapihkan & cuci wadah sayur", type: "westafel" }, { name: "Bowo", task: "Bawa Ompreng & Tutup + merendam ompreng SD", type: "ompreng" }, { name: "Fajar M", task: "Bawa Ompreng & Tutup + merendam ompreng SMP", type: "ompreng" }, { name: "Fajar R", task: "Sikat Lantai + pengering lantai", type: "lantai" }, { name: "Zakaria", task: "Selokan + bersihkan area pilah sampah", type: "selokan" }] }
+                ]
+            },
+            {
+                week: 5,
+                days: [
+                    { day: "Senin", angkut: ["Fajar R", "Zakaria"], bilas: ["Bowo (Bilas Tutup)", "Fajar M (Bilas Ompreng)"], tasks: [{ name: "Bowo", task: "Gestrep + cuci wadah sisa sampah ompreng", type: "gestrep" }, { name: "Fajar M", task: "Westafel + merapihkan & cuci wadah sayur", type: "westafel" }, { name: "Fajar R", task: "Bawa Ompreng & Tutup + merendam ompreng SD", type: "ompreng" }, { name: "Zakaria", task: "Bawa Ompreng & Tutup + merendam ompreng SMP", type: "ompreng" }, { name: "Agus", task: "Sikat Lantai + pengering lantai", type: "lantai" }, { name: "Aziz", task: "Selokan + bersihkan area pilah sampah", type: "selokan" }] },
+                    { day: "Selasa", angkut: ["Zakaria", "Agus"], bilas: ["Fajar M (Bilas Tutup)", "Fajar R (Bilas Ompreng)"], tasks: [{ name: "Fajar M", task: "Gestrep + cuci wadah sisa sampah ompreng", type: "gestrep" }, { name: "Fajar R", task: "Westafel + merapihkan & cuci wadah sayur", type: "westafel" }, { name: "Zakaria", task: "Bawa Ompreng & Tutup + merendam ompreng SD", type: "ompreng" }, { name: "Agus", task: "Bawa Ompreng & Tutup + merendam ompreng SMP", type: "ompreng" }, { name: "Aziz", task: "Sikat Lantai + pengering lantai", type: "lantai" }, { name: "Bowo", task: "Selokan + bersihkan area pilah sampah", type: "selokan" }] },
+                    { day: "Rabu", angkut: ["Agus", "Aziz"], bilas: ["Fajar R (Bilas Tutup)", "Zakaria (Bilas Ompreng)"], tasks: [{ name: "Fajar R", task: "Gestrep + cuci wadah sisa sampah ompreng", type: "gestrep" }, { name: "Zakaria", task: "Westafel + merapihkan & cuci wadah sayur", type: "westafel" }, { name: "Agus", task: "Bawa Ompreng & Tutup + merendam ompreng SD", type: "ompreng" }, { name: "Aziz", task: "Bawa Ompreng & Tutup + merendam ompreng SMP", type: "ompreng" }, { name: "Bowo", task: "Sikat Lantai + pengering lantai", type: "lantai" }, { name: "Fajar M", task: "Selokan + bersihkan area pilah sampah", type: "selokan" }] },
+                    { day: "Kamis", angkut: ["Aziz", "Bowo"], bilas: ["Zakaria (Bilas Tutup)", "Agus (Bilas Ompreng)"], tasks: [{ name: "Zakaria", task: "Gestrep + cuci wadah sisa sampah ompreng", type: "gestrep" }, { name: "Agus", task: "Westafel + merapihkan & cuci wadah sayur", type: "westafel" }, { name: "Aziz", task: "Bawa Ompreng & Tutup + merendam ompreng SD", type: "ompreng" }, { name: "Bowo", task: "Bawa Ompreng & Tutup + merendam ompreng SMP", type: "ompreng" }, { name: "Fajar M", task: "Sikat Lantai + pengering lantai", type: "lantai" }, { name: "Fajar R", task: "Selokan + bersihkan area pilah sampah", type: "selokan" }] }
+                ]
+            },
+            {
+                week: 6,
+                days: [
+                    { day: "Senin", angkut: ["Fajar M", "Fajar R"], bilas: ["Aziz (Bilas Tutup)", "Bowo (Bilas Ompreng)"], tasks: [{ name: "Aziz", task: "Gestrep + cuci wadah sisa sampah ompreng", type: "gestrep" }, { name: "Bowo", task: "Westafel + merapihkan & cuci wadah sayur", type: "westafel" }, { name: "Fajar M", task: "Bawa Ompreng & Tutup + merendam ompreng SD", type: "ompreng" }, { name: "Fajar R", task: "Bawa Ompreng & Tutup + merendam ompreng SMP", type: "ompreng" }, { name: "Zakaria", task: "Sikat Lantai + pengering lantai", type: "lantai" }, { name: "Agus", task: "Selokan + bersihkan area pilah sampah", type: "selokan" }] },
+                    { day: "Selasa", angkut: ["Fajar R", "Zakaria"], bilas: ["Bowo (Bilas Tutup)", "Fajar M (Bilas Ompreng)"], tasks: [{ name: "Bowo", task: "Gestrep + cuci wadah sisa sampah ompreng", type: "gestrep" }, { name: "Fajar M", task: "Westafel + merapihkan & cuci wadah sayur", type: "westafel" }, { name: "Fajar R", task: "Bawa Ompreng & Tutup + merendam ompreng SD", type: "ompreng" }, { name: "Zakaria", task: "Bawa Ompreng & Tutup + merendam ompreng SMP", type: "ompreng" }, { name: "Agus", task: "Sikat Lantai + pengering lantai", type: "lantai" }, { name: "Aziz", task: "Selokan + bersihkan area pilah sampah", type: "selokan" }] },
+                    { day: "Rabu", angkut: ["Zakaria", "Agus"], bilas: ["Fajar M (Bilas Tutup)", "Fajar R (Bilas Ompreng)"], tasks: [{ name: "Fajar M", task: "Gestrep + cuci wadah sisa sampah ompreng", type: "gestrep" }, { name: "Fajar R", task: "Westafel + merapihkan & cuci wadah sayur", type: "westafel" }, { name: "Zakaria", task: "Bawa Ompreng & Tutup + merendam ompreng SD", type: "ompreng" }, { name: "Agus", task: "Bawa Ompreng & Tutup + merendam ompreng SMP", type: "ompreng" }, { name: "Aziz", task: "Sikat Lantai + pengering lantai", type: "lantai" }, { name: "Bowo", task: "Selokan + bersihkan area pilah sampah", type: "selokan" }] },
+                    { day: "Kamis", angkut: ["Agus", "Aziz"], bilas: ["Fajar R (Bilas Tutup)", "Zakaria (Bilas Ompreng)"], tasks: [{ name: "Fajar R", task: "Gestrep + cuci wadah sisa sampah ompreng", type: "gestrep" }, { name: "Zakaria", task: "Westafel + merapihkan & cuci wadah sayur", type: "westafel" }, { name: "Agus", task: "Bawa Ompreng & Tutup + merendam ompreng SD", type: "ompreng" }, { name: "Aziz", task: "Bawa Ompreng & Tutup + merendam ompreng SMP", type: "ompreng" }, { name: "Bowo", task: "Sikat Lantai + pengering lantai", type: "lantai" }, { name: "Fajar M", task: "Selokan + bersihkan area pilah sampah", type: "selokan" }] }
+                ]
+            }
+        ];
+
+        const FRIDAY_SCHEDULE = [
+            { week: 1, angkut: ["Agus (Bawa Ompreng & Tutup + Merendam Ompreng SD)", "Aziz (Bawa Ompreng & Tutup + Merendam Ompreng SMP)"], bilas: ["Fajar R (Bilas Tutup)", "Zakaria (Bilas Ompreng)"], tasks: [{ name: "Fajar R", task: "Gestrep + cuci wadah sisa sampah ompreng", type: "gestrep" }, { name: "Zakaria", task: "Westafel + merapihkan & cuci wadah sayur", type: "westafel" }, { name: "Bowo", task: "Sikat Lantai + pengering lantai", type: "lantai" }, { name: "Fajar M", task: "Selokan + bersihkan area pilah sampah", type: "selokan" }] },
+            { week: 2, angkut: ["Zakaria (Bawa Ompreng & Tutup + Merendam Ompreng SD)", "Agus (Bawa Ompreng & Tutup + Merendam Ompreng SMP)"], bilas: ["Fajar M (Bilas Tutup)", "Fajar R (Bilas Ompreng)"], tasks: [{ name: "Fajar M", task: "Gestrep + cuci wadah sisa sampah ompreng", type: "gestrep" }, { name: "Fajar R", task: "Westafel + merapihkan & cuci wadah sayur", type: "westafel" }, { name: "Aziz", task: "Sikat Lantai + pengering lantai", type: "lantai" }, { name: "Bowo", task: "Selokan + bersihkan area pilah sampah", type: "selokan" }] },
+            { week: 3, angkut: ["Fajar R (Bawa Ompreng & Tutup + Merendam Ompreng SD)", "Zakaria (Bawa Ompreng & Tutup + Merendam Ompreng SMP)"], bilas: ["Bowo (Bilas Tutup)", "Fajar M (Bilas Ompreng)"], tasks: [{ name: "Bowo", task: "Gestrep + cuci wadah sisa sampah ompreng", type: "gestrep" }, { name: "Fajar M", task: "Westafel + merapihkan & cuci wadah sayur", type: "westafel" }, { name: "Agus", task: "Sikat Lantai + pengering lantai", type: "lantai" }, { name: "Aziz", task: "Selokan + bersihkan area pilah sampah", type: "selokan" }] },
+            { week: 4, angkut: ["Fajar M (Bawa Ompreng & Tutup + Merendam Ompreng SD)", "Fajar R (Bawa Ompreng & Tutup + Merendam Ompreng SMP)"], bilas: ["Aziz (Bilas Tutup)", "Bowo (Bilas Ompreng)"], tasks: [{ name: "Aziz", task: "Gestrep + cuci wadah sisa sampah ompreng", type: "gestrep" }, { name: "Bowo", task: "Westafel + merapihkan & cuci wadah sayur", type: "westafel" }, { name: "Zakaria", task: "Sikat Lantai + pengering lantai", type: "lantai" }, { name: "Agus", task: "Selokan + bersihkan area pilah sampah", type: "selokan" }] },
+            { week: 5, angkut: ["Bowo (Bawa Ompreng & Tutup + Merendam Ompreng SD)", "Fajar M (Bawa Ompreng & Tutup + Merendam Ompreng SMP)"], bilas: ["Agus (Bilas Tutup)", "Aziz (Bilas Ompreng)"], tasks: [{ name: "Agus", task: "Gestrep + cuci wadah sisa sampah ompreng", type: "gestrep" }, { name: "Aziz", task: "Westafel + merapihkan & cuci wadah sayur", type: "westafel" }, { name: "Fajar R", task: "Sikat Lantai + pengering lantai", type: "lantai" }, { name: "Zakaria", task: "Selokan + bersihkan area pilah sampah", type: "selokan" }] },
+            { week: 6, angkut: ["Aziz (Bawa Ompreng & Tutup + Merendam Ompreng SD)", "Bowo (Bawa Ompreng & Tutup + Merendam Ompreng SMP)"], bilas: ["Zakaria (Bilas Tutup)", "Agus (Bilas Ompreng)"], tasks: [{ name: "Zakaria", task: "Gestrep + cuci wadah sisa sampah ompreng", type: "gestrep" }, { name: "Agus", task: "Westafel + merapihkan & cuci wadah sayur", type: "westafel" }, { name: "Fajar M", task: "Sikat Lantai + pengering lantai", type: "lantai" }, { name: "Fajar R", task: "Selokan + bersihkan area pilah sampah", type: "selokan" }] }
+        ];
+    </script>
+
+    <!-- LOGIKA UTAMA APLIKASI -->
+    <script id="app-logic">
+    let izinUser = "";
+    let penggantiUser = "";
+    let countdownInterval = null;
+    let secondsLeft = 15 * 60;
+    let audioCtx = null;
+    let alarmBeepInterval = null;
+    let autoStopTimeout = null;
+    let currentAlarmSound = 'siren';
+    
+    // Coordinator State
+    let isCoordinator = false;
+    let customScheduleData = null; // Stores modified daily schedule
+    const COORDINATOR_PIN = "1234"; // Change this to your secure PIN
+    
+    // Current editing context
+    let editingWeekIndex = -1;
+    let editingDayIndex = -1;
+    let editingTaskIndex = -1;
+
+    function switchTab(tabId) {
+        ['daily', 'friday', 'sop'].forEach(t => {
+            const el = document.getElementById(`view-${t}`);
+            const nav = document.getElementById(`nav-${t}`);
+            if (t === tabId) {
+                el.classList.remove('hidden');
+                nav.className = "flex flex-col items-center gap-1 text-indigo-600 dark:text-indigo-400 font-bold text-[11px] transition-colors";
+            } else {
+                el.classList.add('hidden');
+                nav.className = "flex flex-col items-center gap-1 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 font-medium text-[11px] transition-colors";
+            }
+        });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function getTodayDateString() {
+        const now = new Date();
+        return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+    }
+
+    function loadSubstitutionState() {
+        try {
+            const saved = localStorage.getItem('satset_sub_today');
+            if (saved) {
+                const parsed = JSON.parse(saved);
+                if (parsed.date === getTodayDateString() && parsed.izin && parsed.pengganti) {
+                    izinUser = parsed.izin;
+                    penggantiUser = parsed.pengganti;
+                } else {
+                    localStorage.removeItem('satset_sub_today');
+                }
+            }
+        } catch (e) {}
+        updateSubstituteButtonUI();
+    }
+
+    function saveSubstitutionState(izin, pengganti) {
+        izinUser = izin;
+        penggantiUser = pengganti;
+        if (izin && pengganti) {
+            localStorage.setItem('satset_sub_today', JSON.stringify({ izin, pengganti, date: getTodayDateString() }));
+        } else {
+            localStorage.removeItem('satset_sub_today');
+        }
+        updateSubstituteButtonUI();
+    }
+
+    function updateSubstituteButtonUI() {
+        const btnText = document.getElementById('subBtnText');
+        if (btnText) {
+            btnText.textContent = (izinUser && penggantiUser) ? `Izin: ${izinUser} ➔ ${penggantiUser}` : "Substitusi Izin";
+        }
+    }
+
+    function ensureAudioContextUnlocked() {
+        try {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+        } catch (e) {}
+    }
+
+    function playAlarmSound() {
+        try {
+            ensureAudioContextUnlocked();
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.type = currentAlarmSound === 'beep' ? 'sine' : 'sawtooth';
+            osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+            gain.gain.setValueAtTime(0.5, audioCtx.currentTime);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.8);
+        } catch (e) {}
+    }
+
+    function startSopTimer(isUserClick = true) {
+        if (isUserClick) ensureAudioContextUnlocked();
+        if (countdownInterval) {
+            clearInterval(countdownInterval);
+            countdownInterval = null;
+            document.getElementById('sopTimerStartBtn').innerHTML = `<i class="ph-bold ph-play"></i> Lanjutkan`;
+            return;
+        }
+        if (secondsLeft <= 0) secondsLeft = 15 * 60;
+        countdownInterval = setInterval(() => {
+            secondsLeft--;
+            updateSopTimerDisplay();
+            if (secondsLeft <= 0) {
+                clearInterval(countdownInterval);
+                countdownInterval = null;
+                triggerAlarm();
+            }
+        }, 1000);
+        document.getElementById('sopTimerStartBtn').innerHTML = `<i class="ph-bold ph-pause"></i> Pause`;
+    }
+
+    function updateSopTimerDisplay() {
+        const m = Math.floor(secondsLeft / 60).toString().padStart(2, '0');
+        const s = (secondsLeft % 60).toString().padStart(2, '0');
+        document.getElementById('sopTimerDisplay').textContent = `${m}:${s}`;
+        document.getElementById('sopTimerProgressBar').style.width = `${((15 * 60 - secondsLeft) / (15 * 60)) * 100}%`;
+    }
+
+    function resetSopTimer() {
+        clearInterval(countdownInterval);
+        countdownInterval = null;
+        stopAlarm();
+        secondsLeft = 15 * 60;
+        updateSopTimerDisplay();
+        document.getElementById('sopTimerStartBtn').innerHTML = `<i class="ph-bold ph-play"></i> Mulai Timer`;
+    }
+
+    function triggerAlarm() {
+        playAlarmSound();
+        alarmBeepInterval = setInterval(playAlarmSound, 1500);
+        document.body.classList.add('alarm-active');
+        autoStopTimeout = setTimeout(stopAlarm, 60000);
+        const modal = document.getElementById('alarmModal');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    }
+
+    function stopAlarm() {
+        clearInterval(alarmBeepInterval);
+        clearTimeout(autoStopTimeout);
+        document.body.classList.remove('alarm-active');
+        const modal = document.getElementById('alarmModal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }
+
+    function getActiveWeeks() {
+        const startDate = new Date(CYCLE_START_DATE);
+        const now = new Date();
+        const diffDays = Math.floor((Date.UTC(now.getFullYear(), now.getMonth(), now.getDate()) - Date.UTC(startDate.getFullYear(), startDate.getMonth(), startDate.getDate())) / 86400000);
+        const days = diffDays >= 0 ? diffDays : 0;
+        return { daily: ((Math.floor(days / 7)) % 6) + 1, diffDays: days, cycleCount: Math.floor(days / 42) };
+    }
+
+    function generateSubstitutions(nameStr) {
+        if (!izinUser || !penggantiUser) return nameStr;
+        return nameStr.split(izinUser).join(penggantiUser);
+    }
+
+    function renderMembers() {
+        const filter = document.getElementById('memberFilter');
+        filter.innerHTML = `<option value="">Semua Anggota</option>` + MEMBERS.map(m => `<option value="${m}">${m}</option>`).join('');
+    }
+
+    // --- COORDINATOR FUNCTIONS ---
+
+    function checkCoordinatorStatus() {
+        // Check if there are custom edits saved for today
+        const savedEdits = localStorage.getItem('satset_custom_edits');
+        if (savedEdits) {
+            try {
+                const parsed = JSON.parse(savedEdits);
+                // Simple validation: if it exists, we assume session might be valid or just show banner?
+                // For security, we usually require re-login per session, but here we persist data.
+                // We will only set isCoordinator=true via explicit login button click with correct PIN.
+                // However, if user refreshes, they lose the "isCoordinator" flag visually unless we store a session token.
+                // Let's keep it simple: Banner shows if customScheduleData is loaded AND user clicked login previously in this session? 
+                // No, better: If customScheduleData exists in memory OR localStorage has edits, we can offer to restore view.
+                // But strict requirement: Only allow editing if PIN entered THIS SESSION.
+            } catch(e){}
+        }
+    }
+
+    function loginCoordinator(pin) {
+        if (pin === COORDINATOR_PIN) {
+            isCoordinator = true;
+            document.body.classList.add('is-coordinator');
+            document.getElementById('coordBanner').classList.remove('hidden');
+            
+            // Load any existing custom edits from storage into memory so UI reflects them immediately
+            const stored = localStorage.getItem('satset_custom_edits');
+            if (stored) {
+                try {
+                    customScheduleData = JSON.parse(stored);
+                } catch(e) {
+                    customScheduleData = JSON.parse(JSON.stringify(DEFAULT_DAILY_SCHEDULE));
+                }
+            } else {
+                customScheduleData = JSON.parse(JSON.stringify(DEFAULT_DAILY_SCHEDULE));
+            }
+            
+            renderDailySchedule();
+            closeModal('loginModal');
+            showToast("Login berhasil. Mode Edit Aktif.");
+        } else {
+            alert("PIN Salah!");
+            document.getElementById('pinInput').value = '';
+        }
+    }
+
+    function logoutCoordinator() {
+        isCoordinator = false;
+        document.body.classList.remove('is-coordinator');
+        document.getElementById('coordBanner').classList.add('hidden');
+        // Keep customScheduleData in memory/localStorage? 
+        // Usually yes, so changes aren't lost on accidental logout.
+        // But hide edit buttons.
+        renderDailySchedule();
+        showToast("Logout dari mode koordinat");
+    }
+
+    function openEditTaskModal(wIdx, dIdx, tIdx) {
+        if (!isCoordinator) return;
+        
+        editingWeekIndex = wIdx;
+        editingDayIndex = dIdx;
+        editingTaskIndex = tIdx;
+
+        const task = customScheduleData[wIdx].days[dIdx].tasks[tIdx];
+        
+        // Populate Select
+        const sel = document.getElementById('editMemberName');
+        sel.innerHTML = MEMBERS.map(m => `<option value="${m}" ${m === task.name ? 'selected' : ''}>${m}</option>`).join('');
+        
+        // Populate Textarea
+        document.getElementById('editTaskDesc').value = task.task;
+        
+        // Context Info
+        document.getElementById('editContextInfo').textContent = `Minggu ${customScheduleData[wIdx].week}, ${task.day || customScheduleData[wIdx].days[dIdx].day}`;
+
+        const modal = document.getElementById('editTaskModal');
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+        setTimeout(() => {
+            document.getElementById('editTaskOverlay').classList.add('active');
+            document.getElementById('editTaskContent').classList.add('active');
+        }, 10);
+    }
+
+    function closeEditTaskModal() {
+        const overlay = document.getElementById('editTaskOverlay');
+        const content = document.getElementById('editTaskContent');
+        overlay.classList.remove('active');
+        content.classList.remove('active');
+        setTimeout(() => {
+            const modal = document.getElementById('editTaskModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }, 250);
+    }
+
+    function saveTaskEdit() {
+        const newName = document.getElementById('editMemberName').value;
+        const newDesc = document.getElementById('editTaskDesc').value.trim();
+
+        if (!newName || !newDesc) {
+            alert("Nama dan Tugas tidak boleh kosong");
+            return;
+        }
+
+        // Update Memory
+        customScheduleData[editingWeekIndex].days[editingDayIndex].tasks[editingTaskIndex].name = newName;
+        customScheduleData[editingWeekIndex].days[editingDayIndex].tasks[editingTaskIndex].task = newDesc;
+
+        // Save to LocalStorage
+        localStorage.setItem('satset_custom_edits', JSON.stringify(customScheduleData));
+
+        // Re-render
+        renderDailySchedule();
+        closeEditTaskModal();
+        showToast("Tugas berhasil diperbarui");
+    }
+
+    function deleteTaskSlot() {
+        if(confirm("Yakin hapus slot tugas ini?")) {
+             // Option: Set name to empty string and mark as deleted, or remove from array.
+             // Removing from array shifts indices which is bad for other logic.
+             // Better: Mark as inactive/deleted visually or replace with "-"
+             customScheduleData[editingWeekIndex].days[editingDayIndex].tasks[editingTaskIndex].name = "-";
+             customScheduleData[editingWeekIndex].days[editingDayIndex].tasks[editingTaskIndex].task = "Dihapus";
+             
+             localStorage.setItem('satset_custom_edits', JSON.stringify(customScheduleData));
+             renderDailySchedule();
+             closeEditTaskModal();
+             showToast("Slot tugas dihapus/dikosongkan");
+        }
+    }
+
+    function showToast(msg) {
+        // Simple toast implementation could go here, using alert for simplicity in single file
+        console.log(msg);
+        // Optional: Create DOM element for toast
+    }
+
+    // --- RENDERING WITH EDITS ---
+
+    function getCurrentDailySchedule() {
+        // If coordinator is active and has custom data, use that. Otherwise use default.
+        // Note: Even if not logged in NOW, if data was saved before, should we show it?
+        // Yes, everyone sees the latest edited schedule. The "Edit Buttons" are only visible to logged-in coord.
+        if (customScheduleData) return customScheduleData;
+        return DEFAULT_DAILY_SCHEDULE;
+    }
+
+    function renderDailySchedule() {
+        const { daily, diffDays } = getActiveWeeks();
+        const actualDailyDayIndex = diffDays % 42;
+        const dayOffset = { 'Senin': 0, 'Selasa': 1, 'Rabu': 2, 'Kamis': 3 };
+        
+        document.getElementById('todayBadge').textContent = `Minggu Ke-${daily}`;
+
+        const scheduleToRender = getCurrentDailySchedule();
+
+        document.getElementById('dailyGrid').innerHTML = scheduleToRender.map((w, wIdx) => {
+            const daysHtml = w.days.map((d, dIdx) => {
+                const isToday = (((w.week - 1) * 7) + dayOffset[d.day] === actualDailyDayIndex);
+                
+                const tasksHtml = d.tasks.map((t, tIdx) => {
+                    const name = generateSubstitutions(t.name);
+                    // Add Edit Button if Coordinator
+                    const editBtn = isCoordinator ? 
+                        `<button onclick="openEditTaskModal(${wIdx}, ${dIdx}, ${tIdx})" class="ml-2 p-1 text-slate-400 hover:text-green-500 transition-colors" title="Edit Tugas"><i class="ph-bold ph-pencil-simple text-[10px]"></i></button>` : '';
+                    
+                    return `<div class="flex justify-between items-center py-1.5 text-xs border-b border-slate-100 dark:border-slate-800/60 last:border-0 group" data-member="${name}">
+                        <div class="flex items-center">
+                            <span class="font-bold text-slate-900 dark:text-white shrink-0">${name}</span>
+                            ${editBtn}
+                        </div>
+                        <span class="text-slate-500 dark:text-slate-400 text-right truncate flex-1 ml-2">${t.task}</span>
+                    </div>`;
+                }).join('');
+
+                const angkut = d.angkut.map(m => generateSubstitutions(m)).join(' & ');
+                const bilas = d.bilas.map(b => generateSubstitutions(b)).join(' & ');
+
+                return `<div class="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200/80 dark:border-slate-800 shadow-sm ${isToday ? 'today-highlight ring-1 ring-indigo-500' : ''}">
+                    <div class="flex justify-between items-center mb-2 pb-2 border-b border-slate-100 dark:border-slate-800">
+                        <span class="font-black text-xs text-indigo-600 dark:text-indigo-400">${d.day} - Minggu ${w.week}</span>
+                        ${isToday ? '<span class="text-[10px] font-bold bg-indigo-600 text-white px-2 py-0.5 rounded-full">Hari Ini</span>' : ''}
+                    </div>
+                    <div class="space-y-1">${tasksHtml}</div>
+                    <div class="mt-3 pt-2 border-t border-slate-100 dark:border-slate-800 flex flex-col sm:flex-row justify-between text-[11px] text-slate-500 gap-1">
+                        <span>🛒 Angkut: <strong class="text-slate-700 dark:text-slate-300">${angkut}</strong></span>
+                        <span>💧 Bilas: <strong class="text-indigo-600 dark:text-indigo-400">${bilas}</strong></span>
+                    </div>
+                </div>`;
+            }).join('');
+
+            return `<div class="space-y-3 mb-6">
+                <div class="flex items-center gap-2 px-1 sticky top-0 bg-slate-50 dark:bg-slate-950 py-2 z-10 backdrop-blur-sm">
+                    <div class="text-xs font-black uppercase text-slate-400">Minggu ${w.week}</div>
+                    ${w.week === daily ? '<span class="text-[10px] font-bold bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 px-2 py-0.5 rounded-full border border-indigo-200 dark:border-indigo-800">Minggu Ini</span>' : ''}
+                </div>
+                <div class="grid grid-cols-1 gap-3">
+                    ${daysHtml}
+                </div>
+            </div>`;
+        }).join('');
+    }
+
+    function renderFridaySchedule() {
+        const { cycleCount, daily, diffDays } = getActiveWeeks();
+        
+        document.getElementById('fridayGrid').innerHTML = FRIDAY_SCHEDULE.map(w => {
+            const isToday = (diffDays % 7 === 4) && (w.week === daily);
+            const ipal = generateSubstitutions(IPAL_MEMBERS[((cycleCount * 6) + w.week - 1) % 5]);
+            
+            const tasks = w.tasks.map(t => {
+                const name = generateSubstitutions(t.name);
+                return `<div class="flex justify-between items-center py-1.5 text-xs border-b border-slate-100 dark:border-slate-800/60 last:border-0" data-member="${name}">
+                    <span class="font-bold text-slate-900 dark:text-white shrink-0">${name}</span>
+                    <span class="text-slate-500 dark:text-slate-400 text-right truncate flex-1 ml-2">${t.task}</span>
+                </div>`;
+            }).join('');
+
+            const angkutF = w.angkut.map(a => generateSubstitutions(a)).join('<br>• ');
+            const bilasF = w.bilas.map(b => generateSubstitutions(b)).join(' & ');
+
+            return `<div class="bg-white dark:bg-slate-900 rounded-2xl p-4 border border-slate-200/80 dark:border-slate-800 shadow-sm ${isToday ? 'today-highlight ring-1 ring-indigo-500' : ''}">
+                <div class="flex justify-between items-center mb-2 pb-2 border-b border-slate-100 dark:border-slate-800">
+                    <span class="font-black text-xs text-indigo-600 dark:text-indigo-400">Jumat - Minggu ${w.week}</span>
+                    ${isToday ? '<span class="text-[10px] font-bold bg-indigo-600 text-white px-2 py-0.5 rounded-full">Hari Ini</span>' : ''}
+                </div>
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="text-[10px] font-bold bg-cyan-50 dark:bg-cyan-950/40 text-cyan-600 dark:text-cyan-400 px-2 py-0.5 rounded border border-cyan-200 dark:border-cyan-800">👤 IPAL: ${ipal}</span>
+                </div>
+                <div class="mb-3 text-[11px] text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-800/50 p-3 rounded-xl">
+                    <strong class="text-indigo-600 dark:text-indigo-400 block mb-1 text-xs uppercase tracking-wide">🛒 Tim Angkut (Merendam Ompreng):</strong>
+                    <div class="leading-relaxed">• ${angkutF}</div>
+                </div>
+                <div class="space-y-1 border-t border-slate-100 dark:border-slate-800 pt-2">${tasks}</div>
+                <div class="mt-3 pt-2 border-t border-slate-100 dark:border-slate-800 text-[11px] text-slate-500">
+                    💧 Bilas Jumat: <strong class="text-indigo-600 dark:text-indigo-400">${bilasF}</strong>
+                </div>
+            </div>`;
+        }).join('');
+    }
+
+    function renderBackwashTable() {
+        document.getElementById('visualBackwashTable').innerHTML = [
+            "1. Posisi Normal (Filter Tabung 1 & 2)",
+            "2. Pindahkan Katup Tabung 1 ke BackWash (15 Menit)",
+            "3. Kembalikan Tabung 1, Pindah Tabung 2 ke BackWash (15 Menit)",
+            "4. Kembalikan Semua Katup ke Posisi Normal"
+        ].map((s) => `<div class="py-2 px-1 text-slate-700 dark:text-slate-300 font-medium flex items-center gap-2"><i class="ph-fill ph-check-circle text-indigo-500"></i> ${s}</div>`).join('');
+    }
+
+    function filterByMember(name) {
+        document.querySelectorAll('.member-highlight').forEach(el => el.classList.remove('member-highlight'));
+        const resetBtn = document.getElementById('resetFilterBtn');
+        if (!name) {
+            document.body.classList.remove('filter-active');
+            resetBtn.classList.add('hidden');
+            return;
+        }
+        document.body.classList.add('filter-active');
+        resetBtn.classList.remove('hidden');
+        document.querySelectorAll(`[data-member*="${name}"]`).forEach(el => el.classList.add('member-highlight'));
+    }
+
+    function shareToWhatsApp() {
+        const text = `*JADWAL PIKET SATSETDASDES*\n\nSilakan cek jadwal harian terbaru melalui aplikasi web operasional tim. _"Selesai Satu, Selesai Semua!"_ 💪`;
+        window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+    }
+
+    function openImageZoom(src) {
+        document.getElementById('zoomedImage').src = src;
+        const m = document.getElementById('imageZoomModal');
+        m.classList.remove('hidden'); m.classList.add('flex');
+    }
+    
+    function closeImageZoom() {
+        const m = document.getElementById('imageZoomModal');
+        m.classList.add('hidden'); m.classList.remove('flex');
+    }
+
+    function closeModal(id) {
+        const modal = document.getElementById(id);
+        const overlay = modal.querySelector('.modal-overlay');
+        const content = modal.querySelector('.modal-content');
+        
+        if(overlay) overlay.classList.remove('active');
+        if(content) content.classList.remove('active');
+        
+        setTimeout(() => {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }, 250);
+    }
+
+    (function init() {
+        if (localStorage.getItem('darkMode') === 'true' || window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            document.documentElement.classList.add('dark');
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            loadSubstitutionState();
+            renderMembers();
+            
+            // Initialize Custom Schedule from Storage if exists
+            const stored = localStorage.getItem('satset_custom_edits');
+            if (stored) {
+                try {
+                    customScheduleData = JSON.parse(stored);
+                } catch(e) {
+                    customScheduleData = null;
+                }
+            }
+
+            renderDailySchedule();
+            renderFridaySchedule();
+            renderBackwashTable();
+            updateSopTimerDisplay();
+
+            // Event Listeners
+            
+            // Coordinator Login
+            document.getElementById('btnCoordLogin').addEventListener('click', () => {
+                const modal = document.getElementById('loginModal');
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+                setTimeout(() => {
+                    document.getElementById('loginOverlay').classList.add('active');
+                    document.getElementById('loginContent').classList.add('active');
+                    document.getElementById('pinInput').focus();
+                }, 10);
+            });
+
+            document.getElementById('btnCancelLogin').addEventListener('click', () => closeModal('loginModal'));
+            document.getElementById('loginOverlay').addEventListener('click', () => closeModal('loginModal'));
+            
+            document.getElementById('btnConfirmPin').addEventListener('click', () => {
+                loginCoordinator(document.getElementById('pinInput').value);
+            });
+            
+            // Enter key for PIN
+            document.getElementById('pinInput').addEventListener('keypress', (e) => {
+                if(e.key === 'Enter') loginCoordinator(document.getElementById('pinInput').value);
+            });
+
+            // Edit Task Modal Listeners
+            document.getElementById('closeEditTask').addEventListener('click', closeEditTaskModal);
+            document.getElementById('editTaskOverlay').addEventListener('click', closeEditTaskModal);
+            document.getElementById('btnSaveEdit').addEventListener('click', saveTaskEdit);
+            document.getElementById('btnDeleteTask').addEventListener('click', deleteTaskSlot);
+
+            // Other Listeners
+            document.getElementById('toggleFridayBtn').addEventListener('click', () => {
+                const activeWeekEl = document.querySelector('#fridayGrid .today-highlight');
+                if (activeWeekEl) {
+                    activeWeekEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            });
+
+            document.getElementById('memberFilter').addEventListener('change', (e) => filterByMember(e.target.value));
+            document.getElementById('resetFilterBtn').addEventListener('click', () => { 
+                document.getElementById('memberFilter').value = ""; 
+                filterByMember(""); 
+            });
+            
+            document.getElementById('darkModeToggle').addEventListener('click', () => {
+                document.documentElement.classList.toggle('dark');
+                localStorage.setItem('darkMode', document.documentElement.classList.contains('dark'));
+            });
+            
+            document.getElementById('btnShareWA').addEventListener('click', shareToWhatsApp);
+            document.getElementById('sopTimerStartBtn').addEventListener('click', () => startSopTimer(true));
+            document.getElementById('sopTimerResetBtn').addEventListener('click', resetSopTimer);
+            document.getElementById('btnStopAlarm').addEventListener('click', stopAlarm);
+            document.getElementById('btnTestSound').addEventListener('click', () => {
+                currentAlarmSound = document.getElementById('alarmSoundSelect').value;
+                playAlarmSound();
+            });
+
+            // Substitute Modal Logic
+            const subModal = document.getElementById('substituteModal');
+            document.getElementById('btnSubstitute').addEventListener('click', () => {
+                document.getElementById('subIzin').innerHTML = MEMBERS.map(m => `<option value="${m}">${m}</option>`).join('');
+                document.getElementById('subPengganti').innerHTML = MEMBERS.map(m => `<option value="${m}">${m}</option>`).join('');
+                subModal.classList.remove('hidden'); 
+                subModal.classList.add('flex');
+                setTimeout(() => {
+                    document.getElementById('substituteOverlay').classList.add('active');
+                    document.getElementById('substituteContent').classList.add('active');
+                }, 10);
+            });
+
+            const closeSubModal = () => {
+                document.getElementById('substituteOverlay').classList.remove('active');
+                document.getElementById('substituteContent').classList.remove('active');
+                setTimeout(() => {
+                    subModal.classList.add('hidden');
+                    subModal.classList.remove('flex');
+                }, 250);
+            };
+
+            document.getElementById('subClose').addEventListener('click', closeSubModal);
+            document.getElementById('substituteOverlay').addEventListener('click', closeSubModal);
+            
+            document.getElementById('btnSubReset').addEventListener('click', () => {
+                saveSubstitutionState("", "");
+                closeSubModal();
+                renderDailySchedule(); 
+                renderFridaySchedule();
+            });
+            
+            document.getElementById('btnSubApply').addEventListener('click', () => {
+                const i = document.getElementById('subIzin').value;
+                const p = document.getElementById('subPengganti').value;
+                if (i === p) { alert("Anggota tidak boleh sama!"); return; }
+                saveSubstitutionState(i, p);
+                closeSubModal();
+                renderDailySchedule(); 
+                renderFridaySchedule();
+            });
+        });
+    })();
+    </script>
+</body>
+</html>
