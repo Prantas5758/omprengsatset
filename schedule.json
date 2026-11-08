@@ -1,86 +1,1294 @@
 {
-  "version": 1,
-  "last_updated_by": "System",
+  "version": 2,
+  "last_updated_by": "Bowo",
+  "updated_at": "2026-11-09T00:00:00.000Z",
+  "config": {
+    "cycle_start_date": "2026-11-09",
+    "coordinator_name": "Bowo",
+    "members": [
+      "Agus",
+      "Aziz",
+      "Bowo",
+      "Fajar M",
+      "Fajar R",
+      "Zakaria"
+    ],
+    "ipal_members": [
+      "Agus",
+      "Aziz",
+      "Fajar M",
+      "Fajar R",
+      "Zakaria"
+    ]
+  },
   "daily_schedule": [
     {
       "week": 1,
       "days": [
         {
           "day": "Senin",
-          "angkut": ["Bowo", "Fajar M"],
-          "bilas": ["Agus (Bilas Tutup)", "Aziz (Bilas Ompreng)"],
+          "angkut": [
+            "Bowo",
+            "Fajar M"
+          ],
+          "bilas": [
+            "Agus (Bilas Tutup)",
+            "Aziz (Bilas Ompreng)"
+          ],
           "tasks": [
-            { "name": "Agus", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep" },
-            { "name": "Aziz", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel" },
-            { "name": "Bowo", "task": "Bawa Ompreng & Tutup + merendam ompreng SD", "type": "ompreng" },
-            { "name": "Fajar M", "task": "Bawa Ompreng & Tutup + merendam ompreng SMP", "type": "ompreng" },
-            { "name": "Fajar R", "task": "Sikat Lantai + pengering lantai", "type": "lantai" },
-            { "name": "Zakaria", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan" }
+            {
+              "name": "Agus",
+              "task": "Gestrep + cuci wadah sisa sampah ompreng",
+              "type": "gestrep"
+            },
+            {
+              "name": "Aziz",
+              "task": "Westafel + merapihkan & cuci wadah sayur",
+              "type": "westafel"
+            },
+            {
+              "name": "Bowo",
+              "task": "Bawa Ompreng & Tutup + merendam ompreng SD",
+              "type": "ompreng"
+            },
+            {
+              "name": "Fajar M",
+              "task": "Bawa Ompreng & Tutup + merendam ompreng SMP",
+              "type": "ompreng"
+            },
+            {
+              "name": "Fajar R",
+              "task": "Sikat Lantai + pengering lantai",
+              "type": "lantai"
+            },
+            {
+              "name": "Zakaria",
+              "task": "Selokan + bersihkan area pilah sampah",
+              "type": "selokan"
+            }
           ]
         },
         {
           "day": "Selasa",
-          "angkut": ["Fajar M", "Fajar R"],
-          "bilas": ["Aziz (Bilas Tutup)", "Bowo (Bilas Ompreng)"],
+          "angkut": [
+            "Fajar M",
+            "Fajar R"
+          ],
+          "bilas": [
+            "Aziz (Bilas Tutup)",
+            "Bowo (Bilas Ompreng)"
+          ],
           "tasks": [
-            { "name": "Aziz", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep" },
-            { "name": "Bowo", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel" },
-            { "name": "Fajar M", "task": "Bawa Ompreng & Tutup + merendam ompreng SD", "type": "ompreng" },
-            { "name": "Fajar R", "task": "Bawa Ompreng & Tutup + merendam ompreng SMP", "type": "ompreng" },
-            { "name": "Zakaria", "task": "Sikat Lantai + pengering lantai", "type": "lantai" },
-            { "name": "Agus", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan" }
+            {
+              "name": "Aziz",
+              "task": "Gestrep + cuci wadah sisa sampah ompreng",
+              "type": "gestrep"
+            },
+            {
+              "name": "Bowo",
+              "task": "Westafel + merapihkan & cuci wadah sayur",
+              "type": "westafel"
+            },
+            {
+              "name": "Fajar M",
+              "task": "Bawa Ompreng & Tutup + merendam ompreng SD",
+              "type": "ompreng"
+            },
+            {
+              "name": "Fajar R",
+              "task": "Bawa Ompreng & Tutup + merendam ompreng SMP",
+              "type": "ompreng"
+            },
+            {
+              "name": "Zakaria",
+              "task": "Sikat Lantai + pengering lantai",
+              "type": "lantai"
+            },
+            {
+              "name": "Agus",
+              "task": "Selokan + bersihkan area pilah sampah",
+              "type": "selokan"
+            }
           ]
         },
         {
           "day": "Rabu",
-          "angkut": ["Fajar R", "Zakaria"],
-          "bilas": ["Bowo (Bilas Tutup)", "Fajar M (Bilas Ompreng)"],
+          "angkut": [
+            "Fajar R",
+            "Zakaria"
+          ],
+          "bilas": [
+            "Bowo (Bilas Tutup)",
+            "Fajar M (Bilas Ompreng)"
+          ],
           "tasks": [
-            { "name": "Bowo", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep" },
-            { "name": "Fajar M", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel" },
-            { "name": "Fajar R", "task": "Bawa Ompreng & Tutup + merendam ompreng SD", "type": "ompreng" },
-            { "name": "Zakaria", "task": "Bawa Ompreng & Tutup + merendam ompreng SMP", "type": "ompreng" },
-            { "name": "Agus", "task": "Sikat Lantai + pengering lantai", "type": "lantai" },
-            { "name": "Aziz", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan" }
+            {
+              "name": "Bowo",
+              "task": "Gestrep + cuci wadah sisa sampah ompreng",
+              "type": "gestrep"
+            },
+            {
+              "name": "Fajar M",
+              "task": "Westafel + merapihkan & cuci wadah sayur",
+              "type": "westafel"
+            },
+            {
+              "name": "Fajar R",
+              "task": "Bawa Ompreng & Tutup + merendam ompreng SD",
+              "type": "ompreng"
+            },
+            {
+              "name": "Zakaria",
+              "task": "Bawa Ompreng & Tutup + merendam ompreng SMP",
+              "type": "ompreng"
+            },
+            {
+              "name": "Agus",
+              "task": "Sikat Lantai + pengering lantai",
+              "type": "lantai"
+            },
+            {
+              "name": "Aziz",
+              "task": "Selokan + bersihkan area pilah sampah",
+              "type": "selokan"
+            }
           ]
         },
         {
           "day": "Kamis",
-          "angkut": ["Zakaria", "Agus"],
-          "bilas": ["Fajar M (Bilas Tutup)", "Fajar R (Bilas Ompreng)"],
+          "angkut": [
+            "Zakaria",
+            "Agus"
+          ],
+          "bilas": [
+            "Fajar M (Bilas Tutup)",
+            "Fajar R (Bilas Ompreng)"
+          ],
           "tasks": [
-            { "name": "Fajar M", "task": "Gestrep + cuci wadah sisa sampah ompreng", "type": "gestrep" },
-            { "name": "Fajar R", "task": "Westafel + merapihkan & cuci wadah sayur", "type": "westafel" },
-            { "name": "Zakaria", "task": "Bawa Ompreng & Tutup + merendam ompreng SD", "type": "ompreng" },
-            { "name": "Agus", "task": "Bawa Ompreng & Tutup + merendam ompreng SMP", "type": "ompreng" },
-            { "name": "Aziz", "task": "Sikat Lantai + pengering lantai", "type": "lantai" },
-            { "name": "Bowo", "task": "Selokan + bersihkan area pilah sampah", "type": "selokan" }
+            {
+              "name": "Fajar M",
+              "task": "Gestrep + cuci wadah sisa sampah ompreng",
+              "type": "gestrep"
+            },
+            {
+              "name": "Fajar R",
+              "task": "Westafel + merapihkan & cuci wadah sayur",
+              "type": "westafel"
+            },
+            {
+              "name": "Zakaria",
+              "task": "Bawa Ompreng & Tutup + merendam ompreng SD",
+              "type": "ompreng"
+            },
+            {
+              "name": "Agus",
+              "task": "Bawa Ompreng & Tutup + merendam ompreng SMP",
+              "type": "ompreng"
+            },
+            {
+              "name": "Aziz",
+              "task": "Sikat Lantai + pengering lantai",
+              "type": "lantai"
+            },
+            {
+              "name": "Bowo",
+              "task": "Selokan + bersihkan area pilah sampah",
+              "type": "selokan"
+            }
           ]
         }
       ]
     },
     {
       "week": 2,
-      "days": [] 
+      "days": [
+        {
+          "day": "Senin",
+          "angkut": [
+            "Aziz",
+            "Bowo"
+          ],
+          "bilas": [
+            "Zakaria (Bilas Tutup)",
+            "Agus (Bilas Ompreng)"
+          ],
+          "tasks": [
+            {
+              "name": "Zakaria",
+              "task": "Gestrep + cuci wadah sisa sampah ompreng",
+              "type": "gestrep"
+            },
+            {
+              "name": "Agus",
+              "task": "Westafel + merapihkan & cuci wadah sayur",
+              "type": "westafel"
+            },
+            {
+              "name": "Aziz",
+              "task": "Bawa Ompreng & Tutup + merendam ompreng SD",
+              "type": "ompreng"
+            },
+            {
+              "name": "Bowo",
+              "task": "Bawa Ompreng & Tutup + merendam ompreng SMP",
+              "type": "ompreng"
+            },
+            {
+              "name": "Fajar M",
+              "task": "Sikat Lantai + pengering lantai",
+              "type": "lantai"
+            },
+            {
+              "name": "Fajar R",
+              "task": "Selokan + bersihkan area pilah sampah",
+              "type": "selokan"
+            }
+          ]
+        },
+        {
+          "day": "Selasa",
+          "angkut": [
+            "Bowo",
+            "Fajar M"
+          ],
+          "bilas": [
+            "Agus (Bilas Tutup)",
+            "Aziz (Bilas Ompreng)"
+          ],
+          "tasks": [
+            {
+              "name": "Agus",
+              "task": "Gestrep + cuci wadah sisa sampah ompreng",
+              "type": "gestrep"
+            },
+            {
+              "name": "Aziz",
+              "task": "Westafel + merapihkan & cuci wadah sayur",
+              "type": "westafel"
+            },
+            {
+              "name": "Bowo",
+              "task": "Bawa Ompreng & Tutup + merendam ompreng SD",
+              "type": "ompreng"
+            },
+            {
+              "name": "Fajar M",
+              "task": "Bawa Ompreng & Tutup + merendam ompreng SMP",
+              "type": "ompreng"
+            },
+            {
+              "name": "Fajar R",
+              "task": "Sikat Lantai + pengering lantai",
+              "type": "lantai"
+            },
+            {
+              "name": "Zakaria",
+              "task": "Selokan + bersihkan area pilah sampah",
+              "type": "selokan"
+            }
+          ]
+        },
+        {
+          "day": "Rabu",
+          "angkut": [
+            "Fajar M",
+            "Fajar R"
+          ],
+          "bilas": [
+            "Aziz (Bilas Tutup)",
+            "Bowo (Bilas Ompreng)"
+          ],
+          "tasks": [
+            {
+              "name": "Aziz",
+              "task": "Gestrep + cuci wadah sisa sampah ompreng",
+              "type": "gestrep"
+            },
+            {
+              "name": "Bowo",
+              "task": "Westafel + merapihkan & cuci wadah sayur",
+              "type": "westafel"
+            },
+            {
+              "name": "Fajar M",
+              "task": "Bawa Ompreng & Tutup + merendam ompreng SD",
+              "type": "ompreng"
+            },
+            {
+              "name": "Fajar R",
+              "task": "Bawa Ompreng & Tutup + merendam ompreng SMP",
+              "type": "ompreng"
+            },
+            {
+              "name": "Zakaria",
+              "task": "Sikat Lantai + pengering lantai",
+              "type": "lantai"
+            },
+            {
+              "name": "Agus",
+              "task": "Selokan + bersihkan area pilah sampah",
+              "type": "selokan"
+            }
+          ]
+        },
+        {
+          "day": "Kamis",
+          "angkut": [
+            "Fajar R",
+            "Zakaria"
+          ],
+          "bilas": [
+            "Bowo (Bilas Tutup)",
+            "Fajar M (Bilas Ompreng)"
+          ],
+          "tasks": [
+            {
+              "name": "Bowo",
+              "task": "Gestrep + cuci wadah sisa sampah ompreng",
+              "type": "gestrep"
+            },
+            {
+              "name": "Fajar M",
+              "task": "Westafel + merapihkan & cuci wadah sayur",
+              "type": "westafel"
+            },
+            {
+              "name": "Fajar R",
+              "task": "Bawa Ompreng & Tutup + merendam ompreng SD",
+              "type": "ompreng"
+            },
+            {
+              "name": "Zakaria",
+              "task": "Bawa Ompreng & Tutup + merendam ompreng SMP",
+              "type": "ompreng"
+            },
+            {
+              "name": "Agus",
+              "task": "Sikat Lantai + pengering lantai",
+              "type": "lantai"
+            },
+            {
+              "name": "Aziz",
+              "task": "Selokan + bersihkan area pilah sampah",
+              "type": "selokan"
+            }
+          ]
+        }
+      ]
     },
     {
       "week": 3,
-      "days": []
+      "days": [
+        {
+          "day": "Senin",
+          "angkut": [
+            "Agus",
+            "Aziz"
+          ],
+          "bilas": [
+            "Fajar R (Bilas Tutup)",
+            "Zakaria (Bilas Ompreng)"
+          ],
+          "tasks": [
+            {
+              "name": "Fajar R",
+              "task": "Gestrep + cuci wadah sisa sampah ompreng",
+              "type": "gestrep"
+            },
+            {
+              "name": "Zakaria",
+              "task": "Westafel + merapihkan & cuci wadah sayur",
+              "type": "westafel"
+            },
+            {
+              "name": "Agus",
+              "task": "Bawa Ompreng & Tutup + merendam ompreng SD",
+              "type": "ompreng"
+            },
+            {
+              "name": "Aziz",
+              "task": "Bawa Ompreng & Tutup + merendam ompreng SMP",
+              "type": "ompreng"
+            },
+            {
+              "name": "Bowo",
+              "task": "Sikat Lantai + pengering lantai",
+              "type": "lantai"
+            },
+            {
+              "name": "Fajar M",
+              "task": "Selokan + bersihkan area pilah sampah",
+              "type": "selokan"
+            }
+          ]
+        },
+        {
+          "day": "Selasa",
+          "angkut": [
+            "Aziz",
+            "Bowo"
+          ],
+          "bilas": [
+            "Zakaria (Bilas Tutup)",
+            "Agus (Bilas Ompreng)"
+          ],
+          "tasks": [
+            {
+              "name": "Zakaria",
+              "task": "Gestrep + cuci wadah sisa sampah ompreng",
+              "type": "gestrep"
+            },
+            {
+              "name": "Agus",
+              "task": "Westafel + merapihkan & cuci wadah sayur",
+              "type": "westafel"
+            },
+            {
+              "name": "Aziz",
+              "task": "Bawa Ompreng & Tutup + merendam ompreng SD",
+              "type": "ompreng"
+            },
+            {
+              "name": "Bowo",
+              "task": "Bawa Ompreng & Tutup + merendam ompreng SMP",
+              "type": "ompreng"
+            },
+            {
+              "name": "Fajar M",
+              "task": "Sikat Lantai + pengering lantai",
+              "type": "lantai"
+            },
+            {
+              "name": "Fajar R",
+              "task": "Selokan + bersihkan area pilah sampah",
+              "type": "selokan"
+            }
+          ]
+        },
+        {
+          "day": "Rabu",
+          "angkut": [
+            "Bowo",
+            "Fajar M"
+          ],
+          "bilas": [
+            "Agus (Bilas Tutup)",
+            "Aziz (Bilas Ompreng)"
+          ],
+          "tasks": [
+            {
+              "name": "Agus",
+              "task": "Gestrep + cuci wadah sisa sampah ompreng",
+              "type": "gestrep"
+            },
+            {
+              "name": "Aziz",
+              "task": "Westafel + merapihkan & cuci wadah sayur",
+              "type": "westafel"
+            },
+            {
+              "name": "Bowo",
+              "task": "Bawa Ompreng & Tutup + merendam ompreng SD",
+              "type": "ompreng"
+            },
+            {
+              "name": "Fajar M",
+              "task": "Bawa Ompreng & Tutup + merendam ompreng SMP",
+              "type": "ompreng"
+            },
+            {
+              "name": "Fajar R",
+              "task": "Sikat Lantai + pengering lantai",
+              "type": "lantai"
+            },
+            {
+              "name": "Zakaria",
+              "task": "Selokan + bersihkan area pilah sampah",
+              "type": "selokan"
+            }
+          ]
+        },
+        {
+          "day": "Kamis",
+          "angkut": [
+            "Fajar M",
+            "Fajar R"
+          ],
+          "bilas": [
+            "Aziz (Bilas Tutup)",
+            "Bowo (Bilas Ompreng)"
+          ],
+          "tasks": [
+            {
+              "name": "Aziz",
+              "task": "Gestrep + cuci wadah sisa sampah ompreng",
+              "type": "gestrep"
+            },
+            {
+              "name": "Bowo",
+              "task": "Westafel + merapihkan & cuci wadah sayur",
+              "type": "westafel"
+            },
+            {
+              "name": "Fajar M",
+              "task": "Bawa Ompreng & Tutup + merendam ompreng SD",
+              "type": "ompreng"
+            },
+            {
+              "name": "Fajar R",
+              "task": "Bawa Ompreng & Tutup + merendam ompreng SMP",
+              "type": "ompreng"
+            },
+            {
+              "name": "Zakaria",
+              "task": "Sikat Lantai + pengering lantai",
+              "type": "lantai"
+            },
+            {
+              "name": "Agus",
+              "task": "Selokan + bersihkan area pilah sampah",
+              "type": "selokan"
+            }
+          ]
+        }
+      ]
     },
     {
       "week": 4,
-      "days": []
+      "days": [
+        {
+          "day": "Senin",
+          "angkut": [
+            "Zakaria",
+            "Agus"
+          ],
+          "bilas": [
+            "Fajar M (Bilas Tutup)",
+            "Fajar R (Bilas Ompreng)"
+          ],
+          "tasks": [
+            {
+              "name": "Fajar M",
+              "task": "Gestrep + cuci wadah sisa sampah ompreng",
+              "type": "gestrep"
+            },
+            {
+              "name": "Fajar R",
+              "task": "Westafel + merapihkan & cuci wadah sayur",
+              "type": "westafel"
+            },
+            {
+              "name": "Zakaria",
+              "task": "Bawa Ompreng & Tutup + merendam ompreng SD",
+              "type": "ompreng"
+            },
+            {
+              "name": "Agus",
+              "task": "Bawa Ompreng & Tutup + merendam ompreng SMP",
+              "type": "ompreng"
+            },
+            {
+              "name": "Aziz",
+              "task": "Sikat Lantai + pengering lantai",
+              "type": "lantai"
+            },
+            {
+              "name": "Bowo",
+              "task": "Selokan + bersihkan area pilah sampah",
+              "type": "selokan"
+            }
+          ]
+        },
+        {
+          "day": "Selasa",
+          "angkut": [
+            "Agus",
+            "Aziz"
+          ],
+          "bilas": [
+            "Fajar R (Bilas Tutup)",
+            "Zakaria (Bilas Ompreng)"
+          ],
+          "tasks": [
+            {
+              "name": "Fajar R",
+              "task": "Gestrep + cuci wadah sisa sampah ompreng",
+              "type": "gestrep"
+            },
+            {
+              "name": "Zakaria",
+              "task": "Westafel + merapihkan & cuci wadah sayur",
+              "type": "westafel"
+            },
+            {
+              "name": "Agus",
+              "task": "Bawa Ompreng & Tutup + merendam ompreng SD",
+              "type": "ompreng"
+            },
+            {
+              "name": "Aziz",
+              "task": "Bawa Ompreng & Tutup + merendam ompreng SMP",
+              "type": "ompreng"
+            },
+            {
+              "name": "Bowo",
+              "task": "Sikat Lantai + pengering lantai",
+              "type": "lantai"
+            },
+            {
+              "name": "Fajar M",
+              "task": "Selokan + bersihkan area pilah sampah",
+              "type": "selokan"
+            }
+          ]
+        },
+        {
+          "day": "Rabu",
+          "angkut": [
+            "Aziz",
+            "Bowo"
+          ],
+          "bilas": [
+            "Zakaria (Bilas Tutup)",
+            "Agus (Bilas Ompreng)"
+          ],
+          "tasks": [
+            {
+              "name": "Zakaria",
+              "task": "Gestrep + cuci wadah sisa sampah ompreng",
+              "type": "gestrep"
+            },
+            {
+              "name": "Agus",
+              "task": "Westafel + merapihkan & cuci wadah sayur",
+              "type": "westafel"
+            },
+            {
+              "name": "Aziz",
+              "task": "Bawa Ompreng & Tutup + merendam ompreng SD",
+              "type": "ompreng"
+            },
+            {
+              "name": "Bowo",
+              "task": "Bawa Ompreng & Tutup + merendam ompreng SMP",
+              "type": "ompreng"
+            },
+            {
+              "name": "Fajar M",
+              "task": "Sikat Lantai + pengering lantai",
+              "type": "lantai"
+            },
+            {
+              "name": "Fajar R",
+              "task": "Selokan + bersihkan area pilah sampah",
+              "type": "selokan"
+            }
+          ]
+        },
+        {
+          "day": "Kamis",
+          "angkut": [
+            "Bowo",
+            "Fajar M"
+          ],
+          "bilas": [
+            "Agus (Bilas Tutup)",
+            "Aziz (Bilas Ompreng)"
+          ],
+          "tasks": [
+            {
+              "name": "Agus",
+              "task": "Gestrep + cuci wadah sisa sampah ompreng",
+              "type": "gestrep"
+            },
+            {
+              "name": "Aziz",
+              "task": "Westafel + merapihkan & cuci wadah sayur",
+              "type": "westafel"
+            },
+            {
+              "name": "Bowo",
+              "task": "Bawa Ompreng & Tutup + merendam ompreng SD",
+              "type": "ompreng"
+            },
+            {
+              "name": "Fajar M",
+              "task": "Bawa Ompreng & Tutup + merendam ompreng SMP",
+              "type": "ompreng"
+            },
+            {
+              "name": "Fajar R",
+              "task": "Sikat Lantai + pengering lantai",
+              "type": "lantai"
+            },
+            {
+              "name": "Zakaria",
+              "task": "Selokan + bersihkan area pilah sampah",
+              "type": "selokan"
+            }
+          ]
+        }
+      ]
     },
     {
       "week": 5,
-      "days": []
+      "days": [
+        {
+          "day": "Senin",
+          "angkut": [
+            "Fajar R",
+            "Zakaria"
+          ],
+          "bilas": [
+            "Bowo (Bilas Tutup)",
+            "Fajar M (Bilas Ompreng)"
+          ],
+          "tasks": [
+            {
+              "name": "Bowo",
+              "task": "Gestrep + cuci wadah sisa sampah ompreng",
+              "type": "gestrep"
+            },
+            {
+              "name": "Fajar M",
+              "task": "Westafel + merapihkan & cuci wadah sayur",
+              "type": "westafel"
+            },
+            {
+              "name": "Fajar R",
+              "task": "Bawa Ompreng & Tutup + merendam ompreng SD",
+              "type": "ompreng"
+            },
+            {
+              "name": "Zakaria",
+              "task": "Bawa Ompreng & Tutup + merendam ompreng SMP",
+              "type": "ompreng"
+            },
+            {
+              "name": "Agus",
+              "task": "Sikat Lantai + pengering lantai",
+              "type": "lantai"
+            },
+            {
+              "name": "Aziz",
+              "task": "Selokan + bersihkan area pilah sampah",
+              "type": "selokan"
+            }
+          ]
+        },
+        {
+          "day": "Selasa",
+          "angkut": [
+            "Zakaria",
+            "Agus"
+          ],
+          "bilas": [
+            "Fajar M (Bilas Tutup)",
+            "Fajar R (Bilas Ompreng)"
+          ],
+          "tasks": [
+            {
+              "name": "Fajar M",
+              "task": "Gestrep + cuci wadah sisa sampah ompreng",
+              "type": "gestrep"
+            },
+            {
+              "name": "Fajar R",
+              "task": "Westafel + merapihkan & cuci wadah sayur",
+              "type": "westafel"
+            },
+            {
+              "name": "Zakaria",
+              "task": "Bawa Ompreng & Tutup + merendam ompreng SD",
+              "type": "ompreng"
+            },
+            {
+              "name": "Agus",
+              "task": "Bawa Ompreng & Tutup + merendam ompreng SMP",
+              "type": "ompreng"
+            },
+            {
+              "name": "Aziz",
+              "task": "Sikat Lantai + pengering lantai",
+              "type": "lantai"
+            },
+            {
+              "name": "Bowo",
+              "task": "Selokan + bersihkan area pilah sampah",
+              "type": "selokan"
+            }
+          ]
+        },
+        {
+          "day": "Rabu",
+          "angkut": [
+            "Agus",
+            "Aziz"
+          ],
+          "bilas": [
+            "Fajar R (Bilas Tutup)",
+            "Zakaria (Bilas Ompreng)"
+          ],
+          "tasks": [
+            {
+              "name": "Fajar R",
+              "task": "Gestrep + cuci wadah sisa sampah ompreng",
+              "type": "gestrep"
+            },
+            {
+              "name": "Zakaria",
+              "task": "Westafel + merapihkan & cuci wadah sayur",
+              "type": "westafel"
+            },
+            {
+              "name": "Agus",
+              "task": "Bawa Ompreng & Tutup + merendam ompreng SD",
+              "type": "ompreng"
+            },
+            {
+              "name": "Aziz",
+              "task": "Bawa Ompreng & Tutup + merendam ompreng SMP",
+              "type": "ompreng"
+            },
+            {
+              "name": "Bowo",
+              "task": "Sikat Lantai + pengering lantai",
+              "type": "lantai"
+            },
+            {
+              "name": "Fajar M",
+              "task": "Selokan + bersihkan area pilah sampah",
+              "type": "selokan"
+            }
+          ]
+        },
+        {
+          "day": "Kamis",
+          "angkut": [
+            "Aziz",
+            "Bowo"
+          ],
+          "bilas": [
+            "Zakaria (Bilas Tutup)",
+            "Agus (Bilas Ompreng)"
+          ],
+          "tasks": [
+            {
+              "name": "Zakaria",
+              "task": "Gestrep + cuci wadah sisa sampah ompreng",
+              "type": "gestrep"
+            },
+            {
+              "name": "Agus",
+              "task": "Westafel + merapihkan & cuci wadah sayur",
+              "type": "westafel"
+            },
+            {
+              "name": "Aziz",
+              "task": "Bawa Ompreng & Tutup + merendam ompreng SD",
+              "type": "ompreng"
+            },
+            {
+              "name": "Bowo",
+              "task": "Bawa Ompreng & Tutup + merendam ompreng SMP",
+              "type": "ompreng"
+            },
+            {
+              "name": "Fajar M",
+              "task": "Sikat Lantai + pengering lantai",
+              "type": "lantai"
+            },
+            {
+              "name": "Fajar R",
+              "task": "Selokan + bersihkan area pilah sampah",
+              "type": "selokan"
+            }
+          ]
+        }
+      ]
     },
     {
       "week": 6,
-      "days": []
+      "days": [
+        {
+          "day": "Senin",
+          "angkut": [
+            "Fajar M",
+            "Fajar R"
+          ],
+          "bilas": [
+            "Aziz (Bilas Tutup)",
+            "Bowo (Bilas Ompreng)"
+          ],
+          "tasks": [
+            {
+              "name": "Aziz",
+              "task": "Gestrep + cuci wadah sisa sampah ompreng",
+              "type": "gestrep"
+            },
+            {
+              "name": "Bowo",
+              "task": "Westafel + merapihkan & cuci wadah sayur",
+              "type": "westafel"
+            },
+            {
+              "name": "Fajar M",
+              "task": "Bawa Ompreng & Tutup + merendam ompreng SD",
+              "type": "ompreng"
+            },
+            {
+              "name": "Fajar R",
+              "task": "Bawa Ompreng & Tutup + merendam ompreng SMP",
+              "type": "ompreng"
+            },
+            {
+              "name": "Zakaria",
+              "task": "Sikat Lantai + pengering lantai",
+              "type": "lantai"
+            },
+            {
+              "name": "Agus",
+              "task": "Selokan + bersihkan area pilah sampah",
+              "type": "selokan"
+            }
+          ]
+        },
+        {
+          "day": "Selasa",
+          "angkut": [
+            "Fajar R",
+            "Zakaria"
+          ],
+          "bilas": [
+            "Bowo (Bilas Tutup)",
+            "Fajar M (Bilas Ompreng)"
+          ],
+          "tasks": [
+            {
+              "name": "Bowo",
+              "task": "Gestrep + cuci wadah sisa sampah ompreng",
+              "type": "gestrep"
+            },
+            {
+              "name": "Fajar M",
+              "task": "Westafel + merapihkan & cuci wadah sayur",
+              "type": "westafel"
+            },
+            {
+              "name": "Fajar R",
+              "task": "Bawa Ompreng & Tutup + merendam ompreng SD",
+              "type": "ompreng"
+            },
+            {
+              "name": "Zakaria",
+              "task": "Bawa Ompreng & Tutup + merendam ompreng SMP",
+              "type": "ompreng"
+            },
+            {
+              "name": "Agus",
+              "task": "Sikat Lantai + pengering lantai",
+              "type": "lantai"
+            },
+            {
+              "name": "Aziz",
+              "task": "Selokan + bersihkan area pilah sampah",
+              "type": "selokan"
+            }
+          ]
+        },
+        {
+          "day": "Rabu",
+          "angkut": [
+            "Zakaria",
+            "Agus"
+          ],
+          "bilas": [
+            "Fajar M (Bilas Tutup)",
+            "Fajar R (Bilas Ompreng)"
+          ],
+          "tasks": [
+            {
+              "name": "Fajar M",
+              "task": "Gestrep + cuci wadah sisa sampah ompreng",
+              "type": "gestrep"
+            },
+            {
+              "name": "Fajar R",
+              "task": "Westafel + merapihkan & cuci wadah sayur",
+              "type": "westafel"
+            },
+            {
+              "name": "Zakaria",
+              "task": "Bawa Ompreng & Tutup + merendam ompreng SD",
+              "type": "ompreng"
+            },
+            {
+              "name": "Agus",
+              "task": "Bawa Ompreng & Tutup + merendam ompreng SMP",
+              "type": "ompreng"
+            },
+            {
+              "name": "Aziz",
+              "task": "Sikat Lantai + pengering lantai",
+              "type": "lantai"
+            },
+            {
+              "name": "Bowo",
+              "task": "Selokan + bersihkan area pilah sampah",
+              "type": "selokan"
+            }
+          ]
+        },
+        {
+          "day": "Kamis",
+          "angkut": [
+            "Agus",
+            "Aziz"
+          ],
+          "bilas": [
+            "Fajar R (Bilas Tutup)",
+            "Zakaria (Bilas Ompreng)"
+          ],
+          "tasks": [
+            {
+              "name": "Fajar R",
+              "task": "Gestrep + cuci wadah sisa sampah ompreng",
+              "type": "gestrep"
+            },
+            {
+              "name": "Zakaria",
+              "task": "Westafel + merapihkan & cuci wadah sayur",
+              "type": "westafel"
+            },
+            {
+              "name": "Agus",
+              "task": "Bawa Ompreng & Tutup + merendam ompreng SD",
+              "type": "ompreng"
+            },
+            {
+              "name": "Aziz",
+              "task": "Bawa Ompreng & Tutup + merendam ompreng SMP",
+              "type": "ompreng"
+            },
+            {
+              "name": "Bowo",
+              "task": "Sikat Lantai + pengering lantai",
+              "type": "lantai"
+            },
+            {
+              "name": "Fajar M",
+              "task": "Selokan + bersihkan area pilah sampah",
+              "type": "selokan"
+            }
+          ]
+        }
+      ]
     }
   ],
-  "friday_schedule": [],
-  "members": ["Agus", "Aziz", "Bowo", "Fajar M", "Fajar R", "Zakaria"],
-  "ipal_members": ["Agus", "Aziz", "Fajar M", "Fajar R", "Zakaria"]
+  "friday_schedule": [
+    {
+      "week": 1,
+      "ipal": "Agus",
+      "angkut": [
+        "Agus (Bawa Ompreng & Tutup + Merendam Ompreng SD)",
+        "Aziz (Bawa Ompreng & Tutup + Merendam Ompreng SMP)"
+      ],
+      "bilas": [
+        "Fajar R (Bilas Tutup)",
+        "Zakaria (Bilas Ompreng)"
+      ],
+      "tasks": [
+        {
+          "name": "Fajar R",
+          "task": "Gestrep + cuci wadah sisa sampah ompreng",
+          "type": "gestrep"
+        },
+        {
+          "name": "Zakaria",
+          "task": "Westafel + merapihkan & cuci wadah sayur",
+          "type": "westafel"
+        },
+        {
+          "name": "Bowo",
+          "task": "Sikat Lantai + pengering lantai",
+          "type": "lantai"
+        },
+        {
+          "name": "Fajar M",
+          "task": "Selokan + bersihkan area pilah sampah",
+          "type": "selokan"
+        }
+      ]
+    },
+    {
+      "week": 2,
+      "ipal": "Aziz",
+      "angkut": [
+        "Zakaria (Bawa Ompreng & Tutup + Merendam Ompreng SD)",
+        "Agus (Bawa Ompreng & Tutup + Merendam Ompreng SMP)"
+      ],
+      "bilas": [
+        "Fajar M (Bilas Tutup)",
+        "Fajar R (Bilas Ompreng)"
+      ],
+      "tasks": [
+        {
+          "name": "Fajar M",
+          "task": "Gestrep + cuci wadah sisa sampah ompreng",
+          "type": "gestrep"
+        },
+        {
+          "name": "Fajar R",
+          "task": "Westafel + merapihkan & cuci wadah sayur",
+          "type": "westafel"
+        },
+        {
+          "name": "Aziz",
+          "task": "Sikat Lantai + pengering lantai",
+          "type": "lantai"
+        },
+        {
+          "name": "Bowo",
+          "task": "Selokan + bersihkan area pilah sampah",
+          "type": "selokan"
+        }
+      ]
+    },
+    {
+      "week": 3,
+      "ipal": "Fajar M",
+      "angkut": [
+        "Fajar R (Bawa Ompreng & Tutup + Merendam Ompreng SD)",
+        "Zakaria (Bawa Ompreng & Tutup + Merendam Ompreng SMP)"
+      ],
+      "bilas": [
+        "Bowo (Bilas Tutup)",
+        "Fajar M (Bilas Ompreng)"
+      ],
+      "tasks": [
+        {
+          "name": "Bowo",
+          "task": "Gestrep + cuci wadah sisa sampah ompreng",
+          "type": "gestrep"
+        },
+        {
+          "name": "Fajar M",
+          "task": "Westafel + merapihkan & cuci wadah sayur",
+          "type": "westafel"
+        },
+        {
+          "name": "Agus",
+          "task": "Sikat Lantai + pengering lantai",
+          "type": "lantai"
+        },
+        {
+          "name": "Aziz",
+          "task": "Selokan + bersihkan area pilah sampah",
+          "type": "selokan"
+        }
+      ]
+    },
+    {
+      "week": 4,
+      "ipal": "Fajar R",
+      "angkut": [
+        "Fajar M (Bawa Ompreng & Tutup + Merendam Ompreng SD)",
+        "Fajar R (Bawa Ompreng & Tutup + Merendam Ompreng SMP)"
+      ],
+      "bilas": [
+        "Aziz (Bilas Tutup)",
+        "Bowo (Bilas Ompreng)"
+      ],
+      "tasks": [
+        {
+          "name": "Aziz",
+          "task": "Gestrep + cuci wadah sisa sampah ompreng",
+          "type": "gestrep"
+        },
+        {
+          "name": "Bowo",
+          "task": "Westafel + merapihkan & cuci wadah sayur",
+          "type": "westafel"
+        },
+        {
+          "name": "Zakaria",
+          "task": "Sikat Lantai + pengering lantai",
+          "type": "lantai"
+        },
+        {
+          "name": "Agus",
+          "task": "Selokan + bersihkan area pilah sampah",
+          "type": "selokan"
+        }
+      ]
+    },
+    {
+      "week": 5,
+      "ipal": "Zakaria",
+      "angkut": [
+        "Bowo (Bawa Ompreng & Tutup + Merendam Ompreng SD)",
+        "Fajar M (Bawa Ompreng & Tutup + Merendam Ompreng SMP)"
+      ],
+      "bilas": [
+        "Agus (Bilas Tutup)",
+        "Aziz (Bilas Ompreng)"
+      ],
+      "tasks": [
+        {
+          "name": "Agus",
+          "task": "Gestrep + cuci wadah sisa sampah ompreng",
+          "type": "gestrep"
+        },
+        {
+          "name": "Aziz",
+          "task": "Westafel + merapihkan & cuci wadah sayur",
+          "type": "westafel"
+        },
+        {
+          "name": "Fajar R",
+          "task": "Sikat Lantai + pengering lantai",
+          "type": "lantai"
+        },
+        {
+          "name": "Zakaria",
+          "task": "Selokan + bersihkan area pilah sampah",
+          "type": "selokan"
+        }
+      ]
+    },
+    {
+      "week": 6,
+      "ipal": "Agus",
+      "angkut": [
+        "Aziz (Bawa Ompreng & Tutup + Merendam Ompreng SD)",
+        "Bowo (Bawa Ompreng & Tutup + Merendam Ompreng SMP)"
+      ],
+      "bilas": [
+        "Zakaria (Bilas Tutup)",
+        "Agus (Bilas Ompreng)"
+      ],
+      "tasks": [
+        {
+          "name": "Zakaria",
+          "task": "Gestrep + cuci wadah sisa sampah ompreng",
+          "type": "gestrep"
+        },
+        {
+          "name": "Agus",
+          "task": "Westafel + merapihkan & cuci wadah sayur",
+          "type": "westafel"
+        },
+        {
+          "name": "Fajar M",
+          "task": "Sikat Lantai + pengering lantai",
+          "type": "lantai"
+        },
+        {
+          "name": "Fajar R",
+          "task": "Selokan + bersihkan area pilah sampah",
+          "type": "selokan"
+        }
+      ]
+    }
+  ]
 }
